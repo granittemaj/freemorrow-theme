@@ -68,7 +68,7 @@ const fabricOf = id => { const b = D[id] && D[id].bullets || []; return (b.find(
 /* ---------- Header and footer ---------- */
 const NAV = [['home', 'index.html', document.body.dataset.home || 'The kit'], ['shop', 'shop.html', 'Shop'], ['about', 'about.html', 'About']];
 document.body.insertAdjacentHTML('afterbegin', `<a class="skip" href="#main">Skip to content</a>
-<header class="hd"><a class="logo" href="index.html" aria-label="Freemorrow, home"><img src="${A}logo-color.png" alt=""></a>
+<header class="hd"><a class="logo" href="index.html" aria-label="Freemorrow, home"><img class="lc" src="${A}logo-color.png" alt=""><img class="lw" src="${A}logo-white.png" alt=""></a>
   <nav class="nav" aria-label="Main">${NAV.map(([k, h, t]) => `<a href="${h}"${k === page || (k === 'shop' && page === 'product') || (k === 'home' && page === 'story') ? ' aria-current="page"' : ''}>${t}</a>`).join('')}</nav>
   <div class="hd-r"><button class="bag-b" data-bag data-n="0" aria-label="Bag, empty">${ICON.bag}<span class="count" data-bag-count aria-hidden="true">0</span></button></div></header>`);
 document.body.insertAdjacentHTML('beforeend', `<footer class="ft">

@@ -37,7 +37,11 @@ h1 em,h2 em{font-size:1.07em}
 .hd{position:sticky;top:0;z-index:100;height:var(--hd);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding:0 var(--g);background:rgba(234,227,213,.86);backdrop-filter:blur(12px) saturate(1.2);-webkit-backdrop-filter:blur(12px) saturate(1.2);transition:box-shadow .3s}
 .hd.up{box-shadow:0 1px 0 var(--rule)}
 .logo{display:inline-flex;align-items:center;gap:9px;font-weight:600;letter-spacing:-.02em;font-size:15px;justify-self:start;min-height:44px}
-.logo img{width:48px;height:auto}
+.logo{position:relative}
+.logo img{height:34px;width:auto;transition:opacity .4s}
+/* the white wordmark takes over whenever the header sits on a dark scene */
+.logo .lw{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:0}
+.hd.dark .logo .lc{opacity:0}.hd.dark .logo .lw{opacity:1}
 .nav{display:flex;gap:4px}
 .nav a{display:inline-flex;align-items:center;min-height:40px;padding:0 13px;border-radius:999px;font-size:13.5px;color:var(--ink-2);transition:background .25s,color .25s}
 .nav a:hover{color:var(--ink);background:rgba(29,32,28,.06)}
@@ -50,7 +54,7 @@ h1 em,h2 em{font-size:1.07em}
 .bag-b[data-n="0"] .count{transform:scale(0)}
 .bag-b.bump .count{animation:bump .5s var(--ease)}
 @keyframes bump{40%{transform:scale(1.35)}}
-@media (max-width:760px){.logo img{width:42px}.hd{grid-template-columns:auto 1fr auto}.nav{justify-self:center}.nav a{padding:0 10px}}
+@media (max-width:760px){.logo img{height:29px}.hd{grid-template-columns:auto 1fr auto}.nav{justify-self:center}.nav a{padding:0 10px}}
 
 /* the drafting surface: canvas, grid and rulers */
 .surface{position:relative;background-color:var(--canvas);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:24px 24px;background-position:-1px -1px}

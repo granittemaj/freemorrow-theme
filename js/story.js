@@ -53,8 +53,7 @@ main.innerHTML = `
     </div>
     <button class="cue mono" aria-label="Play the sunrise"><i></i>Scroll</button>
     <div class="auto" role="group" aria-label="Autoplay">
-      <button class="auto-pp" aria-pressed="false" aria-label="Pause"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="trk" cx="22" cy="22" r="20"/><circle class="run" cx="22" cy="22" r="20"/></svg>
-        <svg class="ic pa" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7v10M15 7v10"/></svg><svg class="ic pl" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7l8 5-8 5z"/></svg></button>
+      <button class="auto-pp" aria-pressed="false" aria-label="Pause"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="trk" cx="22" cy="22" r="20"/><circle class="run" cx="22" cy="22" r="20" transform="rotate(-90 22 22)"/><path class="pa" d="M19 16v12M25 16v12"/><path class="pl" d="M19 15.5 29 22l-10 6.5z"/></svg></button>
       <button class="cue mono" aria-label="Go to the woodland"><i></i>Scroll</button>
     </div>
     <nav class="chap" aria-label="Story chapters">${CHAPTERS.map(c => `<button><span>${c}</span><i></i></button>`).join('')}</nav>
@@ -117,7 +116,7 @@ at(caps[0], { autoAlpha: 0, y: -24 }, .75, .3);
 tl.set(film, { clipPath: circle(() => G.r0) }, 1);
 at(sun, { autoAlpha: 0, ease: 'none' }, 1, .25);
 at(film, { clipPath: circle(() => G.r1), ease: 'power3.in' }, 1.2, .55);
-at('.mtn.day', { yPercent: 80, ease: 'power2.in' }, 1.05, .55);
+at('.mtn.day', { yPercent: 110, ease: 'power2.in' }, 1.05, .55);
 at(stage, { '--fg': '#F7F2E9', '--fg2': 'rgba(247,242,233,.82)' }, 1.4, .3);
 at(caps[1], { autoAlpha: 1, y: 0 }, 1.6, .3); at(caps[1], { autoAlpha: 0, y: -24 }, 2.55, .2);
 // 03 the woodland rises over the film
