@@ -91,7 +91,7 @@ h1 em,h2 em{font-weight:300;font-size:1.02em}
 .auto-pp .trk{fill:rgba(245,240,231,.6);stroke:currentColor;stroke-opacity:.25;stroke-width:1.5}
 .on-dark .auto-pp .trk{fill:rgba(10,14,12,.28)}
 .auto-pp .run{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
-.auto-pp .ic{position:relative;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.auto-pp .ic{position:absolute;left:50%;top:50%;margin:-8px 0 0 -8px;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .auto-pp .pl{display:none;fill:currentColor}
 .auto-pp[aria-pressed="true"] .pa{display:none}
 .auto-pp[aria-pressed="true"] .pl{display:block}

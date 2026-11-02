@@ -194,15 +194,27 @@ const REST = [0, 2.0, 3.55, 5.15, 6.5, 7.15];
 // while a place is on screen and settled, it counts down to the next chapter: [from, to] in timeline time
 const LIVE = [null, [1.9, 2.6], [3.5, 4.0], [5.1, 5.4], [6.45, 6.8]];
 const yAt = t => st.start + t / TOTAL * (st.end - st.start);
-let glide = null;
+const html = document.documentElement;
+let glide = null, glideY = -1;
+function stopGlide() { if (glide) glide.kill(); glide = null; glideY = -1; html.style.scrollBehavior = ''; }
+// the page's smooth scrolling is switched off while gliding, so each step lands at once and nothing lags behind
 function glideTo(t, dur) {
-  if (glide) glide.kill();
+  stopGlide();
   const o = { y: scrollY };
-  glide = gsap.to(o, { y: yAt(t), duration: reduce ? 0 : dur, ease: 'power1.inOut', onUpdate: () => scrollTo({ top: o.y, behavior: 'instant' }), onComplete: () => { glide = null; } });
+  html.style.scrollBehavior = 'auto';
+  glide = gsap.to(o, { y: yAt(t), duration: reduce ? 0 : dur, ease: 'power1.inOut',
+    onUpdate: () => { glideY = Math.round(o.y); scrollTo(0, glideY); }, onComplete: stopGlide });
 }
 const next = i => glideTo(REST[i], i === 1 ? 4.6 : i === 5 ? 1.8 : 2.6);
-// anything the visitor does themselves takes over from the autoplay
-['wheel', 'touchstart', 'keydown'].forEach(ev => addEventListener(ev, e => { if (glide && !(e.target.closest && e.target.closest('.auto,.cue'))) { glide.kill(); glide = null; } }, { passive: true }));
+// anything the visitor does themselves takes over: it stops a glide, and starts the countdown again from the top
+let touched = 0;
+function takeOver(e) {
+  if (e && e.target && e.target.closest && e.target.closest('.auto,.stage > .cue')) return;
+  stopGlide(); touched = performance.now();
+}
+['wheel', 'touchstart', 'touchmove', 'keydown', 'pointerdown'].forEach(ev => addEventListener(ev, takeOver, { passive: true }));
+// a scroll the glide did not make (a scrollbar drag, momentum) counts too
+addEventListener('scroll', () => { if (!glide || Math.abs(scrollY - glideY) > 6) takeOver(); }, { passive: true });
 $('.stage > .cue').addEventListener('click', () => next(1));
 
 // each place counts down, then moves on to the next, unless it is paused
@@ -213,6 +225,7 @@ let left = AUTO, paused = false, scene = 0, raf = 0, last = 0;
 function tick(now) {
   raf = 0;
   if (!scene) return;
+  if (touched) { left = AUTO; touched = 0; }
   if (!paused && !glide) left -= Math.min(.1, (now - (last || now)) / 1000);
   last = now;
   run.style.strokeDashoffset = C * (1 - left / AUTO);
