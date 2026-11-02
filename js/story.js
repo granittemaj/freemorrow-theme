@@ -28,7 +28,7 @@ const ridge = (cls, cols) => `<svg class="mtn ${cls}" viewBox="0 0 1440 420" pre
 const CHAPTERS = ['Sunrise', 'The canopy', 'The woodland', 'The terraces', 'The ridge', 'Sunset'];
 const chip = (id, ci = 0) => { const p = byId(id), c = p.colors[ci]; return `<div class="chip"><span class="th"><img src="${c.img}" alt=""></span><span class="ct"><b>${SHORT[id]}</b><small>${c.n} · ${money(p.price)}</small></span>
   <button class="chip-add" data-product="${id}" data-color="${ci}" data-from="From the story">Add to bag</button><a class="chip-go" href="product.html?p=${id}&c=${ci}" aria-label="${SHORT[id]} details">${ARROW}</a></div>`; };
-const cap = (i, title, text, extra = '') => `<article class="cap" data-cap="${i}"><p class="mono"><b>${pad(i + 1)}</b> · ${CHAPTERS[i]}</p>${i ? `<h2>${title}</h2>` : `<h1>${title}</h1>`}<p class="lead">${text}</p>${extra}</article>`;
+const cap = (i, title, text, extra = '') => `<article class="cap" data-cap="${i}"><p class="mono">${CHAPTERS[i]}</p>${i ? `<h2>${title}</h2>` : `<h1>${title}</h1>`}<p class="lead">${text}</p>${extra}</article>`;
 // a pin on a photo, at the piece's position in the original image
 const pin = (id, ci, px, py, from) => { const p = byId(id); return `<button class="pin" data-product="${id}" data-color="${ci}" data-from="${from}" data-px="${px}" data-py="${py}" aria-label="Quick look: ${SHORT[id]}, ${money(p.price)}"><i>${PLUS}</i><span>${SHORT[id]} · ${money(p.price)}</span></button>`; };
 
@@ -52,7 +52,12 @@ main.innerHTML = `
       ${cap(4, 'Waiting for <em>the light.</em>', 'The most moving beauty is often the most modest. A washed cap and a soft long sleeve, under a hard blue mountain sky.', `<div class="look">${chip('cap', 1)}${chip('offbeat')}</div>`)}
       ${cap(5, 'Leave the world better <em>than you found it.</em>', 'All proceeds from Freemorrow support the work of Not For Sale, helping protect people and the planet by addressing human trafficking, modern-day slavery and ecocide.', `<div class="acts"><a class="btn" href="shop.html">Shop the collection ${ARROW}</a><a class="tlink" href="about.html">Our story ${ARROW}</a></div>`)}
     </div>
-    <div class="cue mono" aria-hidden="true"><i></i>Scroll</div>
+    <button class="cue mono" data-next="1" aria-label="Play the sunrise"><i></i>Scroll</button>
+    <div class="auto" aria-label="The canopy plays on by itself">
+      <button class="auto-pp" aria-pressed="false" aria-label="Pause"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="trk" cx="22" cy="22" r="20"/><circle class="run" cx="22" cy="22" r="20"/></svg>
+        <svg class="ic pa" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7v10M15 7v10"/></svg><svg class="ic pl" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7l8 5-8 5z"/></svg></button>
+      <button class="cue mono" data-next="2" aria-label="Go to the woodland"><i></i>Scroll</button>
+    </div>
     <nav class="chap" aria-label="Story chapters">${CHAPTERS.map(c => `<button><span>${c}</span><i></i></button>`).join('')}</nav>
     <div class="bar" aria-hidden="true"><i></i></div>
   </div>
@@ -113,7 +118,7 @@ tl.set(stage, { backgroundColor: '#F3E6D2', '--fg': '#1D201C', '--fg2': 'rgba(29
 at(sun, { y: () => G.sunY1, ease: 'power1.out' }, 0, 1);
 at(stage, { backgroundColor: '#F6DDC0' }, 0, 1);
 at('.mtn.day', { yPercent: 6 }, 0, 1);
-at('.cue', { autoAlpha: 0 }, 0, .2);
+at('.stage > .cue', { autoAlpha: 0 }, 0, .2);
 at(caps[0], { autoAlpha: 0, y: -24 }, .75, .3);
 // 02 the canopy: the sun becomes a window onto the film, which opens to the whole screen
 tl.set(film, { clipPath: circle(() => G.r0) }, 1);
@@ -155,11 +160,13 @@ tl.to({}, { duration: .1 }, TOTAL - .1);
 // native scrolling; the scrub does the smoothing, so nothing fights the browser's own scroll
 const chaps = $$('.chap button'), bar = $('.bar i');
 let curCh = -1, playing = false;
+let onScene = null; // set once the autoplay below is ready
 const st = ScrollTrigger.create({
   trigger: '.story', start: 'top top', end: () => '+=' + Math.round(TOTAL * innerHeight * .95),
   pin: true, scrub: reduce ? true : 1, anticipatePin: 1, animation: tl, invalidateOnRefresh: true,
   onUpdate(self) {
     const t = self.progress * TOTAL;
+    if (onScene) onScene(t);
     let ch = 0; MARKS.forEach((mk, i) => { if (t >= mk - .05) ch = i; });
     if (ch !== curCh) { curCh = ch; chaps.forEach((b, i) => b.toggleAttribute('aria-current', i === ch)); }
     bar.style.transform = `scaleX(${self.progress})`;
@@ -174,5 +181,51 @@ const st = ScrollTrigger.create({
 });
 const go = y => scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
 chaps.forEach((b, i) => b.addEventListener('click', () => go(st.start + (MARKS[i] + (i ? .25 : 0)) / TOTAL * (st.end - st.start))));
-addEventListener('load', () => ScrollTrigger.refresh());
+
+/* ---------- the story plays itself: the sunrise on arrival, then a countdown on the canopy ---------- */
+// where each scene has settled, in timeline time: the canopy with its caption in, the woodland with its pins out
+const REST = [0, 2.0, 3.55];
+const yAt = t => st.start + t / TOTAL * (st.end - st.start);
+let glide = null;
+function glideTo(t, dur) {
+  if (glide) glide.kill();
+  const o = { y: scrollY };
+  glide = gsap.to(o, { y: yAt(t), duration: reduce ? 0 : dur, ease: 'power1.inOut', onUpdate: () => scrollTo({ top: o.y, behavior: 'instant' }), onComplete: () => { glide = null; } });
+}
+// anything the visitor does themselves takes over from the autoplay
+['wheel', 'touchstart', 'keydown'].forEach(ev => addEventListener(ev, e => { if (glide && !(e.target.closest && e.target.closest('.auto,.cue'))) { glide.kill(); glide = null; } }, { passive: true }));
+$$('[data-next]').forEach(b => b.addEventListener('click', () => glideTo(REST[+b.dataset.next], +b.dataset.next === 1 ? 4.6 : 2.6)));
+
+// the canopy counts down, then moves on to the woodland, unless it is paused
+const AUTO = 7, auto = $('.auto'), pp = $('.auto-pp'), run = $('.auto-pp .run');
+const C = 2 * Math.PI * 20;
+run.style.strokeDasharray = C;
+let left = AUTO, paused = false, live = false, raf = 0, last = 0;
+function tick(now) {
+  raf = 0;
+  if (!live) return;
+  if (!paused && !glide) { left -= Math.min(.1, (now - (last || now)) / 1000); }
+  last = now;
+  run.style.strokeDashoffset = C * (1 - left / AUTO);
+  if (left <= 0) { glideTo(REST[2], 2.6); return; } // the countdown restarts if the visitor comes back
+  raf = requestAnimationFrame(tick);
+}
+function canopy(on) {
+  if (on === live) return;
+  live = on; auto.classList.toggle('on', on);
+  if (on) { left = AUTO; last = 0; run.style.strokeDashoffset = 0; if (!reduce) raf = requestAnimationFrame(tick); }
+  else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+}
+pp.addEventListener('click', () => {
+  paused = !paused;
+  pp.setAttribute('aria-pressed', paused); pp.setAttribute('aria-label', paused ? 'Play' : 'Pause');
+});
+onScene = t => canopy(t > 1.9 && t < 2.6);
+onScene(st.progress * TOTAL);
+
+addEventListener('load', () => {
+  ScrollTrigger.refresh();
+  // the sunrise plays by itself when the page opens at the top
+  if (!reduce && scrollY < 4) setTimeout(() => { if (scrollY < 4) glideTo(REST[1], 4.6); }, 500);
+});
 })();

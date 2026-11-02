@@ -61,7 +61,7 @@ main.innerHTML = `
   <div class="places">${PLACES.map((pl, i) => `
     <article class="place${i ? '' : ' on'}" data-i="${i}">
       <div class="pl-im">${pl.video ? `<video muted loop playsinline preload="none" poster="${A + pl.img}" aria-label="${pl.alt}"></video>` : `<img src="${A + pl.img}" alt="${pl.alt}" style="object-position:${pl.pos}">`}</div>
-      <button class="pl-h" aria-expanded="${!i}" aria-controls="pl-${pl.id}"><span class="mono"><b>${pad(i + 1)}</b> · ${pl.time}</span><span class="pl-n">${pl.name}</span></button>
+      <button class="pl-h" aria-expanded="${!i}" aria-controls="pl-${pl.id}"><span class="mono">${pl.time}</span><span class="pl-n">${pl.name}</span></button>
       <div class="pl-b" id="pl-${pl.id}">
         <h2>${pl.line}</h2>
         <ul>${pl.items.map(([id, ci]) => { const p = byId(id), c = p.colors[ci]; return `<li><button data-product="${id}" data-color="${ci}" data-from="Worn ${pl.at.toLowerCase()}"><span class="th"><img src="${c.img}" alt=""></span><span><b>${SHORT[id]}</b><small>${c.n} · ${money(p.price)}</small></span><i>${PLUS}</i></button></li>`; }).join('')}</ul>

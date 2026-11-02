@@ -54,31 +54,30 @@ main.innerHTML = `
     ${ridge('day', ['#E9C9A4', '#D08B66', '#2E4A3B'])}
     <div class="ab-caps">
       <article class="ab-cap"><p class="mono">About Freemorrow</p><h1>Every stripe <em>is a story.</em></h1><p class="lead">Freemorrow is a purpose-led clothing brand inspired by extraordinary places, people, wildlife, cultures and ideas.</p></article>
-      <article class="ab-cap"><p class="mono"><b>01</b> · Belief</p><h2>People protect what they <em>first learn to love.</em></h2><p class="lead">Through storytelling, design and clothing, we celebrate what makes the world worth exploring, and help protect the future it deserves.</p></article>
+      <article class="ab-cap"><p class="mono">Belief</p><h2>People protect what they <em>first learn to love.</em></h2><p class="lead">Through storytelling, design and clothing, we celebrate what makes the world worth exploring, and help protect the future it deserves.</p></article>
     </div>
     <div class="cue mono" aria-hidden="true"><i></i>Scroll</div>
   </div>
 </section>
 
 <section class="ab-mission">
-  <p class="mono"><b>02</b> · Mission</p>
+  <p class="mono">Mission</p>
   <p class="words" aria-label="${MISSION}">${MISSION.split(' ').map(w => `<span aria-hidden="true">${w}</span>`).join(' ')}</p>
   <p class="sub">We seek out stories that create wonder, offer a new perspective and build a deeper connection with people and the planet.</p>
 </section>
 
 <section class="ab-way">
   <div class="way-pin">
-    <header class="way-h"><div><p class="mono"><b>03</b> · How a piece comes to be</p><h2>From a story <em>to something you wear.</em></h2></div>
-      <p class="mono way-n" aria-hidden="true"><b data-step>01</b> / 0${STEPS.length}</p></header>
+    <header class="way-h"><div><p class="mono">How a piece comes to be</p><h2>From a story <em>to something you wear.</em></h2></div></header>
     <div class="way-sky" aria-hidden="true"><svg viewBox="0 0 1000 100" preserveAspectRatio="none"><path class="arc" d="M0 100Q500 -80 1000 100"/><path class="arc-on" d="M0 100Q500 -80 1000 100"/></svg><span class="way-sun">${SUN('wsC')}</span></div>
     <ol class="way-track">${STEPS.map((s, i) => `
       <li class="step"><figure>${s.video ? `<video muted loop playsinline preload="none" poster="${A + s.img}" aria-label="${s.alt}"></video>` : `<img src="${A + s.img}" alt="${s.alt}" loading="lazy">`}</figure>
-        <div><p class="mono"><b>0${i + 1}</b></p><h3>${s.t}</h3><p>${s.p}</p></div></li>`).join('')}</ol>
+        <div><h3>${s.t}</h3><p>${s.p}</p></div></li>`).join('')}</ol>
   </div>
 </section>
 
 <section class="ab-vision">
-  <div class="vis-t"><p class="mono"><b>04</b> · Vision</p><h2>A fashion brand where every product <em>begins with purpose.</em></h2>
+  <div class="vis-t"><p class="mono">Vision</p><h2>A fashion brand where every product <em>begins with purpose.</em></h2>
     <p>An evolving archive of the world’s wonder, connecting a global community of curious optimists. New frames are added with every story.</p>
     <a class="tlink" href="index.html">Follow the sun ${ARROW}</a></div>
   <div class="vis-cols" aria-label="From the archive">${ARCHIVE.map((col, c) => `<div class="vcol" data-c="${c}">${col.map(([img, cap, pos]) => `<figure><img src="${A + img}" alt="${cap}" loading="lazy" style="object-position:${pos}"><figcaption class="mono">${cap}</figcaption></figure>`).join('')}</div>`).join('')}</div>
@@ -162,14 +161,13 @@ ScrollTrigger.create({
 gsap.to('.words span', { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: '.words', start: 'top 78%', end: 'bottom 42%', scrub: reduce ? true : .6 } });
 
 /* ---------- 03 how a piece comes to be: sideways, under a moving sun ---------- */
-const arc = $('.arc-on'), wsun = $('.way-sun'), sky = $('.way-sky'), stepN = $('[data-step]');
+const arc = $('.arc-on'), wsun = $('.way-sun'), sky = $('.way-sky');
 const len = arc.getTotalLength();
 arc.style.strokeDasharray = len;
 function sunAt(p) {
   const pt = arc.getPointAtLength(p * len), w = sky.clientWidth, h = sky.clientHeight, s = wsun.offsetWidth;
   wsun.style.transform = `translate(${pt.x / 1000 * w - s / 2}px,${pt.y / 100 * h - s * .5}px)`;
   arc.style.strokeDashoffset = len * (1 - p);
-  stepN.textContent = '0' + Math.min(STEPS.length, Math.floor(p * STEPS.length * .999) + 1);
 }
 mm.add('(min-width: 761px)', () => {
   const track = $('.way-track'), dist = () => track.scrollWidth - innerWidth + parseFloat(getComputedStyle(track).paddingLeft);

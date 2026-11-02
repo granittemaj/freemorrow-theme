@@ -317,7 +317,7 @@ function product() {
   const label = src => /back/.test(src) ? 'Back' : /left|right/.test(src) ? 'Side' : /a2/.test(src) ? 'A2' : 'Front';
   document.title = `${SHORT[id]} — Freemorrow`;
   main.innerHTML = `
-  <nav class="crumb mono" aria-label="Breadcrumb"><a href="shop.html">Kit list</a><span>/</span><a href="shop.html#${CAT[id].toLowerCase().replace(' ', '-')}">${CAT[id]}</a><span>/</span><span aria-current="page">No. ${NO(id)}</span></nav>
+  <nav class="crumb mono" aria-label="Breadcrumb"><a href="shop.html">Shop</a><span>/</span><a href="shop.html#${CAT[id].toLowerCase().replace(' ', '-')}">${CAT[id]}</a><span>/</span><span aria-current="page">${SHORT[id]}</span></nav>
   <div class="spec">
     <div class="spec-l">
       <div class="surface spec-s">
@@ -330,7 +330,7 @@ function product() {
     </div>
     <aside class="spec-r">
       <div class="htag">
-        ${mono(`No. ${NO(id)} · ${CAT[id]}`)}
+        ${mono(CAT[id])}
         <h1>${SHORT[id]}</h1><p class="pr">${money(p.price)}</p>
         ${p.colors.length > 1 ? `<fieldset class="opt"><legend class="mono">Colour <span id="spCol"></span></legend><div class="sws" role="radiogroup" aria-label="Colour">${p.colors.map((c, k) => `<button class="sw" role="radio" aria-checked="false" aria-label="${c.n}" style="--c:${c.c}" data-k="${k}"></button>`).join('')}</div></fieldset>` : `<p class="mono one">Colour · ${p.colors[0].n}</p>`}
         ${p.sizes ? `<fieldset class="opt"><legend class="mono">Size</legend><div class="szs" role="radiogroup" aria-label="Size">${p.sizes.map(s => `<button class="sz" role="radio" aria-checked="false" data-s="${s}">${s}</button>`).join('')}</div><span class="err" id="spErr" aria-live="polite"></span></fieldset>` : ''}
@@ -343,7 +343,7 @@ function product() {
     </aside>
   </div>
   <div class="buybar" inert><span><b>${SHORT[id]}</b><small id="bbNote"></small></span><button class="btn" id="bbAdd">Add · ${money(p.price)}</button></div>
-  <section class="more">${mono('Also on the table')}<div class="more-r">${KIT.filter(k => k !== id && k !== PAIR[id]).slice(0, 4).map(k => { const o = byId(k); return `<a class="mini" href="product.html?p=${k}"><span class="im"><img src="${o.colors[0].img}" alt="" loading="lazy"></span><span class="it-l"><b>${NO(k)}</b><em>${money(o.price)}</em><span class="nm">${SHORT[k]}</span></span></a>`; }).join('')}</div></section>`;
+  <section class="more">${mono('Also in the collection')}<div class="more-r">${KIT.filter(k => k !== id && k !== PAIR[id]).slice(0, 4).map(k => { const o = byId(k); return `<a class="mini" href="product.html?p=${k}"><span class="im"><img src="${o.colors[0].img}" alt="" loading="lazy"></span><span class="it-l"><em>${money(o.price)}</em><span class="nm">${SHORT[k]}</span></span></a>`; }).join('')}</div></section>`;
 
   const img = $('#spImg'), views = () => { const c = p.colors[ci]; return [c.img, c.alt, ...(c.more || [])].filter(Boolean); };
   function render() {
