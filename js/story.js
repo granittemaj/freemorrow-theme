@@ -12,7 +12,6 @@ const pad = n => String(n).padStart(2, '0');
 const ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 const PLUS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 7v10M7 12h10"/></svg>';
 const SHORT = { basecamp: 'Basecamp Hoodie', adventure: 'Made for Adventure Hoodie', daybreak: 'Daybreak Cropped Hoodie', roamer: 'Roamer Long Sleeve', offbeat: 'Offbeat Long Sleeve', signature: 'Signature Tee', 'everyday-tee': 'Everyday Tee', tote: 'Free to Wander Tote', print: 'Logo Art Print', beanie: 'Organic Beanie', cap: 'Everyday Cap' };
-const KIT = Object.keys(SHORT);
 const FILM = 'https://freemorrow.com/cdn/shop/videos/c/vp/a222892b32af4fb0b2b1a1a89c07a3e6/a222892b32af4fb0b2b1a1a89c07a3e6.HD-1080p-7.2Mbps-96820446.mp4?v=0';
 
 // the striped sun, drawn to match the print: a solid dome, then bands that thin towards the horizon
@@ -43,7 +42,7 @@ main.innerHTML = `
       <div class="card"><div class="fill" data-nw="1122" data-nh="1402" data-pos="50 30"><img src="${A}col-river.jpg" alt="Wearing the Everyday Cap under a mountain sky">${pin('cap', 1, 59, 25.5, 'Worn on the ridge')}</div></div></div>
     <div class="dusk" aria-hidden="true"></div>
     <div class="sun">${SUN}</div>
-    ${ridge('day', ['#E9C9A4', '#D08B66', '#2E4A3B'])}${ridge('night', ['#2A3830', '#1F2B24', '#141C17'])}
+    ${ridge('day', ['#E9C9A4', '#D08B66', '#2E4A3B'])}${ridge('night', ['#33433A', '#26352B', '#1C2720'])}
     <div class="caps">
       ${cap(0, 'A world worth <em>exploring.</em>', 'Clothing inspired by extraordinary places, people, wildlife, cultures and ideas. Scroll, and spend a day with the sun.')}
       ${cap(1, 'Nature is <em>art.</em>', 'Mist rising off the Amazon at first light. The colours of the canopy, made to be worn far from home.', `<div class="look">${chip('adventure')}${chip('roamer')}</div>`)}
@@ -61,12 +60,6 @@ main.innerHTML = `
     <nav class="chap" aria-label="Story chapters">${CHAPTERS.map(c => `<button><span>${c}</span><i></i></button>`).join('')}</nav>
     <div class="bar" aria-hidden="true"><i></i></div>
   </div>
-</section>
-<section class="coll" id="collection">
-  <div class="coll-h"><div><p class="mono">Shop</p><h2>The whole <em>collection.</em></h2></div><a class="tlink" href="shop.html">Open the shop ${ARROW}</a></div>
-  <div class="cards">${KIT.map(id => { const p = byId(id); return `<div class="card-p"><a href="product.html?p=${id}" class="ci"><img src="${p.colors[0].img}" alt="" loading="lazy"></a>
-    <div class="cm"><a href="product.html?p=${id}"><b>${SHORT[id]}</b><small>${p.colors.length > 1 ? `${p.colors.length} colours` : p.colors[0].n}</small></a><span>${money(p.price)}</span></div>
-    <button class="cq" data-product="${id}" data-from="The collection" aria-label="Quick look: ${SHORT[id]}">${PLUS}</button></div>`; }).join('')}</div>
 </section>`;
 
 if (!window.gsap || !window.ScrollTrigger) return; // without the libraries the captions still read in order
@@ -100,7 +93,7 @@ const circle = r => () => `circle(${typeof r === 'function' ? r() : r}px at ${G.
 const SHUT = 'inset(100% 0% 0% 0%)', OPEN = 'inset(0% 0% 0% 0%)';
 
 /* ---------- the day, in scenes ---------- */
-const TOTAL = 8.4, MARKS = [0, 1.6, 3.1, 4.6, 6.0, 7.5];
+const TOTAL = 7.3, MARKS = [0, 1.6, 3.1, 4.6, 6.0, 6.95], SUNSET = 6.9;
 const tl = gsap.timeline({ defaults: { ease: 'power2.inOut', duration: 1 } });
 const at = (el, vars, t, d = 1) => tl.to(el, { ...vars, duration: d }, t);
 
@@ -147,14 +140,26 @@ at('.card', { xPercent: 0, rotation: 2.5, autoAlpha: 1, ease: 'power3.out' }, 5.
 at(stage, { '--fg': '#F7F2E9', '--fg2': 'rgba(247,242,233,.82)' }, 5.55, .3);
 tl.to('.sc-ridge .pin', { scale: 1, autoAlpha: 1, duration: .25, ease: 'back.out(2)' }, 6.25);
 at(caps[4], { autoAlpha: 1, y: 0 }, 6.0, .3); at(caps[4], { autoAlpha: 0, y: -24 }, 6.8, .2);
-// 06 sunset, drawn again: dusk falls over the ridge, the night mountains rise and the sun goes down behind them
-at('.dusk', { autoAlpha: 1, ease: 'none' }, 6.8, .5);
-at('.mtn.night', { yPercent: 0, autoAlpha: 1, ease: 'power2.out' }, 7.0, .6);
-tl.set(sun, { x: () => G.sunX, y: () => G.H * .06, scale: sunK }, 7.05);
-at(sun, { autoAlpha: 1, ease: 'none' }, 7.1, .15);
-at(sun, { y: () => G.H * .8 - G.sunH * .3, ease: 'power1.in' }, 7.15, 1.15);
-at(caps[5], { autoAlpha: 1, y: 0 }, 7.5, .3);
 tl.to({}, { duration: .1 }, TOTAL - .1);
+// 06 sunset, drawn again and played in time rather than scrolled: once the ridge has gone, dusk falls, the night
+// mountains rise and the sun goes down behind them by itself. It is the last chapter, so nothing moves on after it.
+const sunset = gsap.timeline({ paused: true })
+  .fromTo('.dusk', { autoAlpha: 0 }, { autoAlpha: 1, duration: 1.2, ease: 'none', immediateRender: false }, 0)
+  .fromTo('.mtn.night', { yPercent: 60, autoAlpha: 0 }, { yPercent: 0, autoAlpha: 1, duration: 1.3, ease: 'power2.out', immediateRender: false }, .4)
+  .fromTo(sun, { x: () => G.sunX, y: () => G.H * .06, scale: sunK, autoAlpha: 0 }, { autoAlpha: 1, duration: .5, ease: 'none', immediateRender: false }, .5)
+  .to(sun, { y: () => G.H * .8 - G.sunH * .3, duration: 3.6, ease: 'power1.in' }, .6)
+  .fromTo(caps[5], { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: .7, ease: 'power2.out', immediateRender: false }, 1.4);
+// the sunset stays paused and a tween drives its progress, so it can set and rise again any number of times
+let setting = false, drive = null;
+function sundown(on) {
+  if (on === setting) return;
+  setting = on; stage.classList.toggle('set', on);
+  if (drive) drive.kill();
+  if (reduce) { sunset.progress(on ? 1 : 0); return; }
+  const left = on ? 1 - sunset.progress() : sunset.progress();
+  drive = gsap.to(sunset, { progress: on ? 1 : 0, duration: sunset.duration() * left / (on ? 1 : 3), ease: 'none' });
+}
+ScrollTrigger.addEventListener('refresh', () => { if (sunset.progress()) sunset.invalidate().progress(sunset.progress()); });
 
 /* ---------- scroll ---------- */
 // native scrolling; the scrub does the smoothing, so nothing fights the browser's own scroll
@@ -167,10 +172,11 @@ const st = ScrollTrigger.create({
   onUpdate(self) {
     const t = self.progress * TOTAL;
     if (onScene) onScene(t);
+    sundown(t >= SUNSET);
     let ch = 0; MARKS.forEach((mk, i) => { if (t >= mk - .05) ch = i; });
     if (ch !== curCh) { curCh = ch; chaps.forEach((b, i) => b.toggleAttribute('aria-current', i === ch)); }
     bar.style.transform = `scaleX(${self.progress})`;
-    const dark = ((t > 1.35 && t < 4.2) || t > 5.55) && self.progress < 1;
+    const dark = (t > 1.35 && t < 4.2) || t > 5.55; // the sunset runs straight into the dark footer
     hd.classList.toggle('dark', dark); stage.classList.toggle('on-dark', dark);
     // the film only loads and plays while it is the scene
     const want = !reduce && t > .9 && t < 3.3;
@@ -184,7 +190,7 @@ chaps.forEach((b, i) => b.addEventListener('click', () => go(st.start + (MARKS[i
 
 /* ---------- the story plays itself: the sunrise on arrival, then a countdown on each place ---------- */
 // where each chapter has settled, in timeline time: its caption in and its pins out
-const REST = [0, 2.0, 3.55, 5.15, 6.5, 8.3];
+const REST = [0, 2.0, 3.55, 5.15, 6.5, 7.15];
 // while a place is on screen and settled, it counts down to the next chapter: [from, to] in timeline time
 const LIVE = [null, [1.9, 2.6], [3.5, 4.0], [5.1, 5.4], [6.45, 6.8]];
 const yAt = t => st.start + t / TOTAL * (st.end - st.start);
@@ -194,7 +200,7 @@ function glideTo(t, dur) {
   const o = { y: scrollY };
   glide = gsap.to(o, { y: yAt(t), duration: reduce ? 0 : dur, ease: 'power1.inOut', onUpdate: () => scrollTo({ top: o.y, behavior: 'instant' }), onComplete: () => { glide = null; } });
 }
-const next = i => glideTo(REST[i], i === 1 ? 4.6 : i === 5 ? 3.4 : 2.6);
+const next = i => glideTo(REST[i], i === 1 ? 4.6 : i === 5 ? 1.8 : 2.6);
 // anything the visitor does themselves takes over from the autoplay
 ['wheel', 'touchstart', 'keydown'].forEach(ev => addEventListener(ev, e => { if (glide && !(e.target.closest && e.target.closest('.auto,.cue'))) { glide.kill(); glide = null; } }, { passive: true }));
 $('.stage > .cue').addEventListener('click', () => next(1));

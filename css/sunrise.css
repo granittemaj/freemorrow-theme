@@ -6,6 +6,7 @@ h1 em,h2 em{font-weight:300;font-size:1.02em}
 /* header floats over the stage, and turns light when the story goes dark */
 :is(body[data-page="story"],body.float) .hd{position:fixed;left:0;right:0;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;transition:color .4s,background .4s}
 :is(body[data-page="story"],body.float) .hd.solid{background:rgba(234,227,213,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--rule)}
+:is(body[data-page="story"],body.float) .hd.dark.solid{background:rgba(28,39,32,.9);box-shadow:none}
 .hd.dark{color:var(--on-dark)}
 .hd.dark .nav a{color:rgba(236,230,218,.75)}
 .hd.dark .nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
@@ -107,6 +108,7 @@ h1 em,h2 em{font-weight:300;font-size:1.02em}
 .chap button:hover span,.chap button:focus-visible span,.chap button[aria-current] span{opacity:.85;transform:none}
 .bar{left:0;right:0;bottom:0;height:2px;z-index:9;background:rgba(127,120,110,.18)}
 .bar i{display:block;height:100%;background:var(--sun);transform-origin:0 50%;transform:scaleX(0)}
+.stage.set .bar{opacity:0;transition:opacity .6s}
 
 @media (max-width:760px){
   .auto{flex-direction:row;bottom:14px;gap:14px}
@@ -127,20 +129,3 @@ h1 em,h2 em{font-weight:300;font-size:1.02em}
   .sc-wood{background:#141A15}
   .sc-wood .fill{top:36%}
 }
-
-/* after the story: the collection as cards */
-.coll{padding:clamp(72px,9vw,130px) var(--g) clamp(64px,8vw,110px)}
-.coll-h{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:clamp(24px,3vw,40px)}
-.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(14px,1.6vw,24px)}
-.card-p{position:relative}
-.ci{display:grid;place-items:center;aspect-ratio:4/5;border-radius:10px;background:var(--paper)}
-.ci img{width:80%;height:80%;object-fit:contain;filter:drop-shadow(0 10px 14px rgba(60,44,28,.1));transition:transform .55s var(--ease)}
-.card-p:hover .ci img{transform:translateY(-6px)}
-.cm{display:flex;justify-content:space-between;gap:12px;padding-top:10px}
-.cm b{display:block;font-weight:500}
-.cm small{color:var(--mute);font-size:12.5px}
-.cm > span{font-family:var(--mono);font-size:12.5px}
-.cq{position:absolute;top:10px;right:10px;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--canvas);box-shadow:0 0 0 1px var(--rule);transition:background .25s,color .25s}
-.cq svg{width:16px;height:16px}
-.cq:hover{background:var(--ink);color:var(--paper)}
-@media (max-width:900px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
