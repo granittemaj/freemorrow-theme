@@ -52,11 +52,11 @@ main.innerHTML = `
       ${cap(4, 'Waiting for <em>the light.</em>', 'The most moving beauty is often the most modest. A washed cap and a soft long sleeve, under a hard blue mountain sky.', `<div class="look">${chip('cap', 1)}${chip('offbeat')}</div>`)}
       ${cap(5, 'Leave the world better <em>than you found it.</em>', 'All proceeds from Freemorrow support the work of Not For Sale, helping protect people and the planet by addressing human trafficking, modern-day slavery and ecocide.', `<div class="acts"><a class="btn" href="shop.html">Shop the collection ${ARROW}</a><a class="tlink" href="about.html">Our story ${ARROW}</a></div>`)}
     </div>
-    <button class="cue mono" data-next="1" aria-label="Play the sunrise"><i></i>Scroll</button>
-    <div class="auto" aria-label="The canopy plays on by itself">
+    <button class="cue mono" aria-label="Play the sunrise"><i></i>Scroll</button>
+    <div class="auto" role="group" aria-label="Autoplay">
       <button class="auto-pp" aria-pressed="false" aria-label="Pause"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="trk" cx="22" cy="22" r="20"/><circle class="run" cx="22" cy="22" r="20"/></svg>
         <svg class="ic pa" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7v10M15 7v10"/></svg><svg class="ic pl" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7l8 5-8 5z"/></svg></button>
-      <button class="cue mono" data-next="2" aria-label="Go to the woodland"><i></i>Scroll</button>
+      <button class="cue mono" aria-label="Go to the woodland"><i></i>Scroll</button>
     </div>
     <nav class="chap" aria-label="Story chapters">${CHAPTERS.map(c => `<button><span>${c}</span><i></i></button>`).join('')}</nav>
     <div class="bar" aria-hidden="true"><i></i></div>
@@ -182,9 +182,11 @@ const st = ScrollTrigger.create({
 const go = y => scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
 chaps.forEach((b, i) => b.addEventListener('click', () => go(st.start + (MARKS[i] + (i ? .25 : 0)) / TOTAL * (st.end - st.start))));
 
-/* ---------- the story plays itself: the sunrise on arrival, then a countdown on the canopy ---------- */
-// where each scene has settled, in timeline time: the canopy with its caption in, the woodland with its pins out
-const REST = [0, 2.0, 3.55];
+/* ---------- the story plays itself: the sunrise on arrival, then a countdown on each place ---------- */
+// where each chapter has settled, in timeline time: its caption in and its pins out
+const REST = [0, 2.0, 3.55, 5.15, 6.5, 8.3];
+// while a place is on screen and settled, it counts down to the next chapter: [from, to] in timeline time
+const LIVE = [null, [1.9, 2.6], [3.5, 4.0], [5.1, 5.4], [6.45, 6.8]];
 const yAt = t => st.start + t / TOTAL * (st.end - st.start);
 let glide = null;
 function glideTo(t, dur) {
@@ -192,35 +194,41 @@ function glideTo(t, dur) {
   const o = { y: scrollY };
   glide = gsap.to(o, { y: yAt(t), duration: reduce ? 0 : dur, ease: 'power1.inOut', onUpdate: () => scrollTo({ top: o.y, behavior: 'instant' }), onComplete: () => { glide = null; } });
 }
+const next = i => glideTo(REST[i], i === 1 ? 4.6 : i === 5 ? 3.4 : 2.6);
 // anything the visitor does themselves takes over from the autoplay
 ['wheel', 'touchstart', 'keydown'].forEach(ev => addEventListener(ev, e => { if (glide && !(e.target.closest && e.target.closest('.auto,.cue'))) { glide.kill(); glide = null; } }, { passive: true }));
-$$('[data-next]').forEach(b => b.addEventListener('click', () => glideTo(REST[+b.dataset.next], +b.dataset.next === 1 ? 4.6 : 2.6)));
+$('.stage > .cue').addEventListener('click', () => next(1));
 
-// the canopy counts down, then moves on to the woodland, unless it is paused
-const AUTO = 7, auto = $('.auto'), pp = $('.auto-pp'), run = $('.auto-pp .run');
+// each place counts down, then moves on to the next, unless it is paused
+const AUTO = 7, auto = $('.auto'), pp = $('.auto-pp'), run = $('.auto-pp .run'), cue2 = $('.auto .cue');
 const C = 2 * Math.PI * 20;
 run.style.strokeDasharray = C;
-let left = AUTO, paused = false, live = false, raf = 0, last = 0;
+let left = AUTO, paused = false, scene = 0, raf = 0, last = 0;
 function tick(now) {
   raf = 0;
-  if (!live) return;
-  if (!paused && !glide) { left -= Math.min(.1, (now - (last || now)) / 1000); }
+  if (!scene) return;
+  if (!paused && !glide) left -= Math.min(.1, (now - (last || now)) / 1000);
   last = now;
   run.style.strokeDashoffset = C * (1 - left / AUTO);
-  if (left <= 0) { glideTo(REST[2], 2.6); return; } // the countdown restarts if the visitor comes back
+  if (left <= 0) { next(scene + 1); return; } // the countdown restarts if the visitor comes back
   raf = requestAnimationFrame(tick);
 }
-function canopy(on) {
-  if (on === live) return;
-  live = on; auto.classList.toggle('on', on);
-  if (on) { left = AUTO; last = 0; run.style.strokeDashoffset = 0; if (!reduce) raf = requestAnimationFrame(tick); }
-  else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+function settle(i) {
+  if (i === scene) return;
+  scene = i; auto.classList.toggle('on', !!i);
+  if (raf) { cancelAnimationFrame(raf); raf = 0; }
+  if (!i) return;
+  cue2.setAttribute('aria-label', `Go to ${CHAPTERS[i + 1].toLowerCase()}`);
+  left = AUTO; last = 0; run.style.strokeDashoffset = 0;
+  if (!reduce) raf = requestAnimationFrame(tick);
 }
+cue2.addEventListener('click', () => scene && next(scene + 1));
+// pausing holds every countdown until play is pressed again
 pp.addEventListener('click', () => {
   paused = !paused;
   pp.setAttribute('aria-pressed', paused); pp.setAttribute('aria-label', paused ? 'Play' : 'Pause');
 });
-onScene = t => canopy(t > 1.9 && t < 2.6);
+onScene = t => settle(Math.max(0, LIVE.findIndex(r => r && t > r[0] && t < r[1])));
 onScene(st.progress * TOTAL);
 
 addEventListener('load', () => {

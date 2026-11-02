@@ -83,16 +83,19 @@ h1 em,h2 em{font-weight:300;font-size:1.02em}
 /* the canopy plays on by itself: a countdown ring that pauses, and the same scroll cue */
 .auto{left:50%;bottom:22px;transform:translateX(-50%);z-index:9;display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
 .auto.on{opacity:1;visibility:visible}
-.auto .cue{transform:none}
-.auto-pp{position:relative;width:44px;height:44px;display:grid;place-items:center;color:#F7F2E9;border-radius:50%}
+.auto .cue{transform:none;color:var(--fg)!important;transition:color .4s}
+.auto .cue i{background:linear-gradient(var(--fg),transparent)}
+.auto-pp{position:relative;width:44px;height:44px;display:grid;place-items:center;color:var(--fg);border-radius:50%;transition:color .4s}
 .auto-pp svg:first-child{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
-.auto-pp .trk{fill:rgba(10,14,12,.28);stroke:rgba(247,242,233,.3);stroke-width:1.5}
-.auto-pp .run{fill:none;stroke:#F7F2E9;stroke-width:1.5;stroke-linecap:round}
+.auto-pp .trk{fill:rgba(245,240,231,.6);stroke:currentColor;stroke-opacity:.25;stroke-width:1.5}
+.on-dark .auto-pp .trk{fill:rgba(10,14,12,.28)}
+.auto-pp .run{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
 .auto-pp .ic{position:relative;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .auto-pp .pl{display:none;fill:currentColor}
 .auto-pp[aria-pressed="true"] .pa{display:none}
 .auto-pp[aria-pressed="true"] .pl{display:block}
-.auto-pp:hover .trk{fill:rgba(10,14,12,.45)}
+.auto-pp:hover .trk{fill:rgba(245,240,231,.85)}
+.on-dark .auto-pp:hover .trk{fill:rgba(10,14,12,.45)}
 @media (prefers-reduced-motion:no-preference){.cue i{animation:cue 2s ease-in-out infinite;transform-origin:top}}
 @keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
 .chap{right:clamp(12px,1.6vw,26px);top:50%;transform:translateY(-50%);z-index:9;display:flex;flex-direction:column;gap:2px}
@@ -106,6 +109,9 @@ h1 em,h2 em{font-weight:300;font-size:1.02em}
 .bar i{display:block;height:100%;background:var(--sun);transform-origin:0 50%;transform:scaleX(0)}
 
 @media (max-width:760px){
+  .auto{flex-direction:row;bottom:14px;gap:14px}
+  .auto .cue i{display:none}
+  .auto .cue{min-height:44px;justify-content:center}
   .caps{left:var(--g);right:var(--g);width:auto}
   .cap,.cap[data-cap="0"]{justify-content:flex-start;padding:calc(var(--hd) + 18px) 0 0}
   .cap h1,.cap h2{font-size:clamp(30px,8.4vw,38px);margin-top:10px}
