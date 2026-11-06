@@ -1,0 +1,39 @@
+{%- comment -%}
+  A photograph from the theme editor, or the bundled one it stands in for until one is chosen.
+  Accepts:
+  - image {Object} an image from an image_picker setting (optional)
+  - fallback {String} a bundled photo: hero-forest, life-1, life-2, mountain, col-river, col-hoodie, hands, flatlay, video-poster
+  - alt {String}, class {String}, sizes {String}, loading {String} lazy | eager, style {String}
+{%- endcomment -%}
+{%- liquid
+  assign img_loading = loading | default: 'lazy'
+  assign img_sizes = sizes | default: '100vw'
+-%}
+{%- if image != blank -%}
+  {{ image | image_url: width: 2400 | image_tag: widths: '480, 800, 1200, 1600, 2000, 2400', sizes: img_sizes, alt: alt, class: class, loading: img_loading, style: style }}
+{%- else -%}
+  {%- liquid
+    case fallback
+      when 'hero-forest'
+        assign w = 1672
+        assign h = 941
+      when 'hands'
+        assign w = 1400
+        assign h = 788
+      when 'mountain'
+        assign w = 1400
+        assign h = 1050
+      when 'flatlay'
+        assign w = 993
+        assign h = 992
+      when 'video-poster'
+        assign w = 1600
+        assign h = 900
+      else
+        assign w = 1122
+        assign h = 1402
+    endcase
+    assign src = 'photo-' | append: fallback | append: '.jpg'
+  -%}
+  <img src="{{ src | asset_url }}" alt="{{ alt | escape }}" width="{{ w }}" height="{{ h }}" loading="{{ img_loading }}"{% if class != blank %} class="{{ class }}"{% endif %}{% if style != blank %} style="{{ style }}"{% endif %}>
+{%- endif -%}

@@ -1,0 +1,16 @@
+{%- comment -%} All collections, each as a photo of its first piece. {%- endcomment -%}
+<section class="pg pg--wide">
+  <header class="pg-h"><p class="mono">{{ 'products.product.shop' | t }}</p><h1>{{ 'collections.all_title' | t }}</h1></header>
+  <div class="cl-g">
+    {%- for c in collections -%}
+      {%- if c.handle == 'frontpage' -%}{%- continue -%}{%- endif -%}
+      <a class="cl" href="{{ c.url }}">
+        <span class="im">{%- assign img = c.image | default: c.products.first.featured_image -%}{% if img != blank %}{{ img | image_url: width: 700 | image_tag: widths: '350, 500, 700', sizes: '(min-width: 900px) 25vw, 50vw', alt: '', loading: 'lazy' }}{% endif %}</span>
+        <b>{{ c.title }}</b><small class="mono">{{ 'collections.pieces' | t: count: c.products_count }}</small>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "Collections list", "class": "section-collections" }
+{% endschema %}

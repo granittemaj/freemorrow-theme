@@ -1,0 +1,24 @@
+{%- comment -%} Sign in, and the password reset form beside it. {%- endcomment -%}
+<section class="pg pg--narrow">
+  <header class="pg-h"><p class="mono">{{ shop.name }}</p><h1>{{ 'customer.login.title' | t }}</h1></header>
+  {%- form 'customer_login', class: 'fm-form' -%}
+    {%- if form.errors -%}<div class="errs" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+    <label>{{ 'customer.email' | t }}<input type="email" name="customer[email]" autocomplete="email" required></label>
+    {%- if form.password_needed -%}<label>{{ 'customer.password' | t }}<input type="password" name="customer[password]" autocomplete="current-password" required></label>{%- endif -%}
+    <button type="submit" class="btn">{{ 'customer.login.submit' | t }}</button>
+    <p class="pg-alt"><a class="tlink" href="{{ routes.account_register_url }}">{{ 'customer.register.title' | t }}</a></p>
+  {%- endform -%}
+  <details class="pg-more"><summary class="mono">{{ 'customer.recover.title' | t }}</summary>
+    {%- form 'recover_customer_password', class: 'fm-form' -%}
+      {%- if form.posted_successfully? -%}<p class="ok" role="status">{{ 'customer.recover.success' | t }}</p>{%- endif -%}
+      <label>{{ 'customer.email' | t }}<input type="email" name="email" autocomplete="email" required></label>
+      <button type="submit" class="btn">{{ 'customer.recover.submit' | t }}</button>
+    {%- endform -%}
+  </details>
+  {%- if shop.checkout.guest_login -%}
+    {%- form 'guest_login' -%}<button type="submit" class="tlink">{{ 'customer.login.guest' | t }}</button>{%- endform -%}
+  {%- endif -%}
+</section>
+{% schema %}
+{ "name": "Sign in", "class": "section-login" }
+{% endschema %}

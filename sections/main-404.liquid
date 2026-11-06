@@ -1,0 +1,9 @@
+{%- comment -%} Page not found, with the sun gone down behind the hills. {%- endcomment -%}
+<section class="pg pg-404">
+  <div class="sun404">{% render 'sun', id: 'sun404' %}</div>
+  <header class="pg-h"><p class="mono">404</p><h1>{{ 'general.404.title' | t }}</h1><p class="lede">{{ 'general.404.text' | t }}</p></header>
+  <div class="acts"><a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue' | t }} {% render 'icon', name: 'arrow' %}</a><a class="tlink" href="{{ routes.root_url }}">{{ 'general.404.home' | t }} {% render 'icon', name: 'arrow' %}</a></div>
+</section>
+{% schema %}
+{ "name": "Page not found", "class": "section-404" }
+{% endschema %}

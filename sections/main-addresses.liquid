@@ -1,0 +1,30 @@
+{%- comment -%} Saved addresses: each one editable, and a form to add another. {%- endcomment -%}
+<section class="pg pg--wide">
+  <header class="pg-h"><p class="mono"><a href="{{ routes.account_url }}">{{ 'customer.account.title' | t }}</a></p><h1>{{ 'customer.addresses.title' | t }}</h1></header>
+  {%- paginate customer.addresses by 10 -%}
+    <div class="acct">
+      {%- for address in customer.addresses -%}
+        <div>
+          {%- if address == customer.default_address -%}<p class="mono">{{ 'customer.addresses.default' | t }}</p>{%- endif -%}
+          {{ address | format_address }}
+          <details class="pg-more"><summary class="mono">{{ 'customer.addresses.edit' | t }}</summary>
+            {%- form 'customer_address', address, class: 'fm-form' -%}
+              {%- render 'address-fields', form: form, id: address.id -%}
+              <button type="submit" class="btn">{{ 'customer.addresses.save' | t }}</button>
+            {%- endform -%}
+          </details>
+        </div>
+      {%- endfor -%}
+      <div>
+        <p class="mono">{{ 'customer.addresses.add' | t }}</p>
+        {%- form 'customer_address', customer.new_address, class: 'fm-form' -%}
+          {%- render 'address-fields', form: form, id: 'new' -%}
+          <button type="submit" class="btn">{{ 'customer.addresses.add' | t }}</button>
+        {%- endform -%}
+      </div>
+    </div>
+  {%- endpaginate -%}
+</section>
+{% schema %}
+{ "name": "Addresses", "class": "section-addresses" }
+{% endschema %}

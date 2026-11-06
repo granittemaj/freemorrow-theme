@@ -1,0 +1,21 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "settings": {
+        "tagline": "Leaving the world better than we found it.",
+        "menu_1": "main-menu",
+        "menu_1_title": "Shop",
+        "menu_2": "footer",
+        "menu_2_title": "Freemorrow",
+        "newsletter": true,
+        "newsletter_heading": "Letters from the field",
+        "newsletter_text": "New collections and the stories behind them, a few times a year.",
+        "show_policies": true
+      }
+    }
+  },
+  "order": ["footer"]
+}

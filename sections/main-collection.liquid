@@ -1,0 +1,243 @@
+{%- comment -%}
+  The shop. On the main collection it opens on the places from the shoot, side by side, with the drawn sun moving
+  across the sky above whichever one is open; choosing a place shows what was worn there. Every collection has the
+  chips to the others, a sort, and the grid, with photo tiles between the products on the main one.
+  Behaviour: assets/collection.js.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign is_main = false
+  if collection.handle == 'all' or collection.handle == s.main_collection.handle
+    assign is_main = true
+  endif
+  assign places = section.blocks | where: 'type', 'place'
+  assign show_places = false
+  if is_main and places.size > 0
+    assign show_places = true
+  endif
+-%}
+<section class="sh-hero{% unless show_places %} sh-hero--plain{% endunless %}">
+  <div class="sh-t">
+    <div>
+      <p class="mono">{{ s.eyebrow }} · {{ 'collections.pieces' | t: count: collection.products_count }}</p>
+      {%- if is_main and s.heading != blank -%}<h1>{{ s.heading }}</h1>{%- else -%}<h1>{{ collection.title }}</h1>{%- endif -%}
+    </div>
+    {%- if is_main and s.lede != blank -%}
+      <p class="lede">{{ s.lede }}</p>
+    {%- elsif collection.description != blank -%}
+      <div class="lede rte">{{ collection.description }}</div>
+    {%- endif -%}
+  </div>
+  {%- if show_places -%}
+    <div class="sh-sky" aria-hidden="true"><svg viewBox="0 0 1000 100" preserveAspectRatio="none"><path d="M0 100Q500 -40 1000 100"/></svg><span class="sh-sun">{% render 'sun', id: 'shopSun' %}</span></div>
+    <div class="places">
+      {%- for block in places -%}
+        {%- liquid
+          assign b = block.settings
+          assign pid = b.name | handleize
+          assign v_src = b.video_url
+          if b.video != blank
+            for source in b.video.sources
+              if source.mime_type == 'video/mp4'
+                assign v_src = source.url
+              endif
+            endfor
+          endif
+          assign colors = b.colors | split: ','
+        -%}
+        <article class="place{% if forloop.first %} on{% endif %}" data-i="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <div class="pl-im">
+            {%- if v_src != blank -%}
+              <video muted loop playsinline preload="none" data-src="{{ v_src | escape }}" aria-label="{{ b.alt | escape }}"
+                poster="{% if b.image != blank %}{{ b.image | image_url: width: 1400 }}{% else %}{{ 'photo-' | append: b.fallback | append: '.jpg' | asset_url }}{% endif %}"></video>
+            {%- else -%}
+              {%- render 'photo', image: b.image, fallback: b.fallback, alt: b.alt, sizes: '(min-width: 760px) 50vw, 82vw', style: 'object-position: 50% 30%' -%}
+            {%- endif -%}
+          </div>
+          <button type="button" class="pl-h" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="pl-{{ block.id }}"><span class="mono">{{ b.time }}</span><span class="pl-n">{{ b.name }}</span></button>
+          <div class="pl-b" id="pl-{{ block.id }}">
+            <h2>{{ b.line }}</h2>
+            <ul>
+              {%- for p in b.products -%}
+                {%- liquid
+                  assign c = colors[forloop.index0] | strip
+                  assign v = p.selected_or_first_available_variant
+                  if c != blank
+                    for pv in p.variants
+                      if pv.options contains c
+                        assign v = pv
+                        break
+                      endif
+                    endfor
+                  endif
+                  assign img = v.featured_image | default: p.featured_image
+                -%}
+                <li><button type="button" data-product="{{ p.handle }}" data-color="{{ c | escape }}" data-from="{{ 'collections.worn' | t }} {{ b.at | downcase | escape }}">
+                  <span class="th">{% if img != blank %}{{ img | image_url: width: 120 | image_tag: alt: '', loading: 'lazy' }}{% endif %}</span>
+                  <span><b>{{ p.title | remove_first: 'The ' }}</b><small>{% if c != blank %}{{ c }} · {% endif %}{{ v.price | money }}</small></span><i>{% render 'icon', name: 'plus' %}</i></button></li>
+              {%- endfor -%}
+            </ul>
+            <button type="button" class="pl-go" data-place="{{ pid }}">{%- assign place_name = b.name | downcase -%}{{ 'collections.shop_place' | t: place: place_name }} {% render 'icon', name: 'arrow' %}</button>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+
+<div class="tools" id="tools">
+  <div class="tools-in">
+    {%- if s.collections != blank -%}
+      <nav class="chips" aria-label="{{ 'collections.browse' | t }}">
+        {%- for c in s.collections -%}
+          <a href="{{ c.url }}"{% if c.handle == collection.handle %} aria-current="page"{% endif %}>{{ c.title }} <i>{{ c.products_count }}</i></a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+    <button type="button" class="pill" hidden data-worn="{{ 'collections.worn' | t | escape }}" data-remove="{{ 'collections.remove_filter' | t | escape }}"><span></span>{% render 'icon', name: 'close' %}</button>
+    <div class="tools-r">
+      <span class="mono" id="shN" aria-live="polite" data-one="{{ 'collections.piece' | t | escape }}" data-other="{{ 'collections.piece_plural' | t | escape }}"></span>
+      <label class="sort"><span class="sr">{{ 'collections.sort' | t }}</span>
+        <select id="shSort">
+          <option value="featured">{{ 'collections.sort_featured' | t }}</option>
+          <option value="low">{{ 'collections.sort_low' | t }}</option>
+          <option value="high">{{ 'collections.sort_high' | t }}</option>
+        </select>
+      </label>
+    </div>
+  </div>
+  <div class="track" aria-hidden="true"><i></i></div>
+</div>
+
+{%- paginate collection.products by s.per_page -%}
+  <section class="grid" aria-label="{{ collection.title | escape }}">
+    {%- for product in collection.products -%}
+      {%- assign card_index = forloop.index0 -%}
+      {%- if is_main and paginate.current_page == 1 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type != 'place' and block.settings.position == card_index -%}
+            {%- render 'collection-tile', block: block -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+      {%- liquid
+        if forloop.index > 4
+          assign lazy = 'lazy'
+        else
+          assign lazy = 'eager'
+        endif
+      -%}
+      {%- render 'product-card', product: product, from: collection.title, loading: lazy -%}
+    {%- endfor -%}
+  </section>
+  {%- if collection.products.size == 0 -%}
+    <p class="none">{{ 'collections.empty' | t }} <a class="tlink" href="{{ routes.all_products_collection_url }}">{{ 'collections.show_all' | t }}</a></p>
+  {%- endif -%}
+  <p class="none" hidden data-none>{{ 'collections.none_here' | t }} <button type="button" class="tlink" data-reset>{{ 'collections.show_all' | t }}</button></p>
+  {%- if paginate.pages > 1 -%}
+    <nav class="pager" aria-label="{{ 'general.pagination' | t }}">
+      {%- if paginate.previous -%}<a class="tlink" href="{{ paginate.previous.url }}">{{ 'general.previous' | t }}</a>{%- endif -%}
+      <span class="mono">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+      {%- if paginate.next -%}<a class="tlink" href="{{ paginate.next.url }}">{{ 'general.next' | t }}</a>{%- endif -%}
+    </nav>
+  {%- endif -%}
+{%- endpaginate -%}
+
+<script type="application/json" id="shPlaces">
+  [{%- for block in places -%}{"id":{{ block.settings.name | handleize | json }},"at":{{ block.settings.at | json }},"handles":[{%- for p in block.settings.products -%}{{ p.handle | json }}{% unless forloop.last %},{% endunless %}{%- endfor -%}]}{% unless forloop.last %},{% endunless %}{%- endfor -%}]
+</script>
+<script src="{{ 'collection.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Shop",
+  "class": "section-shop",
+  "settings": [
+    { "type": "collection", "id": "main_collection", "label": "Main collection", "info": "Opens on the places and shows the photo tiles. /collections/all always does." },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "The shop" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading on the main collection", "default": "Everything the sun <em>touched.</em>" },
+    { "type": "text", "id": "lede", "label": "Intro on the main collection", "default": "Each piece was photographed somewhere real, morning to evening. Shop by the place it was worn, or browse the whole collection." },
+    { "type": "collection_list", "id": "collections", "label": "Collection chips", "limit": 8 },
+    { "type": "range", "id": "per_page", "label": "Products per page", "min": 8, "max": 48, "step": 4, "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "place",
+      "name": "Place",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "The woodland" },
+        { "type": "text", "id": "at", "label": "Where, as a phrase", "info": "Used as: Worn in the woodland.", "default": "In the woodland" },
+        { "type": "text", "id": "time", "label": "Time of day", "default": "Midday" },
+        { "type": "inline_richtext", "id": "line", "label": "Line", "default": "Growth begins with <em>the smallest things.</em>" },
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        {
+          "type": "select", "id": "fallback", "label": "Bundled photo, until one is chosen", "default": "hero-forest",
+          "options": [
+            { "value": "video-poster", "label": "The canopy" }, { "value": "hero-forest", "label": "The woodland" },
+            { "value": "life-1", "label": "The terraces" }, { "value": "life-2", "label": "The terraces, second" },
+            { "value": "col-river", "label": "The ridge, portrait" }, { "value": "mountain", "label": "The striped mountain" },
+            { "value": "col-hoodie", "label": "The striped sun, printed" }, { "value": "hands", "label": "Hands and cloth" },
+            { "value": "flatlay", "label": "Laid flat" }
+          ]
+        },
+        { "type": "video", "id": "video", "label": "Film", "info": "Plays while this place is open. Optional." },
+        { "type": "text", "id": "video_url", "label": "Film address (MP4)", "info": "Used when no film is chosen above." },
+        { "type": "text", "id": "alt", "label": "Description", "default": "Wearing the Basecamp Hoodie and a mustard beanie in a pine forest" },
+        { "type": "product_list", "id": "products", "label": "Worn here", "limit": 4 },
+        { "type": "text", "id": "colors", "label": "Colours worn", "info": "Optional, in the same order, separated by commas. Example: Dust, Mustard Yellow" }
+      ]
+    },
+    {
+      "type": "look",
+      "name": "Photo tile with pins",
+      "settings": [
+        { "type": "range", "id": "position", "label": "Before product number", "min": 0, "max": 24, "step": 1, "default": 2, "info": "0 puts it first." },
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        {
+          "type": "select", "id": "fallback", "label": "Bundled photo, until one is chosen", "default": "hero-forest",
+          "options": [
+            { "value": "hero-forest", "label": "The woodland" }, { "value": "life-1", "label": "The terraces" },
+            { "value": "life-2", "label": "The terraces, second" }, { "value": "col-river", "label": "The ridge, portrait" },
+            { "value": "mountain", "label": "The striped mountain" }, { "value": "col-hoodie", "label": "The striped sun, printed" },
+            { "value": "flatlay", "label": "Laid flat" }
+          ]
+        },
+        { "type": "text", "id": "alt", "label": "Description", "default": "Wearing the Basecamp Hoodie and the Organic Beanie in a pine forest" },
+        { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Worn in the woodland" },
+        { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Cream and mustard <em>on moss.</em>" },
+        { "type": "product", "id": "product_1", "label": "First piece" },
+        { "type": "text", "id": "color_1", "label": "First piece colour" },
+        { "type": "range", "id": "pin_1_x", "label": "First pin, across (%)", "min": 0, "max": 100, "step": 1, "default": 52 },
+        { "type": "range", "id": "pin_1_y", "label": "First pin, down (%)", "min": 0, "max": 100, "step": 1, "default": 12 },
+        { "type": "product", "id": "product_2", "label": "Second piece" },
+        { "type": "text", "id": "color_2", "label": "Second piece colour" },
+        { "type": "range", "id": "pin_2_x", "label": "Second pin, across (%)", "min": 0, "max": 100, "step": 1, "default": 47 },
+        { "type": "range", "id": "pin_2_y", "label": "Second pin, down (%)", "min": 0, "max": 100, "step": 1, "default": 52 },
+        { "type": "text", "id": "place", "label": "Place to show", "info": "The name of a Place block, such as The woodland. Its button filters to that place.", "default": "The woodland" },
+        { "type": "text", "id": "button", "label": "Button label", "default": "Shop the look" }
+      ]
+    },
+    {
+      "type": "quote",
+      "name": "Photo tile with words",
+      "settings": [
+        { "type": "range", "id": "position", "label": "Before product number", "min": 0, "max": 24, "step": 1, "default": 10 },
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        {
+          "type": "select", "id": "fallback", "label": "Bundled photo, until one is chosen", "default": "life-2",
+          "options": [
+            { "value": "hero-forest", "label": "The woodland" }, { "value": "life-1", "label": "The terraces" },
+            { "value": "life-2", "label": "The terraces, second" }, { "value": "col-river", "label": "The ridge, portrait" },
+            { "value": "mountain", "label": "The striped mountain" }, { "value": "col-hoodie", "label": "The striped sun, printed" }
+          ]
+        },
+        { "type": "text", "id": "eyebrow", "label": "Small label", "default": "The terraces" },
+        { "type": "inline_richtext", "id": "text", "label": "Words", "default": "Keep climbing. There is always more of the world, <em>and yourself,</em> to discover." },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Follow the sun" },
+        { "type": "url", "id": "link", "label": "Link", "info": "Leave empty to link to the home page story." }
+      ]
+    }
+  ]
+}
+{% endschema %}

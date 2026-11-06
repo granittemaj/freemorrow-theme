@@ -1,0 +1,20 @@
+{%- comment -%} About: a statement written into place word by word as you scroll. {%- endcomment -%}
+{%- assign words = section.settings.statement | split: ' ' -%}
+<section class="ab-mission">
+  <p class="mono">{{ section.settings.label }}</p>
+  <p class="words" aria-label="{{ section.settings.statement | escape }}">{% for w in words %}<span aria-hidden="true">{{ w }}</span> {% endfor %}</p>
+  {%- if section.settings.sub != blank -%}<p class="sub">{{ section.settings.sub }}</p>{%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "About: statement",
+  "class": "section-about-mission",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Small label", "default": "Mission" },
+    { "type": "textarea", "id": "statement", "label": "Statement", "default": "To inspire people to discover, value and protect the extraordinary world around them." },
+    { "type": "text", "id": "sub", "label": "Text", "default": "We seek out stories that create wonder, offer a new perspective and build a deeper connection with people and the planet." }
+  ],
+  "presets": [{ "name": "About: statement" }]
+}
+{% endschema %}

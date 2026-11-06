@@ -1,0 +1,126 @@
+/* Freemorrow: what the Shopify theme adds to the prototype's styles. Loads after base, story and pages. */
+
+/* product photos are shot on white: multiply lets them sit on the paper tiles as if cut out */
+.pc-a img,.mini .im img,.fm-main img,.fm-thumbs img,.fm-im img,.chip .th img,.pl-b .th img,.spec-f > img,.pair .th img,.cl .im:not(.im--photo) img{mix-blend-mode:multiply}
+/* the prototype's drop shadows outline a photo's square, so the shop's photos go without them */
+.pc-a img,.mini .im img,.spec-f > img,.chip .th img,.fm-main img{filter:none}
+
+/* collections are links */
+.chips a{display:inline-flex;align-items:center;min-height:38px;padding:0 14px;border-radius:999px;font-size:13px;box-shadow:inset 0 0 0 1px var(--rule);transition:background .25s,color .25s,box-shadow .25s;white-space:nowrap}
+.chips a i{font-style:normal;font-family:var(--mono);font-size:10.5px;color:var(--mute);margin-left:5px}
+.chips a:hover{box-shadow:inset 0 0 0 1px var(--ink-2)}
+.chips a[aria-current]{background:var(--ink);color:var(--paper);box-shadow:none}
+.chips a[aria-current] i{color:rgba(245,240,231,.6)}
+@media (max-width:760px){.tools .chips a{flex:none}}
+
+/* cards */
+.pc-p s{color:var(--mute);margin-left:4px}
+.pc-out{background:var(--ink);color:var(--paper)}
+.qa-s button:disabled{opacity:.35;text-decoration:line-through;pointer-events:none}
+.sh-hero--plain{padding-bottom:0}
+.sh-hero--plain .sh-t{padding-bottom:4px}
+
+/* product page */
+.sp-select{width:100%;min-height:44px;margin-top:14px;padding:0 12px;border-radius:8px;border:1px solid var(--rule);background:var(--paper);font:inherit}
+html.js .sp-select{display:none}
+.sz.gone{color:var(--mute);text-decoration:line-through}
+.htag .pr s{color:var(--mute);margin-left:6px}
+.spec-r .rte{color:var(--ink-2);font-size:14px;padding-bottom:18px}
+.spec-r .rte ul{padding-left:18px;margin:8px 0}
+.pair .mono{font-size:10px}
+.fm-more{margin-top:4px;font-size:13px}
+.fm-sz[aria-disabled="true"]{color:var(--mute);text-decoration:line-through}
+
+/* rich text from the admin */
+.rte{line-height:1.65}
+.rte > :first-child{margin-top:0}
+.rte a{text-decoration:underline;text-underline-offset:3px}
+.rte a:hover{color:var(--sun)}
+.rte img{height:auto;border-radius:8px}
+.rte h2,.rte h3{font-family:var(--serif);font-weight:400;letter-spacing:-.015em;margin:1.6em 0 .5em}
+
+/* plain pages */
+.pg{padding:clamp(40px,6vw,88px) var(--g) clamp(64px,8vw,110px);max-width:760px;margin:0 auto}
+.pg--wide{max-width:1180px}
+.pg--narrow{max-width:460px}
+.pg-h{margin-bottom:clamp(24px,3vw,40px)}
+.pg-h h1{font-size:clamp(30px,3.2vw,46px);margin-top:12px}
+.pg-h .lede{margin-top:14px}
+.pg-h .tlink{margin-top:16px}
+.pg-im{margin:0 0 32px;border-radius:10px;overflow:hidden}
+.pg-im img{width:100%;height:auto}
+.pg-alt{margin:18px 0 0}
+.pg-more{margin-top:28px;border-top:1px solid var(--rule);padding-top:16px}
+.pg-more summary{cursor:pointer;list-style:none;min-height:36px;display:flex;align-items:center}
+.pg-more summary::-webkit-details-marker{display:none}
+
+/* forms */
+.fm-form{display:flex;flex-direction:column;gap:14px}
+.fm-form label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--ink-2)}
+.fm-form .chk{flex-direction:row;align-items:center;gap:10px}
+.fm-form input:not([type="checkbox"]),.fm-form textarea,.fm-form select,.cart-s textarea,.srch input{width:100%;min-height:46px;padding:10px 14px;border:1px solid var(--rule);border-radius:10px;background:var(--paper);color:var(--ink);font:inherit;font-size:16px}
+.fm-form textarea,.cart-s textarea{resize:vertical}
+.fm-form input:focus,.fm-form textarea:focus,.fm-form select:focus,.srch input:focus{outline:2px solid var(--sun);outline-offset:1px;border-color:transparent}
+.fm-form .btn{align-self:flex-start}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:560px){.row2{grid-template-columns:1fr}}
+.ok{padding:12px 14px;border-radius:10px;background:var(--forest);color:var(--on-dark)}
+.errs{padding:12px 14px;border-radius:10px;box-shadow:inset 0 0 0 1px var(--sun);color:var(--sun-2)}
+.errs ul{margin:0;padding-left:18px}
+
+/* cart page */
+.cart-l{list-style:none;margin:0;padding:0;border-top:1px solid var(--fm-rule)}
+.cart-l .fm-line{padding-left:0;padding-right:0}
+.cart-l .fm-im{width:72px}
+.cart-q input{width:72px;min-height:40px;margin-top:10px;padding:0 10px;border:1px solid var(--rule);border-radius:999px;background:transparent;font:inherit;text-align:center}
+.cart-s{max-width:420px;margin:24px 0 0 auto;display:flex;flex-direction:column;gap:10px}
+.cart-s label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--ink-2)}
+.cart-b{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-top:8px}
+.cart-b .btn{flex:1}
+.fm-empty .btn{margin-top:18px}
+
+/* search, collections list, blog */
+.srch{display:flex;gap:8px;margin-top:20px;max-width:560px}
+.srch .btn{flex:none}
+.srch-r{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:18px;border-radius:12px;background:var(--paper);min-height:160px}
+.pager{display:flex;justify-content:center;align-items:center;gap:24px;padding:0 var(--g) clamp(64px,8vw,110px)}
+.cl-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:clamp(16px,2vw,28px)}
+.cl{display:flex;flex-direction:column;gap:4px}
+.cl .im{display:grid;place-items:center;aspect-ratio:4/5;border-radius:12px;background:var(--paper);overflow:hidden;margin-bottom:8px}
+.cl .im img{width:78%;height:78%;object-fit:contain;transition:transform .6s var(--ease)}
+.cl .im--photo img{width:100%;height:100%;object-fit:cover}
+.cl:hover .im img{transform:translateY(-6px)}
+.cl b{font-weight:500}
+
+/* account */
+.acct{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:clamp(24px,4vw,56px);margin-top:28px}
+.acct address{font-style:normal;line-height:1.6;margin:10px 0 14px}
+.ords{width:100%;border-collapse:collapse;font-size:14px;margin-top:10px}
+.ords th{font:400 11px var(--mono);letter-spacing:.07em;text-transform:uppercase;color:var(--mute);text-align:left;padding:10px 8px;border-bottom:1px solid var(--ink)}
+.ords td{padding:12px 8px;border-bottom:1px solid var(--rule)}
+
+/* 404, password and gift card: the sun gone down */
+.pg-404{position:relative;text-align:center;overflow:hidden}
+.pg-404 .acts{justify-content:center}
+.sun404{width:120px;margin:0 auto 18px;aspect-ratio:100/77;clip-path:inset(0 0 46% 0);transform:translateY(46%);filter:drop-shadow(0 0 30px rgba(233,120,80,.4))}
+.sun404 svg{width:100%;height:100%}
+body[data-page="password"]{background:linear-gradient(180deg,#10161A,#1A1F22 55%,#3A2A24);color:var(--on-dark);min-height:100vh}
+.pw{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px var(--g);text-align:center}
+.pw h1{font-family:var(--serif);font-weight:400;font-size:clamp(30px,4vw,52px)}
+.pw p{color:var(--on-dark-2);max-width:44ch;margin:0}
+.pw .ft-n{width:min(420px,100%)}
+.pw-logo{width:90px;height:auto}
+.gc{text-align:center}
+.gc img{margin:0 auto}
+.gc-code{font-size:20px;letter-spacing:.12em;padding:16px;border:1px dashed var(--rule);border-radius:10px;margin:18px 0}
+.gc #QrCode{display:grid;place-items:center;margin:18px 0}
+.gc .acts{justify-content:center}
+
+/* footer additions */
+.ft-ok,.ft-err{margin:8px 0 0;font-size:14px;color:var(--on-dark)}
+.ft-err{color:#F08A6E}
+.ft-pol{display:flex;flex-wrap:wrap;gap:4px 16px}
+@media (max-width:760px){.ft-l{flex-direction:column}}
+/* the footer's columns may shrink below their content on phones, so long links and the form wrap instead of widening the page */
+.ft > *{min-width:0}
+@media (max-width:900px){.ft{grid-template-columns:repeat(2,minmax(0,1fr))}}

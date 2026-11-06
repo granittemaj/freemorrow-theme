@@ -1,0 +1,582 @@
+{%- comment -%}
+  Follow the sun: the home page is one day. A drawn sunrise; the sun opens into the film; the woodland, the terraces
+  and the ridge rise one over another with pins on what is worn; a drawn sunset closes it. assets/story.js scrubs it
+  with GSAP ScrollTrigger and plays it by itself. The choreography is fixed, so each chapter has its own settings.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign c0 = section.blocks | where: 'type', 'sunrise' | first
+  assign c0 = c0.settings
+  assign c1 = section.blocks | where: 'type', 'film' | first
+  assign c1 = c1.settings
+  assign c2 = section.blocks | where: 'type', 'woodland' | first
+  assign c2 = c2.settings
+  assign c3 = section.blocks | where: 'type', 'terraces' | first
+  assign c3 = c3.settings
+  assign c4 = section.blocks | where: 'type', 'ridge' | first
+  assign c4 = c4.settings
+  assign c5 = section.blocks | where: 'type', 'sunset' | first
+  assign c5 = c5.settings
+  assign chapter_names = c0.name | append: '|' | append: c1.name | append: '|' | append: c2.name | append: '|' | append: c3.name | append: '|' | append: c4.name | append: '|' | append: c5.name | split: '|'
+  assign film_src = c1.film_url
+  if c1.film != blank
+    for source in c1.film.sources
+      if source.mime_type == 'video/mp4'
+        assign film_src = source.url
+      endif
+    endfor
+  endif
+-%}
+<section class="story" aria-label="{{ s.label | escape }}">
+  <div class="stage">
+    <div class="scene sc-film">
+      <video muted loop playsinline preload="none" data-src="{{ film_src | escape }}" aria-label="{{ c1.alt | escape }}"
+        poster="{% if c1.poster != blank %}{{ c1.poster | image_url: width: 1920 }}{% else %}{{ 'photo-video-poster.jpg' | asset_url }}{% endif %}"></video>
+    </div>
+
+    <div class="scene sc-wood">
+      <div class="fill" {% render 'photo-size', image: c2.image, fallback: 'hero-forest' %} data-pos="50 40">
+        {%- render 'photo', image: c2.image, fallback: 'hero-forest', alt: c2.alt -%}
+        {%- if c2.pins -%}
+          {%- render 'pin', product: c2.product_1, color: c2.color_1, x: c2.pin_1_x, y: c2.pin_1_y, from: c2.name -%}
+          {%- render 'pin', product: c2.product_2, color: c2.color_2, x: c2.pin_2_x, y: c2.pin_2_y, from: c2.name -%}
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="scene sc-terr">
+      <div class="panel pa">
+        <div class="fill" {% render 'photo-size', image: c3.image, fallback: 'life-1' %} data-pos="50 40">
+          {%- render 'photo', image: c3.image, fallback: 'life-1', alt: c3.alt, sizes: '(min-width: 760px) 25vw, 45vw' -%}
+          {%- if c3.pins -%}{%- render 'pin', product: c3.product_1, color: c3.color_1, x: c3.pin_1_x, y: c3.pin_1_y, from: c3.name -%}{%- endif -%}
+        </div>
+      </div>
+      <div class="panel pb">
+        <div class="fill" {% render 'photo-size', image: c3.image_2, fallback: 'life-2' %} data-pos="50 40">
+          {%- render 'photo', image: c3.image_2, fallback: 'life-2', alt: c3.alt_2, sizes: '(min-width: 760px) 21vw, 45vw' -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="scene sc-ridge">
+      {%- render 'photo', image: c4.image, fallback: 'mountain', alt: c4.alt, class: 'bg' -%}
+      <div class="card">
+        <div class="fill" {% render 'photo-size', image: c4.print, fallback: 'col-river' %} data-pos="50 30">
+          {%- render 'photo', image: c4.print, fallback: 'col-river', alt: c4.print_alt, sizes: '(min-width: 760px) 25vw, 58vw' -%}
+          {%- if c4.pins -%}{%- render 'pin', product: c4.product_1, color: c4.color_1, x: c4.pin_1_x, y: c4.pin_1_y, from: c4.name -%}{%- endif -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="dusk" aria-hidden="true"></div>
+    <div class="sun">{%- render 'sun', id: 'storySun' -%}</div>
+    {%- render 'ridge', class: 'day', back: '#E9C9A4', middle: '#D08B66', front: '#2E4A3B' -%}
+    {%- render 'ridge', class: 'night', back: '#33433A', middle: '#26352B', front: '#1C2720' -%}
+
+    <div class="caps">
+      <article class="cap" data-cap="0"><p class="mono">{{ c0.name }}</p><h1>{{ c0.heading }}</h1><p class="lead">{{ c0.text }}</p></article>
+      <article class="cap" data-cap="1"><p class="mono">{{ c1.name }}</p><h2>{{ c1.heading }}</h2><p class="lead">{{ c1.text }}</p>
+        <div class="look">{% render 'chip', product: c1.product_1, color: c1.color_1, from: c1.name %}{% render 'chip', product: c1.product_2, color: c1.color_2, from: c1.name %}</div></article>
+      <article class="cap" data-cap="2"><p class="mono">{{ c2.name }}</p><h2>{{ c2.heading }}</h2><p class="lead">{{ c2.text }}</p>
+        <div class="look">{% render 'chip', product: c2.product_1, color: c2.color_1, from: c2.name %}{% render 'chip', product: c2.product_2, color: c2.color_2, from: c2.name %}</div></article>
+      <article class="cap" data-cap="3"><p class="mono">{{ c3.name }}</p><h2>{{ c3.heading }}</h2><p class="lead">{{ c3.text }}</p>
+        <div class="look">{% render 'chip', product: c3.product_1, color: c3.color_1, from: c3.name %}{% render 'chip', product: c3.product_2, color: c3.color_2, from: c3.name %}</div></article>
+      <article class="cap" data-cap="4"><p class="mono">{{ c4.name }}</p><h2>{{ c4.heading }}</h2><p class="lead">{{ c4.text }}</p>
+        <div class="look">{% render 'chip', product: c4.product_1, color: c4.color_1, from: c4.name %}{% render 'chip', product: c4.product_2, color: c4.color_2, from: c4.name %}</div></article>
+      <article class="cap" data-cap="5"><p class="mono">{{ c5.name }}</p><h2>{{ c5.heading }}</h2><p class="lead">{{ c5.text }}</p>
+        <div class="acts">
+          {%- if c5.button != blank -%}<a class="btn" href="{{ c5.button_link | default: routes.all_products_collection_url }}">{{ c5.button }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+          {%- if c5.link != blank -%}<a class="tlink" href="{{ c5.link_url | default: '/pages/about' }}">{{ c5.link }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+        </div></article>
+    </div>
+
+    <button type="button" class="cue mono" aria-label="{{ 'story.play' | t }}"><i></i>{{ 'story.scroll' | t }}</button>
+    <div class="auto" role="group" aria-label="{{ 'story.autoplay' | t }}">
+      <button type="button" class="auto-pp" aria-pressed="false" aria-label="{{ 'story.pause' | t }}" data-pause="{{ 'story.pause' | t | escape }}" data-play="{{ 'story.play_label' | t | escape }}"><svg viewBox="0 0 44 44" aria-hidden="true" focusable="false"><circle class="trk" cx="22" cy="22" r="20"/><circle class="run" cx="22" cy="22" r="20" transform="rotate(-90 22 22)"/><path class="pa" d="M19 16v12M25 16v12"/><path class="pl" d="M19 15.5 29 22l-10 6.5z"/></svg></button>
+      <button type="button" class="cue mono" data-go="{{ 'story.go_to' | t | escape }}"><i></i>{{ 'story.scroll' | t }}</button>
+    </div>
+    <nav class="chap" aria-label="{{ 'story.chapters' | t }}">
+      {%- for name in chapter_names -%}<button type="button"><span>{{ name }}</span><i></i></button>{%- endfor -%}
+    </nav>
+    <div class="bar" aria-hidden="true"><i></i></div>
+  </div>
+</section>
+
+<script src="{{ 'story.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Follow the sun",
+  "tag": "div",
+  "class": "section-story",
+  "limit": 1,
+  "enabled_on": {
+    "templates": [
+      "index"
+    ]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Accessible name",
+      "default": "The Freemorrow story"
+    },
+    {
+      "type": "paragraph",
+      "content": "Keep all six chapters: the sunrise and sunset are drawn, the four between are your film and photos."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Follow the sun",
+      "blocks": [
+        {
+          "type": "sunrise"
+        },
+        {
+          "type": "film"
+        },
+        {
+          "type": "woodland"
+        },
+        {
+          "type": "terraces"
+        },
+        {
+          "type": "ridge"
+        },
+        {
+          "type": "sunset"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "sunrise",
+      "name": "Sunrise (drawn)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Chapter name",
+          "default": "Sunrise"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "A world worth <em>exploring.</em>"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Clothing inspired by extraordinary places, people, wildlife, cultures and ideas. Scroll, and spend a day with the sun."
+        }
+      ]
+    },
+    {
+      "type": "film",
+      "name": "The film",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Chapter name",
+          "default": "The canopy"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Nature is <em>art.</em>"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Mist rising off the Amazon at first light. The colours of the canopy, made to be worn far from home."
+        },
+        {
+          "type": "video",
+          "id": "film",
+          "label": "Film",
+          "info": "Seen through the sun as it rises. Leave empty to use the film address below."
+        },
+        {
+          "type": "text",
+          "id": "film_url",
+          "label": "Film address (MP4)",
+          "default": "https://freemorrow.com/cdn/shop/videos/c/vp/a222892b32af4fb0b2b1a1a89c07a3e6/a222892b32af4fb0b2b1a1a89c07a3e6.HD-1080p-7.2Mbps-96820446.mp4?v=0"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster",
+          "label": "Poster image",
+          "info": "Shown before the film plays."
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Film description",
+          "default": "Mist rising off a rainforest canopy at first light"
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "First piece"
+        },
+        {
+          "type": "text",
+          "id": "color_1",
+          "label": "First piece colour",
+          "info": "Optional. Must match a colour option, such as Pine Green."
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Second piece"
+        },
+        {
+          "type": "text",
+          "id": "color_2",
+          "label": "Second piece colour"
+        }
+      ]
+    },
+    {
+      "type": "woodland",
+      "name": "The woodland",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Chapter name",
+          "default": "The woodland"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Growth begins with <em>the smallest things.</em>"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Cream and mustard on moss. The heavyweight hoodie and the organic beanie, exactly as they were worn. Touch a pin to shop it."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo",
+          "info": "Full screen. Leave empty to use the woodland photo."
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Photo description",
+          "default": "Wearing the Basecamp Hoodie and a mustard beanie in a pine forest"
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "First piece"
+        },
+        {
+          "type": "text",
+          "id": "color_1",
+          "label": "First piece colour"
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Second piece"
+        },
+        {
+          "type": "text",
+          "id": "color_2",
+          "label": "Second piece colour"
+        },
+        {
+          "type": "checkbox",
+          "id": "pins",
+          "label": "Show pins on the photo",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "pin_1_x",
+          "label": "First pin, across (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 52
+        },
+        {
+          "type": "range",
+          "id": "pin_1_y",
+          "label": "First pin, down (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 12
+        },
+        {
+          "type": "range",
+          "id": "pin_2_x",
+          "label": "Second pin, across (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 47
+        },
+        {
+          "type": "range",
+          "id": "pin_2_y",
+          "label": "Second pin, down (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 52
+        }
+      ]
+    },
+    {
+      "type": "terraces",
+      "name": "The terraces",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Chapter name",
+          "default": "The terraces"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Keep <em>climbing.</em>"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Shot among rice terraces and limestone peaks. Light layers for long days and longer walks."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "First photo (portrait)"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "First photo description",
+          "default": "Wearing the Everyday Tee in White among rice terraces"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_2",
+          "label": "Second photo (portrait)"
+        },
+        {
+          "type": "text",
+          "id": "alt_2",
+          "label": "Second photo description",
+          "default": "Standing among rice terraces below limestone peaks"
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "First piece"
+        },
+        {
+          "type": "text",
+          "id": "color_1",
+          "label": "First piece colour"
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Second piece"
+        },
+        {
+          "type": "text",
+          "id": "color_2",
+          "label": "Second piece colour"
+        },
+        {
+          "type": "checkbox",
+          "id": "pins",
+          "label": "Show a pin on the first photo",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "pin_1_x",
+          "label": "Pin, across (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 54
+        },
+        {
+          "type": "range",
+          "id": "pin_1_y",
+          "label": "Pin, down (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 46
+        }
+      ]
+    },
+    {
+      "type": "ridge",
+      "name": "The ridge",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Chapter name",
+          "default": "The ridge"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Waiting for <em>the light.</em>"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "The most moving beauty is often the most modest. A washed cap and a soft long sleeve, under a hard blue mountain sky."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background photo"
+        },
+        {
+          "type": "text",
+          "id": "alt",
+          "label": "Background description",
+          "default": "Striped red and ochre ridges of a mountain under a cloudy sky"
+        },
+        {
+          "type": "image_picker",
+          "id": "print",
+          "label": "Print photo (portrait)"
+        },
+        {
+          "type": "text",
+          "id": "print_alt",
+          "label": "Print description",
+          "default": "Wearing the Everyday Cap under a mountain sky"
+        },
+        {
+          "type": "product",
+          "id": "product_1",
+          "label": "First piece"
+        },
+        {
+          "type": "text",
+          "id": "color_1",
+          "label": "First piece colour"
+        },
+        {
+          "type": "product",
+          "id": "product_2",
+          "label": "Second piece"
+        },
+        {
+          "type": "text",
+          "id": "color_2",
+          "label": "Second piece colour"
+        },
+        {
+          "type": "checkbox",
+          "id": "pins",
+          "label": "Show a pin on the print",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "pin_1_x",
+          "label": "Pin, across (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 59
+        },
+        {
+          "type": "range",
+          "id": "pin_1_y",
+          "label": "Pin, down (%)",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 26
+        }
+      ]
+    },
+    {
+      "type": "sunset",
+      "name": "Sunset (drawn)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Chapter name",
+          "default": "Sunset"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Leave the world better <em>than you found it.</em>"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "All proceeds from Freemorrow support the work of Not For Sale, helping protect people and the planet by addressing human trafficking, modern-day slavery and ecocide."
+        },
+        {
+          "type": "text",
+          "id": "button",
+          "label": "Button label",
+          "default": "Shop the collection"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "text",
+          "id": "link",
+          "label": "Second link label",
+          "default": "Our story"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Second link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6
+}
+{% endschema %}

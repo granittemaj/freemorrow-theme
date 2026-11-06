@@ -1,0 +1,38 @@
+{%- comment -%}
+  More from the collection, from Shopify's product recommendations. The section loads itself once the page is up.
+{%- endcomment -%}
+<section class="more" data-recs data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}">
+  {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+    <p class="mono">{{ section.settings.heading }}</p>
+    <div class="more-r">
+      {%- for rec in recommendations.products -%}
+        <a class="mini" href="{{ rec.url }}">
+          <span class="im">{{ rec.featured_image | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '(min-width: 900px) 22vw, 45vw', alt: '', loading: 'lazy' }}</span>
+          <span class="it-l"><em>{{ rec.price | money }}</em><span class="nm">{{ rec.title | remove_first: 'The ' }}</span></span>
+        </a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</section>
+<script>
+  (() => {
+    const el = document.querySelector('[data-recs]:not([data-done])');
+    if (!el || el.children.length) return;
+    el.dataset.done = '';
+    fetch(el.dataset.url).then(r => r.text()).then(t => {
+      const s = new DOMParser().parseFromString(t, 'text/html').querySelector('[data-recs]');
+      if (s && s.innerHTML.trim()) el.innerHTML = s.innerHTML;
+    }).catch(() => {});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Also in the collection",
+  "class": "section-recommendations",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Also in the collection" },
+    { "type": "range", "id": "limit", "label": "Products", "min": 2, "max": 8, "step": 1, "default": 4 }
+  ]
+}
+{% endschema %}

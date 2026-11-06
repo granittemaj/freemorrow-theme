@@ -1,0 +1,26 @@
+{%- comment -%}
+  A piece from a story chapter: its photo, name and price, with Add to bag and a link to its page.
+  Accepts: product {Object}, color {String} the colour worn (optional), from {String}
+{%- endcomment -%}
+{%- if product != blank -%}
+  {%- liquid
+    assign title = product.title | remove_first: 'The '
+    assign variant = product.selected_or_first_available_variant
+    if color != blank
+      for v in product.variants
+        if v.options contains color
+          assign variant = v
+          break
+        endif
+      endfor
+    endif
+    assign img = variant.featured_image | default: product.featured_image
+    assign label = color
+  -%}
+  <div class="chip">
+    <span class="th">{%- if img != blank -%}{{ img | image_url: width: 160 | image_tag: alt: '', loading: 'lazy' }}{%- endif -%}</span>
+    <span class="ct"><b>{{ title }}</b><small>{% if label != blank %}{{ label }} · {% endif %}{{ variant.price | money }}</small></span>
+    <button type="button" class="chip-add" data-product="{{ product.handle }}" data-color="{{ color | escape }}" data-from="{{ from | escape }}">{{ 'products.product.add_to_cart' | t }}</button>
+    <a class="chip-go" href="{{ variant.url | default: product.url }}" aria-label="{{ 'products.card.details' | t: title: title | escape }}">{% render 'icon', name: 'arrow' %}</a>
+  </div>
+{%- endif -%}

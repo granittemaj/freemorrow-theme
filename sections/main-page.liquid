@@ -1,0 +1,8 @@
+{%- comment -%} A page from the admin, set in the house style. {%- endcomment -%}
+<section class="pg">
+  <header class="pg-h"><p class="mono">{{ shop.name }}</p><h1>{{ page.title }}</h1></header>
+  <div class="rte pg-b">{{ page.content }}</div>
+</section>
+{% schema %}
+{ "name": "Page", "class": "section-page" }
+{% endschema %}

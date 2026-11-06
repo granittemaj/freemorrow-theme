@@ -1,0 +1,20 @@
+{%- comment -%}
+  The fields of an address form.
+  Accepts: form {Object} the customer_address form, id {String} unique per form
+{%- endcomment -%}
+<div class="row2">
+  <label>{{ 'customer.first_name' | t }}<input type="text" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name"></label>
+  <label>{{ 'customer.last_name' | t }}<input type="text" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name"></label>
+</div>
+<label>{{ 'customer.address.address1' | t }}<input type="text" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1"></label>
+<label>{{ 'customer.address.address2' | t }}<input type="text" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2"></label>
+<div class="row2">
+  <label>{{ 'customer.address.city' | t }}<input type="text" name="address[city]" value="{{ form.city }}" autocomplete="address-level2"></label>
+  <label>{{ 'customer.address.zip' | t }}<input type="text" name="address[zip]" value="{{ form.zip }}" autocomplete="postal-code"></label>
+</div>
+<div class="row2">
+  <label>{{ 'customer.address.country' | t }}<select name="address[country]" data-default="{{ form.country }}">{{ all_country_option_tags }}</select></label>
+  <label>{{ 'customer.address.province' | t }}<input type="text" name="address[province]" value="{{ form.province }}" autocomplete="address-level1"></label>
+</div>
+<label>{{ 'customer.address.phone' | t }}<input type="tel" name="address[phone]" value="{{ form.phone }}" autocomplete="tel"></label>
+<label class="chk"><input type="checkbox" name="address[default]" value="1"> {{ 'customer.addresses.make_default' | t }}</label>

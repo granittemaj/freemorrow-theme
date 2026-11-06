@@ -1,0 +1,63 @@
+{%- comment -%} The footer: the white logo, two menus, the newsletter and the legal line. {%- endcomment -%}
+<footer class="ft">
+  <div class="ft-a">
+    {%- if settings.logo_white != blank -%}
+      {{ settings.logo_white | image_url: width: 120 | image_tag: alt: shop.name, class: 'ft-mark' }}
+    {%- else -%}
+      <img class="ft-mark" src="{{ 'logo-white.png' | asset_url }}" alt="{{ shop.name | escape }}" width="44" height="34" loading="lazy">
+    {%- endif -%}
+    {%- if section.settings.tagline != blank -%}<p>{{ section.settings.tagline }}</p>{%- endif -%}
+  </div>
+  {%- for i in (1..2) -%}
+    {%- liquid
+      assign menu_key = 'menu_' | append: i
+      assign title_key = 'menu_' | append: i | append: '_title'
+      assign menu = section.settings[menu_key]
+    -%}
+    {%- if menu != blank and menu.links.size > 0 -%}
+      <nav class="ft-c" aria-label="{{ section.settings[title_key] | default: menu.title | escape }}">
+        <b class="mono">{{ section.settings[title_key] | default: menu.title }}</b>
+        {%- for link in menu.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
+      </nav>
+    {%- else -%}
+      <div class="ft-c"></div>
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if section.settings.newsletter -%}
+    {%- form 'customer', class: 'ft-n', id: 'footer-newsletter' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label class="mono" for="ftMail">{{ section.settings.newsletter_heading }}</label>
+      {%- if section.settings.newsletter_text != blank -%}<p>{{ section.settings.newsletter_text }}</p>{%- endif -%}
+      {%- if form.posted_successfully? -%}
+        <p class="ft-ok" role="status">{{ 'newsletter.success' | t }}</p>
+      {%- else -%}
+        {%- if form.errors -%}<p class="ft-err" role="alert">{{ form.errors.messages.email | default: form.errors.messages.base }}</p>{%- endif -%}
+        <div class="ft-in"><input id="ftMail" type="email" name="contact[email]" placeholder="{{ 'newsletter.placeholder' | t }}" autocomplete="email" required><button type="submit">{{ 'newsletter.button' | t }}</button></div>
+      {%- endif -%}
+    {%- endform -%}
+  {%- endif -%}
+  <div class="ft-l mono">
+    <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
+    {%- if section.settings.show_policies -%}
+      <span class="ft-pol">{%- for policy in shop.policies -%}<a href="{{ policy.url }}">{{ policy.title }}</a>{%- endfor -%}</span>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "section-footer",
+  "settings": [
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "Leaving the world better than we found it." },
+    { "type": "link_list", "id": "menu_1", "label": "First menu", "default": "main-menu" },
+    { "type": "text", "id": "menu_1_title", "label": "First menu heading", "default": "Shop" },
+    { "type": "link_list", "id": "menu_2", "label": "Second menu", "default": "footer" },
+    { "type": "text", "id": "menu_2_title", "label": "Second menu heading", "default": "Freemorrow" },
+    { "type": "checkbox", "id": "newsletter", "label": "Show newsletter sign-up", "default": true },
+    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Letters from the field" },
+    { "type": "text", "id": "newsletter_text", "label": "Newsletter text", "default": "New collections and the stories behind them, a few times a year." },
+    { "type": "checkbox", "id": "show_policies", "label": "Show policy links", "default": true }
+  ]
+}
+{% endschema %}

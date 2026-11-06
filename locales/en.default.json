@@ -1,0 +1,136 @@
+{
+  "general": {
+    "accessibility": { "skip_to_content": "Skip to content" },
+    "meta": { "tags": "Tagged \"{{ tags }}\"", "page": "Page {{ page }}" },
+    "home": "{{ shop }}, home",
+    "main_menu": "Main",
+    "breadcrumb": "Breadcrumb",
+    "close": "Close",
+    "pagination": "Pages",
+    "previous": "Previous",
+    "next": "Next",
+    "404": {
+      "title": "The sun has set on this page.",
+      "text": "It may have moved, or it never existed. The rest of the world is still worth exploring.",
+      "home": "Back to the story"
+    }
+  },
+  "story": {
+    "scroll": "Scroll",
+    "play": "Play the sunrise",
+    "autoplay": "Autoplay",
+    "pause": "Pause",
+    "play_label": "Play",
+    "go_to": "Go to",
+    "chapters": "Story chapters"
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to bag",
+      "add_short": "Add",
+      "added": "added to bag",
+      "sold_out": "Sold out",
+      "choose_size": "Choose a size to continue.",
+      "colour": "Colour",
+      "size": "Size",
+      "from": "From {{ price }}",
+      "shop": "Shop",
+      "taxes": "Taxes and shipping calculated at checkout",
+      "the_piece": "The piece",
+      "pairs_with": "Pairs well with",
+      "variant": "Choose an option",
+      "views": "Views",
+      "worn": { "one": "Worn · 1 photo", "other": "Worn · {{ count }} photos" }
+    },
+    "card": {
+      "organic": "Organic cotton",
+      "quick_add": "Quick add",
+      "quick_add_label": "Add {{ title }} to bag in size",
+      "quick_look": "Quick look: {{ title }}",
+      "details": "{{ title }} details",
+      "colours": { "one": "1 colour", "other": "{{ count }} colours" }
+    },
+    "quick_look": {
+      "label": "Product details",
+      "details": "Full details"
+    }
+  },
+  "collections": {
+    "pieces": { "one": "1 piece", "other": "{{ count }} pieces" },
+    "piece": "piece",
+    "piece_plural": "pieces",
+    "browse": "Collections",
+    "worn": "Worn",
+    "remove_filter": "Remove filter",
+    "shop_place": "Shop {{ place }}",
+    "sort": "Sort by",
+    "sort_featured": "Featured",
+    "sort_low": "Price, low to high",
+    "sort_high": "Price, high to low",
+    "empty": "Nothing here yet.",
+    "none_here": "Nothing here yet.",
+    "show_all": "Show everything",
+    "all_title": "Collections"
+  },
+  "cart": {
+    "title": "Your bag",
+    "bag_count": { "one": "Bag, 1 item", "other": "Bag, {{ count }} items" },
+    "count": { "one": "1 piece", "other": "{{ count }} pieces" },
+    "subtotal": "Subtotal",
+    "taxes": "Taxes and shipping calculated at checkout.",
+    "checkout": "Checkout",
+    "update": "Update",
+    "remove": "Remove",
+    "quantity": "Quantity",
+    "note": "A note for us",
+    "empty": "Nothing here yet.",
+    "empty_line": "Every story needs somewhere to go.",
+    "continue": "Shop the collection",
+    "error": "That did not work. Please try again."
+  },
+  "newsletter": {
+    "placeholder": "Email address",
+    "button": "Sign up",
+    "success": "Thank you. The next letter is on its way to you."
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send",
+    "success": "Thank you. We will write back soon."
+  },
+  "search": {
+    "title": "Search",
+    "results_for": "Results for “{{ terms }}”",
+    "placeholder": "Search the collection",
+    "submit": "Search",
+    "none": "Nothing matched. Try another word."
+  },
+  "blog": { "empty": "No stories yet." },
+  "password": { "enter": "Enter with a password", "submit": "Enter" },
+  "gift_card": {
+    "title": "Your {{ value }} gift card",
+    "balance": "Balance: {{ value }}",
+    "expired": "This gift card is no longer valid",
+    "shop": "Shop the collection",
+    "apple_wallet": "Add to Apple Wallet"
+  },
+  "customer": {
+    "email": "Email",
+    "password": "Password",
+    "password_confirm": "Confirm password",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "logout": "Sign out",
+    "login": { "title": "Sign in", "submit": "Sign in", "guest": "Continue as a guest" },
+    "register": { "title": "Create an account", "submit": "Create account" },
+    "recover": { "title": "Forgot your password?", "submit": "Send a reset link", "success": "We have emailed you a link to reset your password." },
+    "activate": { "title": "Activate your account", "submit": "Activate", "decline": "Decline invitation" },
+    "reset": { "title": "Choose a new password", "submit": "Save password" },
+    "account": { "title": "Your account", "orders": "Orders", "none": "No orders yet.", "address": "Address" },
+    "order": { "title": "Order {{ name }}", "number": "Order", "date": "Date", "status": "Status", "total": "Total", "shipping": "Shipping address", "billing": "Billing address" },
+    "addresses": { "title": "Addresses", "default": "Default", "edit": "Edit", "save": "Save address", "add": "Add an address", "make_default": "Make this my default address" },
+    "address": { "address1": "Address", "address2": "Apartment, suite, etc.", "city": "City", "zip": "Postal code", "country": "Country", "province": "State or province", "phone": "Phone" }
+  }
+}

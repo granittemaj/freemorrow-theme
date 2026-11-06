@@ -1,0 +1,17 @@
+{%- comment -%} Create an account. {%- endcomment -%}
+<section class="pg pg--narrow">
+  <header class="pg-h"><p class="mono">{{ shop.name }}</p><h1>{{ 'customer.register.title' | t }}</h1></header>
+  {%- form 'create_customer', class: 'fm-form' -%}
+    {%- if form.errors -%}<div class="errs" role="alert">{{ form.errors | default_errors }}</div>{%- endif -%}
+    <div class="row2">
+      <label>{{ 'customer.first_name' | t }}<input type="text" name="customer[first_name]" autocomplete="given-name"></label>
+      <label>{{ 'customer.last_name' | t }}<input type="text" name="customer[last_name]" autocomplete="family-name"></label>
+    </div>
+    <label>{{ 'customer.email' | t }}<input type="email" name="customer[email]" autocomplete="email" required></label>
+    <label>{{ 'customer.password' | t }}<input type="password" name="customer[password]" autocomplete="new-password" required></label>
+    <button type="submit" class="btn">{{ 'customer.register.submit' | t }}</button>
+  {%- endform -%}
+</section>
+{% schema %}
+{ "name": "Create account", "class": "section-register" }
+{% endschema %}

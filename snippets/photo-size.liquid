@@ -1,0 +1,33 @@
+{%- comment -%}
+  The natural size of a photograph or its bundled stand-in, as data-nw and data-nh attributes, so pins can follow
+  the crop that object-fit: cover makes.
+  Accepts: image {Object} (optional), fallback {String}
+{%- endcomment -%}
+{%- liquid
+  if image != blank
+    assign w = image.width
+    assign h = image.height
+  else
+    case fallback
+      when 'hero-forest'
+        assign w = 1672
+        assign h = 941
+      when 'hands'
+        assign w = 1400
+        assign h = 788
+      when 'mountain'
+        assign w = 1400
+        assign h = 1050
+      when 'flatlay'
+        assign w = 993
+        assign h = 992
+      when 'video-poster'
+        assign w = 1600
+        assign h = 900
+      else
+        assign w = 1122
+        assign h = 1402
+    endcase
+  endif
+-%}
+data-nw="{{ w }}" data-nh="{{ h }}"
