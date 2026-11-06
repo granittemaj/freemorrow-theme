@@ -17,7 +17,7 @@ This is a static prototype (HTML, CSS and JavaScript, no build step). The bag an
 
 `shopify/` is the same design as a Shopify Online Store 2.0 theme, wired to the store's products, collections, menus and
 cart. See [shopify/README.md](shopify/README.md) for installing it (zip, GitHub branch `shopify-theme`, or the Shopify CLI)
-and the checklist before publishing. The latest zip is on the [releases page](https://github.com/granittemaj/freemorrow-theme/releases/latest).
+and the checklist before publishing.
 
 ## Run it locally
 
