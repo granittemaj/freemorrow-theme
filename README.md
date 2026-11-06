@@ -6,8 +6,11 @@ which stand in until you choose your own in the theme editor.
 
 ## Install
 
-**From the zip** (simplest): Online Store › Themes › Add theme › Upload zip file, and choose `freemorrow-follow-the-sun.zip`
-from the latest release: https://github.com/granittemaj/freemorrow-theme/releases/latest
+**From a zip** (simplest): Online Store › Themes › Add theme › Upload zip file. To build the zip from this folder:
+
+```bash
+zip -r freemorrow-follow-the-sun.zip assets config layout locales sections snippets templates
+```
 
 **From GitHub** (keeps it in sync): Online Store › Themes › Add theme › Connect from GitHub, choose this repository and the
 `shopify-theme` branch. Pushing to that branch updates the theme.
