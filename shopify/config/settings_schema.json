@@ -1,0 +1,24 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Freemorrow: Follow the sun",
+    "theme_version": "1.0.0",
+    "theme_author": "Freemorrow",
+    "theme_documentation_url": "https://github.com/granittemaj/freemorrow-theme",
+    "theme_support_url": "https://github.com/granittemaj/freemorrow-theme/issues"
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      { "type": "image_picker", "id": "logo", "label": "Logo", "info": "For light backgrounds. Leave empty to use the bundled striped-sun logo." },
+      { "type": "image_picker", "id": "logo_white", "label": "Logo on dark", "info": "Shown on dark story scenes and in the footer." },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "Square, at least 64 × 64 px." }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      { "type": "checkbox", "id": "cart_note", "label": "Let customers leave a note on the cart page", "default": false }
+    ]
+  }
+]

@@ -1,0 +1,46 @@
+{%- comment -%}
+  About, the opening: the striped sun from the logo. As you scroll, each stripe becomes a window onto the photograph,
+  the gaps close, and the sun opens into it, with the belief over it. Behaviour: assets/about.js.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  if s.image != blank
+    assign photo = s.image | image_url: width: 2400
+  else
+    assign photo = 'photo-mountain.jpg' | asset_url
+  endif
+-%}
+<section class="ab-open" aria-label="{{ s.eyebrow | escape }}">
+  <div class="ab-stage">
+    <svg class="ab-win" aria-hidden="true" focusable="false"><defs><clipPath id="abC"><circle/></clipPath>
+      <mask id="abM" maskUnits="userSpaceOnUse"><rect class="mbg" fill="#000"/><g clip-path="url(#abC)">{% for i in (1..6) %}<rect class="mb" fill="#fff"/>{% endfor %}</g></mask></defs>
+      <image href="{{ photo }}" preserveAspectRatio="xMidYMid slice" mask="url(#abM)"/>
+      <g clip-path="url(#abC)">{% for i in (1..6) %}<rect class="rb" fill="#C9432A"/>{% endfor %}</g></svg>
+    <div class="ab-shade"></div>
+    {%- render 'ridge', class: 'day', back: '#E9C9A4', middle: '#D08B66', front: '#2E4A3B' -%}
+    <div class="ab-caps">
+      <article class="ab-cap"><p class="mono">{{ s.eyebrow }}</p><h1>{{ s.heading }}</h1><p class="lead">{{ s.lead }}</p></article>
+      <article class="ab-cap"><p class="mono">{{ s.belief_label }}</p><h2>{{ s.belief_heading }}</h2><p class="lead">{{ s.belief_text }}</p></article>
+    </div>
+    <div class="cue mono" aria-hidden="true"><i></i>{{ 'story.scroll' | t }}</div>
+  </div>
+</section>
+<script src="{{ 'about.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "About: the striped sun",
+  "class": "section-about-open",
+  "limit": 1,
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Photo seen through the stripes", "info": "Leave empty to use the striped mountain." },
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "About Freemorrow" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Every stripe <em>is a story.</em>" },
+    { "type": "text", "id": "lead", "label": "Intro", "default": "Freemorrow is a purpose-led clothing brand inspired by extraordinary places, people, wildlife, cultures and ideas." },
+    { "type": "text", "id": "belief_label", "label": "Second label", "default": "Belief" },
+    { "type": "inline_richtext", "id": "belief_heading", "label": "Second heading", "default": "People protect what they <em>first learn to love.</em>" },
+    { "type": "text", "id": "belief_text", "label": "Second text", "default": "Through storytelling, design and clothing, we celebrate what makes the world worth exploring, and help protect the future it deserves." }
+  ],
+  "presets": [{ "name": "About: the striped sun" }]
+}
+{% endschema %}

@@ -1,0 +1,109 @@
+{
+  "sections": {
+    "story": {
+      "type": "story",
+      "blocks": {
+        "sunrise": {
+          "type": "sunrise",
+          "settings": {
+            "name": "Sunrise",
+            "heading": "A world worth <em>exploring.</em>",
+            "text": "Clothing inspired by extraordinary places, people, wildlife, cultures and ideas. Scroll, and spend a day with the sun."
+          }
+        },
+        "film": {
+          "type": "film",
+          "settings": {
+            "name": "The canopy",
+            "heading": "Nature is <em>art.</em>",
+            "text": "Mist rising off the Amazon at first light. The colours of the canopy, made to be worn far from home.",
+            "film_url": "https://freemorrow.com/cdn/shop/videos/c/vp/a222892b32af4fb0b2b1a1a89c07a3e6/a222892b32af4fb0b2b1a1a89c07a3e6.HD-1080p-7.2Mbps-96820446.mp4?v=0",
+            "alt": "Mist rising off a rainforest canopy at first light",
+            "product_1": "the-made-for-adventure-oversized-hoodie",
+            "color_1": "",
+            "product_2": "the-roamer-heavyweight-long-sleeve",
+            "color_2": "Cypress"
+          }
+        },
+        "woodland": {
+          "type": "woodland",
+          "settings": {
+            "name": "The woodland",
+            "heading": "Growth begins with <em>the smallest things.</em>",
+            "text": "Cream and mustard on moss. The heavyweight hoodie and the organic beanie, exactly as they were worn. Touch a pin to shop it.",
+            "alt": "Wearing the Basecamp Hoodie and a mustard beanie in a pine forest",
+            "product_1": "the-basecamp-oversized-hoodie",
+            "color_1": "Dust",
+            "product_2": "the-everyday-organic-beanie",
+            "color_2": "Mustard Yellow",
+            "pins": true,
+            "pin_1_x": 47,
+            "pin_1_y": 52,
+            "pin_2_x": 52,
+            "pin_2_y": 12
+          }
+        },
+        "terraces": {
+          "type": "terraces",
+          "settings": {
+            "name": "The terraces",
+            "heading": "Keep <em>climbing.</em>",
+            "text": "Shot among rice terraces and limestone peaks. Light layers for long days and longer walks.",
+            "alt": "Wearing the Everyday Tee in White among rice terraces",
+            "alt_2": "Standing among rice terraces below limestone peaks",
+            "product_1": "the-everyday-oversized-tee",
+            "color_1": "White",
+            "product_2": "the-free-to-wander-denim-tote",
+            "color_2": "",
+            "pins": true,
+            "pin_1_x": 54,
+            "pin_1_y": 46
+          }
+        },
+        "ridge": {
+          "type": "ridge",
+          "settings": {
+            "name": "The ridge",
+            "heading": "Waiting for <em>the light.</em>",
+            "text": "The most moving beauty is often the most modest. A washed cap and a soft long sleeve, under a hard blue mountain sky.",
+            "alt": "Striped red and ochre ridges of a mountain under a cloudy sky",
+            "print_alt": "Wearing the Everyday Cap under a mountain sky",
+            "product_1": "the-everyday-cap",
+            "color_1": "Stone",
+            "product_2": "the-offbeat-long-sleeve-tee",
+            "color_2": "",
+            "pins": true,
+            "pin_1_x": 59,
+            "pin_1_y": 26
+          }
+        },
+        "sunset": {
+          "type": "sunset",
+          "settings": {
+            "name": "Sunset",
+            "heading": "Leave the world better <em>than you found it.</em>",
+            "text": "All proceeds from Freemorrow support the work of Not For Sale, helping protect people and the planet by addressing human trafficking, modern-day slavery and ecocide.",
+            "button": "Shop the collection",
+            "button_link": "shopify://collections/shop-all",
+            "link": "Our story",
+            "link_url": "shopify://pages/about"
+          }
+        }
+      },
+      "block_order": [
+        "sunrise",
+        "film",
+        "woodland",
+        "terraces",
+        "ridge",
+        "sunset"
+      ],
+      "settings": {
+        "label": "The Freemorrow story"
+      }
+    }
+  },
+  "order": [
+    "story"
+  ]
+}

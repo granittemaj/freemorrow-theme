@@ -1,0 +1,10 @@
+{%- comment -%}
+  A pin on a photograph, on the piece being worn. Opens the quick look.
+  Accepts: product {Object}, color {String} (optional), x {Number}, y {Number} percent of the photo, from {String}
+{%- endcomment -%}
+{%- if product != blank -%}
+  {%- assign title = product.title | remove_first: 'The ' -%}
+  <button type="button" class="pin" data-product="{{ product.handle }}" data-color="{{ color | escape }}" data-from="{{ from | escape }}" data-px="{{ x }}" data-py="{{ y }}" aria-label="{{ 'products.card.quick_look' | t: title: title | escape }}, {{ product.price | money | strip_html }}">
+    <i>{% render 'icon', name: 'plus' %}</i><span>{{ title }} · {{ product.price | money }}</span>
+  </button>
+{%- endif -%}

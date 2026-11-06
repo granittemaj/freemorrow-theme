@@ -13,6 +13,12 @@ A design concept for the [Freemorrow](https://freemorrow.com) Shopify store. The
 
 This is a static prototype (HTML, CSS and JavaScript, no build step). The bag and checkout are simulated; in production they hand off to Shopify.
 
+## Shopify theme
+
+`shopify/` is the same design as a Shopify Online Store 2.0 theme, wired to the store's products, collections, menus and
+cart. See [shopify/README.md](shopify/README.md) for installing it (zip, GitHub branch `shopify-theme`, or the Shopify CLI)
+and the checklist before publishing. The latest zip is on the [releases page](https://github.com/granittemaj/freemorrow-theme/releases/latest).
+
 ## Run it locally
 
 ```bash

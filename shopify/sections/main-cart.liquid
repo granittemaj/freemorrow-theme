@@ -1,0 +1,32 @@
+{%- comment -%} The cart page, for when the bag drawer is not used: lines, quantities, note and checkout. {%- endcomment -%}
+<section class="pg pg--wide">
+  <header class="pg-h"><p class="mono">{{ 'cart.count' | t: count: cart.item_count }}</p><h1>{{ 'cart.title' | t }}</h1></header>
+  {%- if cart.item_count > 0 -%}
+    <form action="{{ routes.cart_url }}" method="post" class="cart-f">
+      <ul class="cart-l">
+        {%- for item in cart.items -%}
+          <li class="fm-line">
+            <a class="fm-im" href="{{ item.url }}">{% if item.image %}{{ item.image | image_url: width: 240 | image_tag: alt: '', loading: 'lazy' }}{% endif %}</a>
+            <div>
+              <h4><a href="{{ item.url }}">{{ item.product.title | remove_first: 'The ' }}</a></h4>
+              {%- unless item.product.has_only_default_variant -%}<div class="fm-v">{{ item.variant.title }}</div>{%- endunless -%}
+              <label class="cart-q"><span class="sr">{{ 'cart.quantity' | t }}</span><input type="number" name="updates[]" value="{{ item.quantity }}" min="0" inputmode="numeric"></label>
+            </div>
+            <div class="fm-r">{{ item.final_line_price | money }}<a class="fm-rm" href="{{ item.url_to_remove }}">{{ 'cart.remove' | t }}</a></div>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <div class="cart-s">
+        {%- if settings.cart_note -%}<label>{{ 'cart.note' | t }}<textarea name="note" rows="3">{{ cart.note }}</textarea></label>{%- endif -%}
+        <div class="fm-sub"><span>{{ 'cart.subtotal' | t }}</span><span>{{ cart.total_price | money }}</span></div>
+        <small class="mono">{{ 'cart.taxes' | t }}</small>
+        <div class="cart-b"><button type="submit" name="update" class="tlink">{{ 'cart.update' | t }}</button><button type="submit" name="checkout" class="btn">{{ 'cart.checkout' | t }}</button></div>
+      </div>
+    </form>
+  {%- else -%}
+    <div class="fm-empty"><strong>{{ 'cart.empty' | t }}</strong><p>{{ 'cart.empty_line' | t }}</p><a class="btn" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue' | t }}</a></div>
+  {%- endif -%}
+</section>
+{% schema %}
+{ "name": "Cart", "class": "section-cart" }
+{% endschema %}

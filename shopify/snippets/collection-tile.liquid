@@ -1,0 +1,29 @@
+{%- comment -%}
+  A photo tile between the products on the main collection.
+  Accepts: block {Object} a 'look' or 'quote' block of sections/main-collection.liquid
+{%- endcomment -%}
+{%- assign b = block.settings -%}
+{%- if block.type == 'look' -%}
+  <article class="ed ed-look" {{ block.shopify_attributes }}>
+    <div class="fill" {% render 'photo-size', image: b.image, fallback: b.fallback %} data-pos="50 40">
+      {%- render 'photo', image: b.image, fallback: b.fallback, alt: b.alt, sizes: '(min-width: 900px) 50vw, 100vw' -%}
+      {%- render 'pin', product: b.product_1, color: b.color_1, x: b.pin_1_x, y: b.pin_1_y, from: b.eyebrow -%}
+      {%- render 'pin', product: b.product_2, color: b.color_2, x: b.pin_2_x, y: b.pin_2_y, from: b.eyebrow -%}
+    </div>
+    <div class="ed-t">
+      <p class="mono">{{ b.eyebrow }}</p>
+      <h3>{{ b.heading }}</h3>
+      {%- if b.product_1 != blank and b.product_2 != blank -%}
+        <p>{{ b.product_1.title | remove_first: 'The ' }} · {{ b.product_2.title | remove_first: 'The ' }} · {{ b.product_1.price | plus: b.product_2.price | money }}</p>
+      {%- endif -%}
+      {%- if b.place != blank and b.button != blank -%}
+        <button type="button" class="tlink" data-place="{{ b.place | handleize }}">{{ b.button }} {% render 'icon', name: 'arrow' %}</button>
+      {%- endif -%}
+    </div>
+  </article>
+{%- elsif block.type == 'quote' -%}
+  <a class="ed ed-q" href="{{ b.link | default: routes.root_url }}" {{ block.shopify_attributes }}>
+    {%- render 'photo', image: b.image, fallback: b.fallback, alt: '', sizes: '(min-width: 900px) 25vw, 50vw' -%}
+    <span class="ed-qt"><span class="mono">{{ b.eyebrow }}</span><b>{{ b.text }}</b>{%- if b.link_label != blank -%}<span class="tlink">{{ b.link_label }} {% render 'icon', name: 'arrow' %}</span>{%- endif -%}</span>
+  </a>
+{%- endif -%}

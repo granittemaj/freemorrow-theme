@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "shipping": { "type": "details", "settings": { "heading": "Shipping and returns", "text": "<p>Taxes and shipping are calculated at checkout. Our shipping and refund policies are linked at the foot of every page.</p>" } }
+      },
+      "block_order": ["shipping"]
+    },
+    "recommendations": { "type": "product-recommendations", "settings": { "heading": "Also in the collection", "limit": 4 } }
+  },
+  "order": ["main", "recommendations"]
+}

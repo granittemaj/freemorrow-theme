@@ -1,0 +1,32 @@
+{%- comment -%}
+  A CSS colour for a colour option value: Shopify's own swatch if the option has one, else the Freemorrow palette.
+  Accepts: value {Object} a product option value
+{%- endcomment -%}
+{%- if value.swatch.color -%}
+  {{- value.swatch.color -}}
+{%- else -%}
+  {%- assign v = value | downcase -%}
+  {%- case v -%}
+    {%- when 'dust' -%}#D9CCB4
+    {%- when 'athletic heather' -%}#B5B4B0
+    {%- when 'pine green' -%}#2E4A3B
+    {%- when 'black' -%}#1A1A1A
+    {%- when 'cypress' -%}#5E6A4C
+    {%- when 'midnight blue' -%}#1E2942
+    {%- when 'clay' -%}#B8836A
+    {%- when 'french navy' -%}#1F2A48
+    {%- when 'stone' -%}#D6CDBD
+    {%- when 'white' -%}#F7F7F4
+    {%- when 'light blue' -%}#B7CEE2
+    {%- when 'mustard yellow' -%}#D6A238
+    {%- when 'oxford navy' -%}#232B44
+    {%- when 'burgundy' -%}#6B1F2B
+    {%- when 'light avio blue' -%}#9DB7D2
+    {%- when 'leaf green' -%}#4D7A46
+    {%- when 'navy' -%}#1F2A44
+    {%- when 'cranberry' -%}#8C2234
+    {%- when 'dark grey' -%}#4B4B4B
+    {%- when 'denim blue' -%}#4E6A8F
+    {%- else -%}#CFC6B6
+  {%- endcase -%}
+{%- endif -%}

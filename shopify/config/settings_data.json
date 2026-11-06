@@ -1,0 +1,10 @@
+{
+  "current": {
+    "cart_note": false
+  },
+  "presets": {
+    "Default": {
+      "cart_note": false
+    }
+  }
+}

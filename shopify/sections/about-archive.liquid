@@ -1,0 +1,59 @@
+{%- comment -%} About: the vision beside an archive of photographs that drift at three speeds. {%- endcomment -%}
+<section class="ab-vision">
+  <div class="vis-t">
+    <p class="mono">{{ section.settings.label }}</p>
+    <h2>{{ section.settings.heading }}</h2>
+    {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+    {%- if section.settings.link_label != blank -%}<a class="tlink" href="{{ section.settings.link | default: routes.root_url }}">{{ section.settings.link_label }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+  </div>
+  <div class="vis-cols">
+    {%- for c in (0..2) -%}
+      <div class="vcol" data-c="{{ c }}">
+        {%- for block in section.blocks -%}
+          {%- assign col = forloop.index0 | modulo: 3 -%}
+          {%- if col == c -%}
+            <figure {{ block.shopify_attributes }}>
+              {%- render 'photo', image: block.settings.image, fallback: block.settings.fallback, alt: block.settings.caption, sizes: '(min-width: 760px) 18vw, 45vw' -%}
+              <figcaption class="mono">{{ block.settings.caption }}</figcaption>
+            </figure>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About: the archive",
+  "class": "section-about-archive",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Small label", "default": "Vision" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "A fashion brand where every product <em>begins with purpose.</em>" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "An evolving archive of the world’s wonder, connecting a global community of curious optimists. New frames are added with every story." },
+    { "type": "text", "id": "link_label", "label": "Link label", "default": "Follow the sun" },
+    { "type": "url", "id": "link", "label": "Link", "info": "Leave empty to link to the home page story." }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        {
+          "type": "select", "id": "fallback", "label": "Bundled photo, until one is chosen", "default": "hero-forest",
+          "options": [
+            { "value": "hero-forest", "label": "The woodland" }, { "value": "mountain", "label": "The striped mountain" },
+            { "value": "video-poster", "label": "The canopy" }, { "value": "col-river", "label": "The ridge" },
+            { "value": "flatlay", "label": "Laid flat" }, { "value": "life-2", "label": "The terraces" },
+            { "value": "col-hoodie", "label": "The striped sun, printed" }, { "value": "life-1", "label": "The terraces, first" },
+            { "value": "hands", "label": "Hands and cloth" }
+          ]
+        },
+        { "type": "text", "id": "caption", "label": "Caption", "default": "The woodland" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "About: the archive" }]
+}
+{% endschema %}

@@ -1,0 +1,31 @@
+{%- comment -%} About: questions and answers. {%- endcomment -%}
+<section class="ab-faq" id="faq">
+  <div><p class="mono">{{ section.settings.label }}</p><h2>{{ section.settings.heading }}</h2></div>
+  <div class="faq-l">
+    {%- for block in section.blocks -%}
+      <details {{ block.shopify_attributes }}><summary>{{ block.settings.question }}<i aria-hidden="true"></i></summary><div class="rte">{{ block.settings.answer }}</div></details>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About: questions",
+  "class": "section-about-faq",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Small label", "default": "Questions" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Asked <em>along the way.</em>" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "What is Freemorrow?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>An adventure-inspired clothing and accessories brand.</p>" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "About: questions" }]
+}
+{% endschema %}

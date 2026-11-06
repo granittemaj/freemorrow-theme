@@ -1,0 +1,79 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "blocks": {
+        "canopy": {
+          "type": "place",
+          "settings": {
+            "name": "The canopy", "at": "Under the canopy", "time": "Morning", "line": "Nature is <em>art.</em>",
+            "fallback": "video-poster",
+            "video_url": "https://freemorrow.com/cdn/shop/videos/c/vp/a222892b32af4fb0b2b1a1a89c07a3e6/a222892b32af4fb0b2b1a1a89c07a3e6.HD-1080p-7.2Mbps-96820446.mp4?v=0",
+            "alt": "Mist rising off a rainforest canopy at first light",
+            "products": ["the-made-for-adventure-oversized-hoodie", "the-roamer-heavyweight-long-sleeve"],
+            "colors": ", Cypress"
+          }
+        },
+        "woodland": {
+          "type": "place",
+          "settings": {
+            "name": "The woodland", "at": "In the woodland", "time": "Midday", "line": "Growth begins with <em>the smallest things.</em>",
+            "fallback": "hero-forest", "video_url": "",
+            "alt": "Wearing the Basecamp Hoodie and a mustard beanie in a pine forest",
+            "products": ["the-basecamp-oversized-hoodie", "the-everyday-organic-beanie"],
+            "colors": "Dust, Mustard Yellow"
+          }
+        },
+        "terraces": {
+          "type": "place",
+          "settings": {
+            "name": "The terraces", "at": "On the terraces", "time": "Afternoon", "line": "Keep <em>climbing.</em>",
+            "fallback": "life-1", "video_url": "",
+            "alt": "Wearing the Everyday Tee in White among rice terraces",
+            "products": ["the-everyday-oversized-tee", "the-free-to-wander-denim-tote"],
+            "colors": "White"
+          }
+        },
+        "ridge": {
+          "type": "place",
+          "settings": {
+            "name": "The ridge", "at": "On the ridge", "time": "Evening", "line": "Waiting for <em>the light.</em>",
+            "fallback": "col-river", "video_url": "",
+            "alt": "Wearing the Everyday Cap under a mountain sky",
+            "products": ["the-everyday-cap", "the-offbeat-long-sleeve-tee"],
+            "colors": "Stone"
+          }
+        },
+        "look": {
+          "type": "look",
+          "settings": {
+            "position": 2, "fallback": "hero-forest",
+            "alt": "Wearing the Basecamp Hoodie and the Organic Beanie in a pine forest",
+            "eyebrow": "Worn in the woodland", "heading": "Cream and mustard <em>on moss.</em>",
+            "product_1": "the-everyday-organic-beanie", "color_1": "Mustard Yellow", "pin_1_x": 52, "pin_1_y": 12,
+            "product_2": "the-basecamp-oversized-hoodie", "color_2": "Dust", "pin_2_x": 47, "pin_2_y": 52,
+            "place": "The woodland", "button": "Shop the look"
+          }
+        },
+        "quote": {
+          "type": "quote",
+          "settings": {
+            "position": 10, "fallback": "life-2", "eyebrow": "The terraces",
+            "text": "Keep climbing. There is always more of the world, <em>and yourself,</em> to discover.",
+            "link_label": "Follow the sun", "link": "shopify://pages/about"
+          }
+        }
+      },
+      "block_order": ["canopy", "woodland", "terraces", "ridge", "look", "quote"],
+      "settings": {
+        "main_collection": "shop-all",
+        "eyebrow": "The shop",
+        "heading": "Everything the sun <em>touched.</em>",
+        "lede": "Each piece was photographed somewhere real, morning to evening. Shop by the place it was worn, or browse the whole collection.",
+        "collections": ["shop-all", "hoodies", "tees-long-sleeves", "accessories"],
+        "per_page": 48
+      }
+    }
+  },
+  "order": ["main"]
+}

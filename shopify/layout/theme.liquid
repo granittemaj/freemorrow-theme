@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#EAE3D5">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+  {%- endif -%}
+  <title>
+    {{- page_title -}}
+    {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags.first }}{% endif -%}
+    {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  </title>
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+  {% render 'meta-tags' %}
+  {{ 'font-geist-normal-latin-2.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+  {{ 'fonts.css' | asset_url | stylesheet_tag }}
+
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {{ 'story.css' | asset_url | stylesheet_tag }}
+  {{ 'pages.css' | asset_url | stylesheet_tag }}
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+  <script>
+    document.documentElement.classList.add('js');
+    window.FM = window.FM || {};
+    FM.moneyFormat = {{ shop.money_format | json }};
+    FM.routes = {
+      cart: {{ routes.cart_url | json }},
+      cartAdd: {{ routes.cart_add_url | json }},
+      cartChange: {{ routes.cart_change_url | json }},
+      root: {{ routes.root_url | json }}
+    };
+    FM.strings = {
+      addToBag: {{ 'products.product.add_to_cart' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      chooseSize: {{ 'products.product.choose_size' | t | json }},
+      added: {{ 'products.product.added' | t | json }},
+      empty: {{ 'cart.empty' | t | json }},
+      emptyLine: {{ 'cart.empty_line' | t | json }},
+      remove: {{ 'cart.remove' | t | json }},
+      error: {{ 'cart.error' | t | json }}
+    };
+  </script>
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  {%- comment -%} The scroll-led pages animate with GSAP; it loads only where it is used. {%- endcomment -%}
+  {%- if template.name == 'index' or template.name == 'collection' or template.suffix == 'about' -%}
+    <script src="{{ 'gsap.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'gsap-scrolltrigger.min.js' | asset_url }}" defer></script>
+  {%- endif -%}
+  {%- if template.name == 'collection' -%}
+    <script src="{{ 'gsap-flip.min.js' | asset_url }}" defer></script>
+  {%- endif -%}
+
+  {{ content_for_header }}
+</head>
+
+{%- liquid
+  assign page_kind = template.name
+  if template.name == 'index'
+    assign page_kind = 'story'
+  endif
+-%}
+<body data-page="{{ page_kind }}" data-template="{{ template | escape }}"{% if template.suffix == 'about' %} class="float"{% endif %}>
+  <a class="skip" href="#main">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+  {% sections 'header-group' %}
+
+  <main id="main" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+
+  {% sections 'footer-group' %}
+
+  {% render 'drawers' %}
+</body>
+</html>

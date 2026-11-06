@@ -1,0 +1,26 @@
+{%- comment -%} The quick look, the bag and the toast. theme.js fills them from Shopify's Ajax API. {%- endcomment -%}
+<div class="fm-scrim" id="fmScrim"></div>
+<aside class="fm-drawer" id="fmQV" role="dialog" aria-modal="true" aria-label="{{ 'products.quick_look.label' | t }}" aria-hidden="true">
+  <div class="fm-dhead"><span class="fm-label" id="fmFrom"></span><button type="button" class="fm-x">{{ 'general.close' | t }}</button></div>
+  <div class="fm-dbody">
+    <div class="fm-main"><img id="fmImg" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="" width="900" height="900"></div>
+    <div class="fm-thumbs" id="fmThumbs"></div>
+    <div class="fm-info">
+      <h2 id="fmName"></h2><p class="fm-price" id="fmPrice"></p>
+      <fieldset class="fm-opt" id="fmColors"><legend class="fm-label">{{ 'products.product.colour' | t }} <span id="fmColorName"></span></legend><div class="fm-sws" role="radiogroup" aria-label="{{ 'products.product.colour' | t }}"></div></fieldset>
+      <fieldset class="fm-opt" id="fmSizes"><legend class="fm-label">{{ 'products.product.size' | t }}</legend><div class="fm-sizes" role="radiogroup" aria-label="{{ 'products.product.size' | t }}"></div><span class="fm-err" id="fmErr" aria-live="polite"></span></fieldset>
+      <a class="tlink fm-more" id="fmMore" href="#">{{ 'products.quick_look.details' | t }} {% render 'icon', name: 'arrow' %}</a>
+    </div>
+  </div>
+  <div class="fm-dfoot"><button type="button" class="fm-btn" id="fmAdd">{{ 'products.product.add_to_cart' | t }}</button></div>
+</aside>
+<aside class="fm-drawer" id="fmBag" role="dialog" aria-modal="true" aria-label="{{ 'cart.title' | t }}" aria-hidden="true">
+  <div class="fm-dhead"><span class="fm-label">{{ 'cart.title' | t }} (<span id="fmBagN">{{ cart.item_count }}</span>)</span><button type="button" class="fm-x">{{ 'general.close' | t }}</button></div>
+  <div class="fm-dbody"><div id="fmLines"></div></div>
+  <div class="fm-dfoot">
+    <div class="fm-sub"><span>{{ 'cart.subtotal' | t }}</span><span id="fmSubtotal">{{ cart.total_price | money }}</span></div>
+    <small>{{ 'cart.taxes' | t }}</small>
+    <form action="{{ routes.cart_url }}" method="post"><button type="submit" name="checkout" class="fm-btn" id="fmCheckout">{{ 'cart.checkout' | t }}</button></form>
+  </div>
+</aside>
+<div class="fm-toast" id="fmToast" role="status" aria-live="polite"><i></i><span></span></div>

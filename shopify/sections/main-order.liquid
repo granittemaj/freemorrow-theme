@@ -1,0 +1,23 @@
+{%- comment -%} One order. {%- endcomment -%}
+<section class="pg pg--wide">
+  <header class="pg-h"><p class="mono"><a href="{{ routes.account_url }}">{{ 'customer.account.title' | t }}</a> · {{ order.created_at | date: format: 'abbreviated_date' }}</p><h1>{{ 'customer.order.title' | t: name: order.name }}</h1></header>
+  <ul class="cart-l">
+    {%- for item in order.line_items -%}
+      <li class="fm-line"><span class="fm-im">{% if item.image %}{{ item.image | image_url: width: 240 | image_tag: alt: '' }}{% endif %}</span>
+        <div><h4>{{ item.title }}</h4><div class="fm-v">{{ item.quantity }} × {{ item.final_price | money }}</div></div><div class="fm-r">{{ item.final_line_price | money }}</div></li>
+    {%- endfor -%}
+  </ul>
+  <div class="cart-s">
+    <div class="fm-sub"><span>{{ 'cart.subtotal' | t }}</span><span>{{ order.line_items_subtotal_price | money }}</span></div>
+    {%- for line in order.shipping_methods -%}<div class="fm-sub"><span>{{ line.title }}</span><span>{{ line.price | money }}</span></div>{%- endfor -%}
+    {%- for tax in order.tax_lines -%}<div class="fm-sub"><span>{{ tax.title }}</span><span>{{ tax.price | money }}</span></div>{%- endfor -%}
+    <div class="fm-sub"><span>{{ 'customer.order.total' | t }}</span><span>{{ order.total_net_amount | money }}</span></div>
+  </div>
+  <div class="acct">
+    {%- if order.shipping_address -%}<div><p class="mono">{{ 'customer.order.shipping' | t }}</p>{{ order.shipping_address | format_address }}</div>{%- endif -%}
+    {%- if order.billing_address -%}<div><p class="mono">{{ 'customer.order.billing' | t }}</p>{{ order.billing_address | format_address }}</div>{%- endif -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "Order", "class": "section-order" }
+{% endschema %}

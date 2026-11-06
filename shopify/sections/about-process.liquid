@@ -1,0 +1,57 @@
+{%- comment -%} About: how a piece comes to be, walked sideways under a moving sun (stacked on phones). {%- endcomment -%}
+<section class="ab-way">
+  <div class="way-pin">
+    <header class="way-h"><div><p class="mono">{{ section.settings.label }}</p><h2>{{ section.settings.heading }}</h2></div></header>
+    <div class="way-sky" aria-hidden="true"><svg viewBox="0 0 1000 100" preserveAspectRatio="none"><path class="arc" d="M0 100Q500 -80 1000 100"/><path class="arc-on" d="M0 100Q500 -80 1000 100"/></svg><span class="way-sun">{% render 'sun', id: 'waySun' %}</span></div>
+    <ol class="way-track">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <li class="step" {{ block.shopify_attributes }}>
+          <figure>
+            {%- if b.video_url != blank -%}
+              <video muted loop playsinline preload="none" data-src="{{ b.video_url | escape }}" aria-label="{{ b.alt | escape }}"
+                poster="{% if b.image != blank %}{{ b.image | image_url: width: 1000 }}{% else %}{{ 'photo-' | append: b.fallback | append: '.jpg' | asset_url }}{% endif %}"></video>
+            {%- else -%}
+              {%- render 'photo', image: b.image, fallback: b.fallback, alt: b.alt, sizes: '(min-width: 760px) 30vw, 100vw' -%}
+            {%- endif -%}
+          </figure>
+          <div><h3>{{ b.title }}</h3><p>{{ b.text }}</p></div>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About: how it is made",
+  "class": "section-about-process",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Small label", "default": "How a piece comes to be" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "From a story <em>to something you wear.</em>" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "A story" },
+        { "type": "textarea", "id": "text", "label": "Text" },
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        {
+          "type": "select", "id": "fallback", "label": "Bundled photo, until one is chosen", "default": "video-poster",
+          "options": [
+            { "value": "video-poster", "label": "The canopy" }, { "value": "col-hoodie", "label": "The striped sun, printed" },
+            { "value": "hands", "label": "Hands and cloth" }, { "value": "life-1", "label": "The terraces" },
+            { "value": "hero-forest", "label": "The woodland" }, { "value": "flatlay", "label": "Laid flat" }
+          ]
+        },
+        { "type": "text", "id": "video_url", "label": "Film address (MP4)", "info": "Optional. Plays while on screen." },
+        { "type": "text", "id": "alt", "label": "Description" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "About: how it is made" }]
+}
+{% endschema %}

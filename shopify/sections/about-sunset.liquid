@@ -1,0 +1,31 @@
+{%- comment -%} About, the close: a drawn sunset behind the night mountains, which run into the footer. {%- endcomment -%}
+<section class="ab-end">
+  <div class="end-sun">{% render 'sun', id: 'endSun' %}</div>
+  {%- render 'ridge', class: 'night', back: '#2A3830', middle: '#22302A', front: '#1C2720' -%}
+  <div class="end-t">
+    <p class="mono">{{ section.settings.label }}</p>
+    <h2>{{ section.settings.heading }}</h2>
+    {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+    <div class="acts">
+      {%- if section.settings.button != blank -%}<a class="btn" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">{{ section.settings.button }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+      {%- if section.settings.link_label != blank -%}<a class="tlink" href="{{ section.settings.link | default: routes.root_url }}">{{ section.settings.link_label }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About: sunset",
+  "class": "section-about-sunset",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Small label", "default": "Where it goes" },
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "Leave the world better <em>than you found it.</em>" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "All proceeds from Freemorrow support the work of Not For Sale, helping protect people and the planet by addressing human trafficking, modern-day slavery and ecocide." },
+    { "type": "text", "id": "button", "label": "Button label", "default": "Shop the collection" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "text", "id": "link_label", "label": "Second link label", "default": "Follow the sun" },
+    { "type": "url", "id": "link", "label": "Second link" }
+  ],
+  "presets": [{ "name": "About: sunset" }]
+}
+{% endschema %}

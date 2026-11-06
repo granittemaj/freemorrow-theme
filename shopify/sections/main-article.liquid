@@ -1,0 +1,9 @@
+{%- comment -%} An article from the journal. {%- endcomment -%}
+<article class="pg">
+  <header class="pg-h"><p class="mono"><a href="{{ blog.url }}">{{ blog.title }}</a> · {{ article.published_at | date: format: 'abbreviated_date' }}</p><h1>{{ article.title }}</h1></header>
+  {%- if article.image -%}<figure class="pg-im">{{ article.image | image_url: width: 1800 | image_tag: widths: '800, 1200, 1800', sizes: '(min-width: 900px) 760px, 100vw', alt: article.image.alt | default: article.title }}</figure>{%- endif -%}
+  <div class="rte pg-b">{{ article.content }}</div>
+</article>
+{% schema %}
+{ "name": "Article", "class": "section-article" }
+{% endschema %}

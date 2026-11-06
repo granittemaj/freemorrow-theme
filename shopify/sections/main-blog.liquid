@@ -1,0 +1,26 @@
+{%- comment -%} The journal: articles with their first image. {%- endcomment -%}
+<section class="pg pg--wide">
+  <header class="pg-h"><p class="mono">{{ shop.name }}</p><h1>{{ blog.title }}</h1></header>
+  {%- paginate blog.articles by 12 -%}
+    <div class="cl-g">
+      {%- for article in blog.articles -%}
+        <a class="cl" href="{{ article.url }}">
+          <span class="im im--photo">{% if article.image %}{{ article.image | image_url: width: 900 | image_tag: widths: '450, 700, 900', sizes: '(min-width: 900px) 33vw, 100vw', alt: article.image.alt | default: article.title, loading: 'lazy' }}{% endif %}</span>
+          <small class="mono">{{ article.published_at | date: format: 'abbreviated_date' }}</small><b>{{ article.title }}</b>
+        </a>
+      {%- else -%}
+        <p class="none">{{ 'blog.empty' | t }}</p>
+      {%- endfor -%}
+    </div>
+    {%- if paginate.pages > 1 -%}
+      <nav class="pager" aria-label="{{ 'general.pagination' | t }}">
+        {%- if paginate.previous -%}<a class="tlink" href="{{ paginate.previous.url }}">{{ 'general.previous' | t }}</a>{%- endif -%}
+        <span class="mono">{{ paginate.current_page }} / {{ paginate.pages }}</span>
+        {%- if paginate.next -%}<a class="tlink" href="{{ paginate.next.url }}">{{ 'general.next' | t }}</a>{%- endif -%}
+      </nav>
+    {%- endif -%}
+  {%- endpaginate -%}
+</section>
+{% schema %}
+{ "name": "Blog", "class": "section-blog" }
+{% endschema %}

@@ -1,0 +1,5 @@
+{%- comment -%}
+  Three layers of drawn mountains, back to front.
+  Accepts: class {String}, back {String}, middle {String}, front {String} colours
+{%- endcomment -%}
+<svg class="mtn {{ class }}" viewBox="0 0 1440 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false"><path d="M0 250L90 214L170 236L290 150L380 196L470 168L600 92L700 168L800 130L900 182L1010 120L1130 196L1240 150L1350 206L1440 176V420H0Z" fill="{{ back }}"/><path d="M0 300L120 262L240 290L360 222L470 268L580 236L690 286L820 214L930 262L1050 230L1170 282L1290 240L1440 270V420H0Z" fill="{{ middle }}"/><path d="M0 352L150 322L300 346L450 306L610 340L760 312L920 348L1080 316L1240 344L1440 322V420H0Z" fill="{{ front }}"/></svg>
