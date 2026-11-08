@@ -135,3 +135,19 @@ body[data-page="password"]{background:linear-gradient(180deg,#10161A,#1A1F22 55%
 /* Shopify wraps the header in a section element exactly the header's height, so a sticky header inside it scrolls
    away; the wrapper is what stays at the top */
 .section-header{position:sticky;top:0;z-index:100}
+
+/* on scroll, the header and the shop's filter bar get smaller. The header's wrapper gives back the height it loses as
+   margin, so nothing below it jumps. The story and About pages keep their floating header as it is. */
+.hd{transition:height .35s var(--ease),box-shadow .3s,background .3s}
+.logo img{transition:height .35s var(--ease),opacity .4s}
+.section-header{transition:margin .35s var(--ease)}
+html.compact body:not([data-page="story"]):not(.float){--hd:48px}
+html.compact body:not([data-page="story"]):not(.float) .section-header{margin-bottom:12px}
+html.compact body:not([data-page="story"]):not(.float) .logo img{height:26px}
+html.compact body:not([data-page="story"]):not(.float) .nav a{min-height:32px;font-size:13px}
+html.compact body:not([data-page="story"]):not(.float) .bag-b{width:40px;height:40px}
+.tools-in{transition:padding .35s var(--ease)}
+.tools .chips a,.tools .pill,.tools .sort select{transition:min-height .3s var(--ease),font-size .3s,padding .3s,background .25s,color .25s,box-shadow .25s}
+.tools.stuck .tools-in{padding-top:6px;padding-bottom:6px}
+.tools.stuck .chips a,.tools.stuck .pill,.tools.stuck .sort select{min-height:30px;font-size:12px}
+.tools.stuck .chips a{padding:0 12px}
