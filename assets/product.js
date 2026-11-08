@@ -15,11 +15,13 @@ const money = c => (FM.money ? FM.money(c) : (c / 100).toFixed(2));
 const select = $('#spVariant'), add = $('#spAdd'), img = $('#spImg');
 document.documentElement.classList.add('js');
 
-const ci = p.options.findIndex(o => /^colou?r$/i.test(o.name || o));
+// Liquid's product JSON lists options by name only; the values come from the variants
+const opts = p.options.map((o, i) => typeof o === 'string' ? { name: o, values: [...new Set(p.variants.map(v => v.options[i]))] } : o);
+const ci = opts.findIndex(o => /^colou?r$/i.test(o.name));
 const start = p.variants.find(v => String(v.id) === select.value) || p.variants[0];
 const fromUrl = new URLSearchParams(location.search).has('variant');
 // colour starts on the variant shown; every other choice waits for the visitor, unless the link chose a variant
-let sel = start.options.map((o, i) => (i === ci || fromUrl || p.options[i].values.length === 1) ? o : null);
+let sel = start.options.map((o, i) => (i === ci || fromUrl || opts[i].values.length === 1) ? o : null);
 if (p.variants.length === 1) sel = start.options.slice();
 const match = s => p.variants.find(v => v.options.every((o, i) => s[i] == null || o === s[i]));
 const complete = () => sel.every(x => x != null);
@@ -45,7 +47,7 @@ function render() {
   add.disabled = !!out;
   add.textContent = out ? T.soldOut : `${T.addToBag} · ${money(shown.price)}`;
   const note = $('#bbNote');
-  if (note) note.textContent = sel.map((x, i) => x || (i !== ci ? p.options[i].name : '')).filter(Boolean).join(' · ');
+  if (note) note.textContent = sel.map((x, i) => x || (i !== ci ? opts[i].name : '')).filter(Boolean).join(' · ');
   if (v) history.replaceState(null, '', `${location.pathname}?variant=${v.id}`);
   // the photos of this colour, else every photo
   let imgs = p.images;
