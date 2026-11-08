@@ -68,7 +68,7 @@
   <div class="pc-m">
     <a href="{{ product.url }}" class="pc-n" tabindex="-1">{{ title }}</a>
     <span class="pc-p">
-      {%- if product.price_varies -%}{{ 'products.product.from' | t: price: product.price_min | money }}{%- else -%}{{ product.price | money }}{%- endif -%}
+      {%- if product.price_varies -%}{%- assign min_price = product.price_min | money -%}{{ 'products.product.from' | t: price: min_price }}{%- else -%}{{ product.price | money }}{%- endif -%}
       {%- if product.compare_at_price > product.price %} <s>{{ product.compare_at_price | money }}</s>{% endif -%}
     </span>
     {%- if color_option and color_option.values.size > 1 -%}
