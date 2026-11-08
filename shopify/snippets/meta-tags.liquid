@@ -20,6 +20,11 @@
   <meta property="og:image:secure_url" content="https:{{ page_image | image_url: width: 1200 }}">
   <meta property="og:image:width" content="{{ page_image.width }}">
   <meta property="og:image:height" content="{{ page_image.height }}">
+{%- else -%}
+  {%- comment -%} Until a social sharing image is set in Online Store › Preferences, links show the woodland photograph. {%- endcomment -%}
+  <meta property="og:image" content="https:{{ 'photo-hero-forest.jpg' | asset_url }}">
+  <meta property="og:image:width" content="1672">
+  <meta property="og:image:height" content="941">
 {%- endif -%}
 {%- if request.page_type == 'product' -%}
   <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html }}">

@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ 'gift_card.title' | t: value: gift_card.initial_value | money }} &ndash; {{ shop.name }}</title>
+  {%- assign gc_value = gift_card.initial_value | money -%}{%- assign gc_balance = gift_card.balance | money -%}
+  <title>{{ 'gift_card.title' | t: value: gc_value }} &ndash; {{ shop.name }}</title>
   {{ 'base.css' | asset_url | stylesheet_tag }}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
@@ -13,9 +14,9 @@
 <body data-page="gift-card">
   <main class="pg pg--narrow gc">
     <img src="{{ 'logo-color.png' | asset_url }}" alt="{{ shop.name | escape }}" width="74" height="51">
-    <h1>{{ 'gift_card.title' | t: value: gift_card.initial_value | money }}</h1>
+    <h1>{{ 'gift_card.title' | t: value: gc_value }}</h1>
     {%- if gift_card.enabled == false or gift_card.expired -%}<p class="mono">{{ 'gift_card.expired' | t }}</p>{%- endif -%}
-    {%- if gift_card.balance != gift_card.initial_value -%}<p>{{ 'gift_card.balance' | t: value: gift_card.balance | money }}</p>{%- endif -%}
+    {%- if gift_card.balance != gift_card.initial_value -%}<p>{{ 'gift_card.balance' | t: value: gc_balance }}</p>{%- endif -%}
     <p class="gc-code mono">{{ gift_card.code | format_code }}</p>
     <div id="QrCode" data-identifier="{{ gift_card.qr_identifier }}"></div>
     <div class="acts">

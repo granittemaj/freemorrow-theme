@@ -124,3 +124,10 @@ body[data-page="password"]{background:linear-gradient(180deg,#10161A,#1A1F22 55%
 /* the footer's columns may shrink below their content on phones, so long links and the form wrap instead of widening the page */
 .ft > *{min-width:0}
 @media (max-width:900px){.ft{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* the shop's photos are square and already framed in white, so they fill a square tile instead of floating small in a
+   tall one, and the rows get room between a card's colours and the next photo */
+.grid{row-gap:clamp(40px,4.4vw,72px)}
+.pc-im{aspect-ratio:1}
+.pc-a img{width:100%;height:100%}
+.pc-m{padding-top:14px}
