@@ -204,7 +204,9 @@ addEventListener('keydown', e => {
 
 /* ---------- header ---------- */
 const hd = $('.hd');
-if (hd) addEventListener('scroll', () => hd.classList.toggle('up', scrollY > 8), { passive: true });
+// once the page has scrolled a little, the header (and the shop's filter bar) tighten up; theme.css has the sizes
+const root = document.documentElement;
+if (hd) addEventListener('scroll', () => { hd.classList.toggle('up', scrollY > 8); root.classList.toggle('compact', scrollY > 40); }, { passive: true });
 
 document.addEventListener('DOMContentLoaded', () => { $$('.pc').forEach(cardSizes); });
 })();
