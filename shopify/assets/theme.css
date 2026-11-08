@@ -131,3 +131,7 @@ body[data-page="password"]{background:linear-gradient(180deg,#10161A,#1A1F22 55%
 .pc-im{aspect-ratio:1}
 .pc-a img{width:100%;height:100%}
 .pc-m{padding-top:14px}
+
+/* Shopify wraps the header in a section element exactly the header's height, so a sticky header inside it scrolls
+   away; the wrapper is what stays at the top */
+.section-header{position:sticky;top:0;z-index:100}
