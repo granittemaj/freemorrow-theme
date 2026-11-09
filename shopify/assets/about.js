@@ -97,7 +97,7 @@ if (opening) {
 }
 
 /* ---------- the statement, written into place ---------- */
-$$('.words').forEach(w => gsap.to($$('span', w), { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: w, start: 'top 78%', end: 'bottom 42%', scrub: reduce ? true : .6 } }));
+$$('.words').forEach(w => gsap.to($$('span.w', w), { opacity: 1, stagger: .1, ease: 'none', scrollTrigger: { trigger: w, start: 'top 78%', end: 'bottom 42%', scrub: reduce ? true : .6 } }));
 
 /* ---------- how a piece comes to be: sideways, under a moving sun ---------- */
 const way = $('.ab-way');

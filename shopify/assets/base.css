@@ -66,12 +66,12 @@
 @media (prefers-reduced-motion:reduce){.fm-drawer,.fm-scrim,.fm-toast{transition-duration:.01ms!important}}
 /* Field Kit: unbleached canvas, a drafting grid, ink, one sun red. Small type; mono for every label. */
 :root{
-  --canvas:#EAE3D5;--paper:#F5F0E7;--ink:#1D201C;--ink-2:#474A44;--mute:#6F6E66;--rule:rgba(29,32,28,.14);
+  --canvas:#EAE3D5;--paper:#F5F0E7;--ink:#1D201C;--ink-2:#474A44;--mute:#5F5E57;--rule:rgba(29,32,28,.14);
   --grid:rgba(29,32,28,.06);--tick:rgba(29,32,28,.34);--sun:#C23A20;--sun-2:#A92F18;
   --forest:#1C2720;--forest-2:#26352B;--on-dark:#ECE6DA;--on-dark-2:rgba(236,230,218,.66);
   --g:clamp(16px,3vw,44px);--hd:60px;--ease:cubic-bezier(.2,.7,.1,1);
   --sans:'Geist',ui-sans-serif,system-ui,sans-serif;--mono:'Geist Mono',ui-monospace,Menlo,monospace;--serif:'Newsreader',Georgia,serif;
-  --fm-bg:#F5F0E7;--fm-tile:#EAE3D5;--fm-ink:#1D201C;--fm-ink-2:#474A44;--fm-mute:#6F6E66;--fm-rule:rgba(29,32,28,.14);--fm-accent:#C23A20;--fm-serif:'Geist',ui-sans-serif,system-ui,sans-serif;
+  --fm-bg:#F5F0E7;--fm-tile:#EAE3D5;--fm-ink:#1D201C;--fm-ink-2:#474A44;--fm-mute:#5F5E57;--fm-rule:rgba(29,32,28,.14);--fm-accent:#C23A20;--fm-serif:'Geist',ui-sans-serif,system-ui,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--hd) + 12px)}

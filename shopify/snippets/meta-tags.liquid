@@ -21,6 +21,15 @@
   if request.page_type == 'search' or request.page_type == 'cart' or request.page_type == 'captcha' or request.page_type == 'password' or template.directory == 'customers'
     assign noindex = true
   endif
+  comment
+    Shopify's leftover home page collection, and a blog with nothing in it yet, are not worth a search result either.
+  endcomment
+  if request.page_type == 'collection' and collection.handle == 'frontpage'
+    assign noindex = true
+  endif
+  if request.page_type == 'blog' and blog.articles_count == 0
+    assign noindex = true
+  endif
 -%}
 {%- if og_description != blank -%}
   <meta name="description" content="{{ og_description | strip_html | strip_newlines | escape }}">

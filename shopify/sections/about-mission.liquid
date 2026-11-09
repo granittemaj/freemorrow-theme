@@ -2,7 +2,7 @@
 {%- assign words = section.settings.statement | split: ' ' -%}
 <section class="ab-mission">
   <p class="mono">{{ section.settings.label }}</p>
-  <p class="words" aria-label="{{ section.settings.statement | escape }}">{% for w in words %}<span aria-hidden="true">{{ w }}</span> {% endfor %}</p>
+  <p class="words"><span class="visually-hidden">{{ section.settings.statement }}</span>{% for w in words %}<span class="w" aria-hidden="true">{{ w }}</span> {% endfor %}</p>
   {%- if section.settings.sub != blank -%}<p class="sub">{{ section.settings.sub }}</p>{%- endif -%}
 </section>
 
