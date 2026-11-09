@@ -30,7 +30,8 @@
     },
     "payment_methods": "Payment methods accepted",
     "country": "Country or region",
-    "update": "Update"
+    "update": "Update",
+    "back_to_top": "Back to top"
   },
   "story": {
     "scroll": "Scroll",

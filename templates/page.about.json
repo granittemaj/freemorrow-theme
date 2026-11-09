@@ -22,26 +22,112 @@
     "process": {
       "type": "about-process",
       "blocks": {
-        "story": { "type": "step", "settings": { "title": "A story", "fallback": "video-poster", "video_url": "https://freemorrow.com/cdn/shop/videos/c/vp/a222892b32af4fb0b2b1a1a89c07a3e6/a222892b32af4fb0b2b1a1a89c07a3e6.HD-1080p-7.2Mbps-96820446.mp4?v=0", "alt": "Mist rising off a rainforest canopy at first light", "text": "Every collection begins with something real: a landscape, a little-known animal, a remarkable person, a tradition or an idea. The story always comes first." } },
-        "idea": { "type": "step", "settings": { "title": "An idea, drawn", "fallback": "col-hoodie", "video_url": "", "alt": "The back of the Basecamp Hoodie, printed with the striped sun", "text": "Each garment is designed to carry an idea. Sometimes that becomes an illustration. Sometimes a statement, a place or a small detail worth noticing." } },
-        "cloth": { "type": "step", "settings": { "title": "The cloth", "fallback": "hands", "video_url": "", "alt": "Two hands resting against undyed cloth", "text": "Every piece is created to mean something, not simply follow a trend. Selected pieces use organic cotton, and every product page lists what it is made of." } },
-        "new": { "type": "step", "settings": { "title": "Somewhere new", "fallback": "life-1", "video_url": "", "alt": "Wearing the Everyday Tee among rice terraces", "text": "Designed with a person, a destination or an experience in mind, from exploring your own neighbourhood to heading somewhere new." } }
+        "story": {
+          "type": "step",
+          "settings": {
+            "title": "A story",
+            "fallback": "video-poster",
+            "video_url": "https://freemorrow.com/cdn/shop/videos/c/vp/a222892b32af4fb0b2b1a1a89c07a3e6/a222892b32af4fb0b2b1a1a89c07a3e6.HD-1080p-7.2Mbps-96820446.mp4?v=0",
+            "alt": "Mist rising off a rainforest canopy at first light",
+            "text": "Every collection begins with something real: a landscape, a little-known animal, a remarkable person, a tradition or an idea. The story always comes first."
+          }
+        },
+        "idea": {
+          "type": "step",
+          "settings": {
+            "title": "An idea, drawn",
+            "fallback": "col-hoodie",
+            "video_url": "",
+            "alt": "The back of the Basecamp Hoodie, printed with the striped sun",
+            "text": "Each garment is designed to carry an idea. Sometimes that becomes an illustration. Sometimes a statement, a place or a small detail worth noticing."
+          }
+        },
+        "cloth": {
+          "type": "step",
+          "settings": {
+            "title": "The cloth",
+            "fallback": "hands",
+            "video_url": "",
+            "alt": "Two hands resting against undyed cloth",
+            "text": "Every piece is created to mean something, not simply follow a trend. Selected pieces use organic cotton, and every product page lists what it is made of."
+          }
+        },
+        "new": {
+          "type": "step",
+          "settings": {
+            "title": "Somewhere new",
+            "fallback": "life-1",
+            "video_url": "",
+            "alt": "Wearing the Everyday Tee among rice terraces",
+            "text": "Designed with a person, a destination or an experience in mind, from exploring your own neighbourhood to heading somewhere new."
+          }
+        }
       },
-      "block_order": ["story", "idea", "cloth", "new"],
-      "settings": { "label": "How a piece comes to be", "heading": "From a story <em>to something you wear.</em>" }
+      "block_order": [
+        "story",
+        "idea",
+        "cloth",
+        "new"
+      ],
+      "settings": {
+        "label": "How a piece comes to be",
+        "heading": "From a story <em>to something you wear.</em>"
+      }
     },
     "archive": {
       "type": "about-archive",
       "blocks": {
-        "a1": { "type": "photo", "settings": { "fallback": "hero-forest", "caption": "The woodland" } },
-        "a2": { "type": "photo", "settings": { "fallback": "video-poster", "caption": "The canopy" } },
-        "a3": { "type": "photo", "settings": { "fallback": "life-2", "caption": "The terraces" } },
-        "a4": { "type": "photo", "settings": { "fallback": "mountain", "caption": "Striped ridges" } },
-        "a5": { "type": "photo", "settings": { "fallback": "col-river", "caption": "The ridge" } },
-        "a6": { "type": "photo", "settings": { "fallback": "col-hoodie", "caption": "The striped sun" } },
-        "a7": { "type": "photo", "settings": { "fallback": "flatlay", "caption": "Laid flat" } }
+        "a1": {
+          "type": "photo",
+          "settings": {
+            "fallback": "hero-forest",
+            "caption": "The woodland"
+          }
+        },
+        "a2": {
+          "type": "photo",
+          "settings": {
+            "fallback": "video-poster",
+            "caption": "The canopy"
+          }
+        },
+        "a3": {
+          "type": "photo",
+          "settings": {
+            "fallback": "life-2",
+            "caption": "The terraces"
+          }
+        },
+        "a4": {
+          "type": "photo",
+          "settings": {
+            "fallback": "mountain",
+            "caption": "Striped ridges"
+          }
+        },
+        "a5": {
+          "type": "photo",
+          "settings": {
+            "fallback": "col-river",
+            "caption": "The ridge"
+          }
+        },
+        "a6": {
+          "type": "photo",
+          "settings": {
+            "fallback": "col-hoodie",
+            "caption": "The striped sun"
+          }
+        }
       },
-      "block_order": ["a1", "a2", "a3", "a4", "a5", "a6", "a7"],
+      "block_order": [
+        "a1",
+        "a2",
+        "a3",
+        "a4",
+        "a5",
+        "a6"
+      ],
       "settings": {
         "label": "Vision",
         "heading": "A fashion brand where every product <em>begins with purpose.</em>",
@@ -52,14 +138,53 @@
     "faq": {
       "type": "about-faq",
       "blocks": {
-        "q1": { "type": "question", "settings": { "question": "What is Freemorrow?", "answer": "<p>Freemorrow is an adventure-inspired clothing and accessories brand for people who love to travel, explore and discover. The collection includes tees, hoodies, long-sleeve shirts, hats and tote bags designed for everyday wear.</p>" } },
-        "q2": { "type": "question", "settings": { "question": "What inspires the clothing?", "answer": "<p>Every garment is designed with a person, a destination or an experience in mind, from exploring your own neighbourhood to heading somewhere new.</p>" } },
-        "q3": { "type": "question", "settings": { "question": "What does Freemorrow sell?", "answer": "<p>Oversized tees, embroidered logo tees, long-sleeve shirts, oversized and cropped hoodies, caps, beanies and tote bags, and Freemorrow logo art prints for your home.</p>" } },
-        "q4": { "type": "question", "settings": { "question": "Do you offer organic cotton clothing?", "answer": "<p>Yes. Selected products use organic cotton, including the oversized organic cotton tees, ribbed beanies and organic denim tote. Each product page lists its fabric composition.</p>" } },
-        "q5": { "type": "question", "settings": { "question": "How does buying Freemorrow support charity?", "answer": "<p>All proceeds go toward supporting our charity partner and its work combating human trafficking and ecocide. Every purchase contributes to leaving the world better than we found it.</p>" } }
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "What is Freemorrow?",
+            "answer": "<p>Freemorrow is an adventure-inspired clothing and accessories brand for people who love to travel, explore and discover. The collection includes tees, hoodies, long-sleeve shirts, hats and tote bags designed for everyday wear.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "What inspires the clothing?",
+            "answer": "<p>Every garment is designed with a person, a destination or an experience in mind, from exploring your own neighbourhood to heading somewhere new.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "What does Freemorrow sell?",
+            "answer": "<p>Oversized tees, embroidered logo tees, long-sleeve shirts, oversized and cropped hoodies, caps, beanies and tote bags, and Freemorrow logo art prints for your home.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer organic cotton clothing?",
+            "answer": "<p>Yes. Selected products use organic cotton, including the oversized organic cotton tees, ribbed beanies and organic denim tote. Each product page lists its fabric composition.</p>"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "How does buying Freemorrow support charity?",
+            "answer": "<p>All proceeds go toward supporting our charity partner and its work combating human trafficking and ecocide. Every purchase contributes to leaving the world better than we found it.</p>"
+          }
+        }
       },
-      "block_order": ["q1", "q2", "q3", "q4", "q5"],
-      "settings": { "label": "Questions", "heading": "Asked <em>along the way.</em>" }
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+      ],
+      "settings": {
+        "label": "Questions",
+        "heading": "Asked <em>along the way.</em>"
+      }
     },
     "sunset": {
       "type": "about-sunset",
@@ -73,5 +198,12 @@
       }
     }
   },
-  "order": ["open", "mission", "process", "archive", "faq", "sunset"]
+  "order": [
+    "open",
+    "mission",
+    "process",
+    "archive",
+    "faq",
+    "sunset"
+  ]
 }

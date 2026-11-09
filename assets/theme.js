@@ -220,6 +220,18 @@ if (hd) addEventListener('scroll', () => { hd.classList.toggle('up', scrollY > 8
 
 document.addEventListener('DOMContentLoaded', () => { $$('.pc').forEach(cardSizes); });
 
+/* ---------- back to top ---------- */
+const topB = $('#fmTop');
+if (topB) {
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const onTop = () => { const on = scrollY > innerHeight * 1.2; topB.classList.toggle('on', on); topB.tabIndex = on ? 0 : -1; };
+  addEventListener('scroll', onTop, { passive: true }); onTop();
+  topB.addEventListener('click', () => {
+    scrollTo({ top: 0, behavior: still ? 'auto' : 'smooth' });
+    const logo = $('.logo'); logo && logo.focus({ preventScroll: true });
+  });
+}
+
 /* ---------- search: Shopify's predictive search as you type ---------- */
 const fs = $('#fmSearch');
 if (fs) {

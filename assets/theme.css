@@ -396,3 +396,25 @@ html.compact body:not([data-page="story"]):not(.float) .hd-i{width:40px;height:4
 @media (max-width:900px){.ft{grid-template-columns:repeat(3,minmax(0,1fr))}.ft-a{grid-column:1/-1}}
 @media (max-width:560px){.ft{grid-template-columns:repeat(2,minmax(0,1fr))}.ft-pay{width:auto}}
 .ft-a p{max-width:34ch}
+
+/* the sign-up: a heading like the columns', a line of text, then the field and its button as one pill */
+.ft-a .ft-n{margin-top:32px;max-width:400px}
+.ft-nh{display:block;margin-bottom:10px;color:var(--on-dark-2)}
+.ft-nt{margin:0 0 16px!important;max-width:36ch!important;font-size:14px;color:var(--on-dark-2)}
+.ft-in{display:flex;align-items:center;gap:0;padding:4px;border-radius:999px;box-shadow:inset 0 0 0 1px rgba(236,230,218,.22);transition:box-shadow .25s}
+.ft-in:focus-within{box-shadow:inset 0 0 0 1px rgba(236,230,218,.6)}
+.ft-in input{height:42px;padding:0 14px;border:0;background:transparent;outline:none}
+.ft-in input:focus{outline:none}
+.ft-in button{flex:none;height:40px;padding:0 18px;border-radius:999px;font-size:13.5px;transition:background .25s,color .25s}
+.ft-in button:hover{background:var(--sun);color:#fff}
+
+/* the About archive: each photo keeps its portrait shape (the height attribute must not win) */
+.vcol img{height:auto}
+
+/* back to top: a small round button, bottom right, once the page has scrolled well down */
+.totop{position:fixed;right:var(--g);bottom:var(--g);z-index:160;display:grid;place-items:center;width:46px;height:46px;border:0;border-radius:50%;background:var(--paper);color:var(--ink);box-shadow:0 10px 30px -10px rgba(15,19,17,.35),inset 0 0 0 1px var(--rule);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .35s var(--ease),transform .35s var(--ease),visibility 0s .35s,background .25s,color .25s}
+.totop.on{opacity:1;visibility:visible;transform:none;transition:opacity .35s var(--ease),transform .35s var(--ease),background .25s,color .25s}
+.totop:hover{background:var(--ink);color:var(--paper)}
+.totop svg{width:20px;height:20px;transform:rotate(-90deg)}
+body:has(.buybar.on) .totop{bottom:calc(var(--g) + 76px)}
+@media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}
