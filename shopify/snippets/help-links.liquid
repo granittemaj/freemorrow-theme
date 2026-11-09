@@ -24,8 +24,10 @@
   {%- if shop.terms_of_service.body != blank -%}<a href="{{ shop.terms_of_service.url }}"{% if here == shop.terms_of_service.url %} aria-current="page"{% endif %}>{{ shop.terms_of_service.title }}</a>{%- endif -%}
   {%- if cookie_page.title != blank -%}<a href="{{ cookie_page.url }}"{% if here == cookie_page.url %} aria-current="page"{% endif %}>{{ cookie_page.title }}</a>{%- endif -%}
   {%- if a11y_page.title != blank -%}<a href="{{ a11y_page.url }}"{% if here == a11y_page.url %} aria-current="page"{% endif %}>{{ a11y_page.title }}</a>{%- endif -%}
-  {%- if shop.legal_notice.body != blank -%}<a href="{{ shop.legal_notice.url }}"{% if here == shop.legal_notice.url %} aria-current="page"{% endif %}>{{ shop.legal_notice.title }}</a>{%- endif -%}
-  {%- if shop.contact_information.body != blank -%}<a href="{{ shop.contact_information.url }}"{% if here == shop.contact_information.url %} aria-current="page"{% endif %}>{{ shop.contact_information.title }}</a>{%- endif -%}
+  {%- comment -%} The contact information and legal notice policies are only reachable through shop.policies. {%- endcomment -%}
+  {%- for policy in shop.policies -%}
+    {%- if policy.url contains 'contact-information' or policy.url contains 'legal-notice' -%}<a href="{{ policy.url }}"{% if here == policy.url %} aria-current="page"{% endif %}>{{ policy.title }}</a>{%- endif -%}
+  {%- endfor -%}
   {%- if optout_page.title != blank -%}<a href="{{ optout_page.url }}"{% if here == optout_page.url %} aria-current="page"{% endif %}>{{ 'help.privacy_choices' | t }}</a>{%- endif -%}
   {%- if settings.cookie_banner -%}<button type="button" data-cookie-prefs>{{ 'cookies.preferences' | t }}</button>{%- endif -%}
 {%- endcapture -%}
