@@ -225,47 +225,22 @@ if (hd) addEventListener('scroll', () => { hd.classList.toggle('up', scrollY > 8
 document.addEventListener('DOMContentLoaded', () => { $$('.pc').forEach(cardSizes); });
 FM.cardSizes = () => $$('.pc').forEach(cardSizes);
 
-/* ---------- the newsletter signs up in place ---------- */
-// Shopify's spam check (hCaptcha) stops the form, adds its token, then sends the form itself. That last send is
-// caught here and made in the background with the token, and the answer replaces the field, so the page never
-// moves. Without a spam check the form is sent in the background straight away. Shopify will not show its pages in
-// a frame, so the answer is fetched and read here.
-const nl = $('#footer-newsletter');
-if (nl) {
-  const nativeSubmit = HTMLFormElement.prototype.submit;
-  const busy = on => { nl.toggleAttribute('aria-busy', on); const b = $('button[type="submit"]', nl); b && (b.disabled = on); };
-  const send = form => {
-    busy(true);
-    fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'text/html' }, credentials: 'same-origin' })
-      .then(r => {
-        // a visible challenge is Shopify's to show: the form goes the ordinary way, token and all
-        if (/\/challenge/.test(r.url)) throw new Error('challenge');
-        return r.text().then(html => ({ html, posted: /customer_posted=true/.test(r.url) }));
-      })
-      .then(({ html, posted }) => {
-        const f = new DOMParser().parseFromString(html, 'text/html').getElementById('footer-newsletter');
-        let ok = f && f.querySelector('.ft-ok');
-        const err = f && f.querySelector('.ft-err');
-        // Shopify confirms a sign-up in the address it answers from, even when the page says nothing more
-        if (!ok && !err && posted) { ok = document.createElement('p'); ok.className = 'ft-ok'; ok.setAttribute('role', 'status'); ok.textContent = nl.dataset.ok || ''; }
-        // an answer that cannot be read is not sent again: Shopify's token works once
-        if (!ok && !err) { busy(false); $$('.ft-err', nl).forEach(x => x.remove()); const e = document.createElement('p'); e.className = 'ft-err'; e.setAttribute('role', 'alert'); e.textContent = T.error; const b0 = $('.ft-in', nl); b0 && b0.before(e); return; }
-        busy(false);
-        $$('.ft-err', nl).forEach(x => x.remove());
-        const box = $('.ft-in', nl);
-        if (ok) { box && box.replaceWith(document.importNode(ok, true)); return; }
-        box && box.before(document.importNode(err, true));
-        const i = $('input[type="email"]', nl); i && i.focus();
-      })
-      .catch(() => { busy(false); nativeSubmit.call(form); });
-  };
-  HTMLFormElement.prototype.submit = function () { if (this === nl) { send(this); return; } return nativeSubmit.call(this); };
-  // listening on the window, last: if the spam check has stopped the form it will send it itself, later
-  addEventListener('submit', e => {
-    if (e.target !== nl || e.defaultPrevented) return;
-    e.preventDefault();
-    send(nl);
-  });
+/* ---------- the newsletter's answer, where the visitor left it ---------- */
+// The form is sent the way Shopify intends, so its spam check (hCaptcha) always runs. Shopify then brings the
+// visitor back to the same page with the answer in the footer; the page opens right there, not at the top, and the
+// address is tidied so a reload does not repeat it.
+const nlBack = $('#footer-newsletter .ft-ok, #footer-newsletter .ft-err');
+if (nlBack && (/customer_posted=true/.test(location.search) || location.hash === '#footer-newsletter' || nlBack.classList.contains('ft-err'))) {
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  const html = document.documentElement;
+  const there = () => { html.style.scrollBehavior = 'auto'; $('#footer-newsletter').scrollIntoView({ block: 'center' }); html.style.scrollBehavior = ''; };
+  there();
+  // pinned stories change the page's height as they set up, so it settles on the answer again once loaded
+  addEventListener('load', () => { setTimeout(there, 60); setTimeout(there, 450); });
+  nlBack.setAttribute('tabindex', '-1');
+  nlBack.focus({ preventScroll: true });
+  const clean = new URL(location.href); clean.searchParams.delete('customer_posted'); clean.hash = '';
+  history.replaceState(history.state, '', clean.pathname + clean.search);
 }
 
 /* ---------- back to top ---------- */
