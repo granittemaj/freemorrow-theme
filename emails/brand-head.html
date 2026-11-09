@@ -1,0 +1,52 @@
+<!-- fm:brand-head -->
+  <style>
+    /* Freemorrow: the same colours and type as freemorrow.com. Cream page, ink text, Instrument Serif headings,
+       Geist text, Geist Mono labels, ink pill buttons and a forest footer. Email apps without web fonts fall back
+       to Georgia and Helvetica. */
+    @font-face { font-family: 'Instrument Serif'; font-style: normal; font-weight: 400; src: url(https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-6zUTjnTLgNs.woff2) format('woff2'); }
+    @font-face { font-family: 'Instrument Serif'; font-style: italic; font-weight: 400; src: url(https://fonts.gstatic.com/s/instrumentserif/v5/jizHRFtNs2ka5fXjeivQ4LroWlx-6zAjjH7Motmp5g.woff2) format('woff2'); }
+    @font-face { font-family: 'Geist'; font-style: normal; font-weight: 400 500; src: url(https://fonts.gstatic.com/s/geist/v5/gyByhwUxId8gMEwcGFWNOITd.woff2) format('woff2'); }
+    @font-face { font-family: 'Geist Mono'; font-style: normal; font-weight: 400; src: url(https://fonts.gstatic.com/s/geistmono/v6/or3yQ6H-1_WfwkMZI_qYPLs1a-t7PU0AbeE9KK5U5Cl4PuCTfNg.woff2) format('woff2'); }
+    body, .body { background-color: #F4F1EC !important; }
+    .body td, .body p, .body span, .body a, .body li, .body h4, .body div { font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important; }
+    .body h1, .body h2, .body h3 { font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif !important; font-weight: 400 !important; color: #1C1917 !important; letter-spacing: -0.01em; }
+    .body h1 { font-size: 30px !important; line-height: 1.1 !important; }
+    .body h2 { font-size: 36px !important; line-height: 1.08 !important; margin: 0 0 14px !important; }
+    .body h3 { font-size: 26px !important; line-height: 1.15 !important; margin: 0 0 22px !important; }
+    .body h4 { font-family: 'Geist Mono', ui-monospace, Menlo, Consolas, monospace !important; font-size: 12px !important; font-weight: 400 !important; letter-spacing: 0.06em !important; text-transform: uppercase !important; color: #5F5E57 !important; }
+    .body p { color: #44403C !important; font-size: 15px !important; line-height: 1.6 !important; }
+    .body strong { color: #1C1917 !important; font-weight: 500 !important; }
+    .header { margin: 40px 0 28px !important; }
+    .shop-name__text a, .shop-name__text { font-family: 'Instrument Serif', Georgia, serif !important; color: #1C1917 !important; }
+    .order-number__text, .po-number__text { font-family: 'Geist Mono', ui-monospace, Menlo, Consolas, monospace !important; font-size: 12px !important; letter-spacing: 0.06em !important; text-transform: uppercase !important; color: #5F5E57 !important; }
+    .button__cell, .actions-buttons .button__cell--primary { background-color: #1C1917 !important; border-radius: 999px !important; }
+    .button__text, .actions-buttons .button__cell--primary .button__text { color: #F4F1EC !important; font-size: 15px !important; font-weight: 500 !important; }
+    .actions-buttons .button__cell--outlined { background-color: transparent !important; border: 1px solid #1C1917 !important; }
+    .actions-buttons .button__cell--outlined .button__text { color: #1C1917 !important; }
+    .button__cell--shop-app { background-color: #5A31F4 !important; }
+    a, a:hover, a:active, a:visited { color: #1C1917 !important; }
+    .link__cell, .link__cell a, .link { color: #1C1917 !important; }
+    .section__cell { border-top: 1px solid #D6D3D1 !important; }
+    .order-list__product-image, .order-list__no-product-image { background-color: #E7E1D7 !important; border: 0 !important; border-radius: 6px !important; }
+    .order-list__item-title { color: #1C1917 !important; font-weight: 500 !important; }
+    .order-list__item-variant, .order-list__item-original-price, .order-list__estimated-delivery, .order-list__delivery-method-type { color: #5F5E57 !important; }
+    .order-list__item-price, .subtotal-line__value { color: #1C1917 !important; }
+    .subtotal-line__title, .subtotal-line__title p { color: #44403C !important; }
+    .subtotal-table--total .subtotal-line__value strong { font-family: 'Instrument Serif', Georgia, serif !important; font-size: 28px !important; font-weight: 400 !important; }
+    .subtotal-spacer, .subtotal-table--total { border-color: #D6D3D1 !important; }
+    .customer-info__item-content p { color: #44403C !important; }
+    .body td.giftcard__balance { font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif !important; font-size: 44px !important; font-weight: 400 !important; color: #1C1917 !important; }
+    .body td.giftcard__shop_name { font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif !important; font-size: 26px !important; color: #1C1917 !important; }
+    .body td.giftcard__smalltext { font-family: 'Geist Mono', ui-monospace, Menlo, Consolas, monospace !important; font-size: 11px !important; letter-spacing: 0.06em !important; text-transform: uppercase !important; color: #5F5E57 !important; }
+    .body td.giftcard__code { font-family: 'Geist Mono', ui-monospace, Menlo, Consolas, monospace !important; letter-spacing: 0.08em !important; color: #1C1917 !important; }
+    .footer { background-color: #1C2720 !important; margin: 56px 0 0 !important; }
+    .footer__cell { padding: 44px 0 40px !important; border-top: 0 !important; }
+    .footer p, .footer .disclaimer__subtext { color: #B9B4A8 !important; font-size: 13px !important; line-height: 1.6 !important; }
+    .footer a, .footer a:visited { color: #ECE6DA !important; }
+    .footer p.fm-mark { font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif !important; font-size: 30px !important; line-height: 1 !important; color: #ECE6DA !important; margin: 0 0 12px !important; }
+    .footer p.fm-tag { color: #ECE6DA !important; font-size: 15px !important; margin: 0 0 6px !important; }
+    .footer p.fm-links { font-family: 'Geist Mono', ui-monospace, Menlo, Consolas, monospace !important; font-size: 12px !important; letter-spacing: 0.06em !important; text-transform: uppercase !important; margin: 22px 0 24px !important; }
+    .footer p.fm-links a { font-family: 'Geist Mono', ui-monospace, Menlo, Consolas, monospace !important; text-decoration: none !important; color: #ECE6DA !important; }
+    .footer div.fm-rule { border-top: 1px solid #34413A !important; height: 1px; line-height: 1px; font-size: 1px; margin: 0 0 20px !important; }
+  </style>
+<!-- /fm:brand-head -->
