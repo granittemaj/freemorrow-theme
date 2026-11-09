@@ -1,16 +1,29 @@
 {%- comment -%}
   Questions and answers, with FAQPage data for search engines and AI assistants.
 {%- endcomment -%}
-<section class="ab-faq qs" id="{{ section.settings.anchor | default: 'questions' | handleize }}">
-  <div>
-    <p class="mono">{{ section.settings.label }}</p>
-    <h2>{{ section.settings.heading }}</h2>
+{%- comment -%} The heading runs across the top; the questions follow in two even columns. {%- endcomment -%}
+{%- assign half = section.blocks.size | plus: 1 | divided_by: 2 -%}
+<section class="qs" id="{{ section.settings.anchor | default: 'questions' | handleize }}">
+  <header class="qs-h">
+    <div>
+      <p class="mono">{{ section.settings.label }}</p>
+      <h2>{{ section.settings.heading }}</h2>
+    </div>
     {%- if section.settings.text != blank -%}<div class="rte qs-t">{{ section.settings.text }}</div>{%- endif -%}
-  </div>
-  <div class="faq-l">
-    {%- for block in section.blocks -%}
-      <details {{ block.shopify_attributes }}><summary>{{ block.settings.question }}<i aria-hidden="true"></i></summary><div class="rte">{{ block.settings.answer }}</div></details>
-    {%- endfor -%}
+  </header>
+  <div class="qs-cols">
+    <div class="faq-l">
+      {%- for block in section.blocks limit: half -%}
+        <details {{ block.shopify_attributes }}><summary>{{ block.settings.question }}<i aria-hidden="true"></i></summary><div class="rte">{{ block.settings.answer }}</div></details>
+      {%- endfor -%}
+    </div>
+    {%- if section.blocks.size > 1 -%}
+      <div class="faq-l">
+        {%- for block in section.blocks offset: half -%}
+          <details {{ block.shopify_attributes }}><summary>{{ block.settings.question }}<i aria-hidden="true"></i></summary><div class="rte">{{ block.settings.answer }}</div></details>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
   </div>
 </section>
 {%- if section.blocks.size > 0 -%}
