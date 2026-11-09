@@ -11,7 +11,12 @@
       {%- for block in section.blocks -%}
         <article class="hp-c" {{ block.shopify_attributes }}>
           <p class="mono">{{ block.settings.label }}</p>
-          <h2>{{ block.settings.heading }}</h2>
+          {%- comment -%} An email address stays on one line, sized to fit the card, and opens a new message. {%- endcomment -%}
+          {%- if block.settings.heading contains '@' -%}
+            <h2 class="hp-mail"><a href="mailto:{{ block.settings.heading | strip }}">{{ block.settings.heading }}</a></h2>
+          {%- else -%}
+            <h2>{{ block.settings.heading }}</h2>
+          {%- endif -%}
           <div class="rte">{{ block.settings.text }}</div>
           {%- if block.settings.link != blank and block.settings.link_label != blank -%}
             <a class="tlink" href="{{ block.settings.link }}">{{ block.settings.link_label }} {% render 'icon', name: 'arrow' %}</a>
