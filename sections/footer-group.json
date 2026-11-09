@@ -6,16 +6,14 @@
       "type": "footer",
       "settings": {
         "tagline": "Leaving the world better than we found it.",
+        "newsletter": true,
+        "newsletter_heading": "Letters from the field",
         "menu_1": "footer",
         "menu_1_title": "Explore",
         "show_help": true,
         "help_title": "Help",
-        "menu_2": "",
-        "menu_2_title": "",
-        "newsletter": true,
-        "newsletter_heading": "Letters from the field",
-        "newsletter_text": "New collections and the stories behind them, a few times a year.",
         "show_policies": true,
+        "legal_title": "Legal",
         "show_payment": true
       }
     }
