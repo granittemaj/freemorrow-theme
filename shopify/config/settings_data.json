@@ -13,8 +13,7 @@
     "returns_days": 30,
     "cookie_banner": true,
     "cookie_everyone": false,
-    "cookie_text": "We use cookies to keep your bag and checkout working and, with your permission, to understand how the shop is used and to improve it.",
-    "share_image": "shopify://shop_images/freemorrow-share.jpg"
+    "cookie_text": "We use cookies to keep your bag and checkout working and, with your permission, to understand how the shop is used and to improve it."
   },
   "presets": {
     "Default": {
