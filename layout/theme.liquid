@@ -4,7 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#EAE3D5">
-  <link rel="canonical" href="{{ canonical_url }}">
+  {%- comment -%} /collections/all shows the same pieces as Shop all, so it points search engines there. {%- endcomment -%}
+  {%- liquid
+    assign canonical = canonical_url
+    if request.page_type == 'collection' and collection.handle == 'all' and collections['shop-all'].products_count > 0
+      assign canonical = request.origin | append: collections['shop-all'].url
+    endif
+  -%}
+  <link rel="canonical" href="{{ canonical }}">
   {%- comment -%} The striped sun, unless a favicon is chosen in Theme settings › Logo. {%- endcomment -%}
   {%- if settings.favicon != blank -%}
     <link rel="icon" type="image/png" sizes="32x32" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
@@ -15,7 +22,13 @@
     <link rel="apple-touch-icon" href="{{ 'apple-touch-icon.png' | asset_url }}">
   {%- endif -%}
   {%- liquid
-    assign meta_description = page_description | default: settings.seo_description
+    assign meta_description = page_description | default: settings.seo_description | strip_html | strip_newlines | strip
+    if meta_description.size > 160
+      assign meta_description = meta_description | truncatewords: 24, '…'
+    endif
+    if meta_description.size > 160
+      assign meta_description = meta_description | truncatewords: 20, '…'
+    endif
     assign is_policy = false
     if request.page_type == 'policy'
       assign is_policy = true
