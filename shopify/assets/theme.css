@@ -439,3 +439,13 @@ body:has(.buybar.on) .totop{bottom:calc(var(--g) + 76px)}
 .hp-c{container-type:inline-size}
 .hp-c h2.hp-mail{white-space:nowrap;overflow-wrap:normal;font-size:min(clamp(21px,1.8vw,26px),10.4cqi)}
 .hp-c h2.hp-mail a:hover{color:var(--sun)}
+
+/* questions: the heading across the top, then two even columns */
+.qs{padding:clamp(24px,3vw,48px) var(--g) clamp(90px,10vw,140px)}
+.qs-h{display:flex;justify-content:space-between;align-items:flex-end;gap:24px 48px;flex-wrap:wrap;margin-bottom:clamp(24px,3vw,40px)}
+.qs-h h2{font-size:clamp(26px,2.4vw,36px);margin-top:14px}
+.qs-h .qs-t{margin:0;max-width:42ch}
+.qs-h .qs-t p{margin:0}
+.qs-h .qs-t a{text-decoration:underline;text-underline-offset:3px}
+.qs-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(28px,4vw,64px);align-items:start}
+@media (max-width:760px){.qs-cols{grid-template-columns:minmax(0,1fr)}.qs-cols .faq-l + .faq-l details:first-child{border-top:0}}
