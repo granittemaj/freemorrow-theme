@@ -374,3 +374,15 @@ html.compact body:not([data-page="story"]):not(.float) .hd-i{width:40px;height:4
 .turn-l small{font:400 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-top:2px}
 @media (hover:none){.turn-l small{display:none}}
 @media (max-width:420px){.turn-o{display:none}}
+
+/* the stage: a soft studio light, faintly tinted with the colour chosen, that follows the pointer. Nothing behind
+   the piece but light, so the photo blends in cleanly. product.js sets --tint, --mx and --my. */
+@property --tint{syntax:'<color>';inherits:true;initial-value:#D9CCB4}
+.spec-s{--tint:#D9CCB4;--mx:50%;--my:42%;border:0;border-radius:18px;
+  background:
+    radial-gradient(42% 46% at var(--mx) var(--my),rgba(255,255,255,.55),rgba(255,255,255,0) 70%),
+    radial-gradient(80% 70% at 50% 40%,color-mix(in srgb,var(--tint) 9%,#FBF8F2) 0%,color-mix(in srgb,var(--tint) 20%,#F1EBE0) 62%,color-mix(in srgb,var(--tint) 30%,#E6DED0) 100%);
+  transition:--tint .9s ease;box-shadow:inset 0 0 0 1px rgba(29,32,28,.06)}
+.spec-s::before,.spec-s::after{display:none}
+.spec-f::after{background:radial-gradient(closest-side,color-mix(in srgb,var(--tint) 35%,rgba(40,30,20,.28)),rgba(40,30,20,0))}
+.spec-tools{padding:20px 22px 2px}

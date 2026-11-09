@@ -68,6 +68,12 @@ function show() {
   views.forEach(v => { const i = new Image(); i.src = sized(v.u, 1400); });
   controls();
   $('#spShown').textContent = ci > -1 && sel[ci] ? sel[ci] : '';
+  // the stage takes a faint tint of the colour chosen
+  const stage = $('#spStage');
+  // (a piece in one colour has no colour option, so its photo's file name says which it is)
+  let tint = ci > -1 && sel[ci] && FM.swatch ? FM.swatch(sel[ci]) : null;
+  if (!tint && FM.palette) { const f = String(views[vi].u).toLowerCase(), k = Object.keys(FM.palette).find(n => f.includes(handleize(n))); if (k) tint = FM.palette[k]; }
+  if (stage && tint) stage.style.setProperty('--tint', tint);
 }
 let busy = false;
 function turn(step) {
@@ -120,10 +126,14 @@ if (fig) {
     const stage = fig.closest('.spec-s') || fig;
     stage.addEventListener('pointermove', e => {
       if (x0 !== null || busy) return;
+      // the light follows the pointer across the stage
+      const sr = stage.getBoundingClientRect();
+      stage.style.setProperty('--mx', ((e.clientX - sr.left) / sr.width * 100).toFixed(1) + '%');
+      stage.style.setProperty('--my', ((e.clientY - sr.top) / sr.height * 100).toFixed(1) + '%');
       const r = fig.getBoundingClientRect(), nx = (e.clientX - r.left) / r.width - .5, ny = (e.clientY - r.top) / r.height - .5;
       img.style.transform = `${P} rotateY(${(nx * 10).toFixed(2)}deg) rotateX(${(-ny * 6).toFixed(2)}deg)`;
     });
-    stage.addEventListener('pointerleave', () => { if (x0 === null && !busy) img.style.transform = ''; });
+    stage.addEventListener('pointerleave', () => { stage.style.removeProperty('--mx'); stage.style.removeProperty('--my'); if (x0 === null && !busy) img.style.transform = ''; });
   }
 }
 
