@@ -84,7 +84,7 @@ function apply(animate = true) {
   window.ScrollTrigger && setTimeout(() => ScrollTrigger.refresh(), 700);
 }
 const toGrid = () => {
-  const hd = $('.hd'), y = tools.getBoundingClientRect().top + scrollY - (hd ? hd.offsetHeight : 60) + 1;
+  const hd = $('.hd'), y = grid.getBoundingClientRect().top + scrollY - tools.offsetHeight - (hd ? hd.offsetHeight : 60) - 8;
   if (scrollY < y - 4) scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
 };
 pill && pill.addEventListener('click', () => { place = null; apply(); });
@@ -118,7 +118,9 @@ async function showCollection(url, push) {
   if (loading) loading.abort();
   loading = new AbortController();
   // to the top of the products, from above or below
-  const hd = $('.hd'), y = tools.getBoundingClientRect().top + scrollY - (hd ? hd.offsetHeight : 60) + 1;
+  // the filter bar sticks to the top, so its own position says nothing once stuck: the grid, which never sticks, is
+  // measured instead, and the page lands with the bar just above the first row
+  const hd = $('.hd'), y = Math.max(0, grid.getBoundingClientRect().top + scrollY - tools.offsetHeight - (hd ? hd.offsetHeight : 60) - 8);
   if (Math.abs(scrollY - y) > 4) glideTo(y);
   grid.setAttribute('aria-busy', 'true');
   try {
