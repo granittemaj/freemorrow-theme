@@ -10,15 +10,211 @@
   {
     "name": "Logo",
     "settings": [
-      { "type": "image_picker", "id": "logo", "label": "Logo", "info": "For light backgrounds. Leave empty to use the bundled striped-sun logo." },
-      { "type": "image_picker", "id": "logo_white", "label": "Logo on dark", "info": "Shown on dark story scenes and in the footer." },
-      { "type": "image_picker", "id": "favicon", "label": "Favicon", "info": "Square, at least 64 × 64 px." }
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo",
+        "info": "For light backgrounds. Leave empty to use the bundled striped-sun logo."
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_white",
+        "label": "Logo on dark",
+        "info": "Shown on dark story scenes and in the footer."
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Square, at least 64 × 64 px."
+      }
     ]
   },
   {
     "name": "Cart",
     "settings": [
-      { "type": "checkbox", "id": "cart_note", "label": "Let customers leave a note on the cart page", "default": false }
+      {
+        "type": "checkbox",
+        "id": "cart_note",
+        "label": "Let customers leave a note on the cart page",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Search engines and sharing",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Used for search results, link previews and the structured data that search engines and AI assistants read."
+      },
+      {
+        "type": "text",
+        "id": "seo_home_tagline",
+        "label": "Home page title tagline",
+        "default": "Clothing for everyday adventures",
+        "info": "Added after the shop name in the home page's title, unless a title is set in Online Store › Preferences."
+      },
+      {
+        "type": "textarea",
+        "id": "seo_description",
+        "label": "Fallback description",
+        "default": "Clothing for everyday adventures. Supported by our partner Not For Sale, all proceeds support its work combating human trafficking and ecocide.",
+        "info": "Used on any page that has no description of its own, including the home page."
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Fallback sharing image",
+        "info": "Shown when a page with no image is shared. 1200 × 630 px works best."
+      },
+      {
+        "type": "text",
+        "id": "org_email",
+        "label": "Contact email",
+        "default": "team@freemorrow.com"
+      },
+      {
+        "type": "text",
+        "id": "brand_name",
+        "label": "Brand name on products",
+        "info": "Leave empty to use the shop name."
+      },
+      {
+        "type": "header",
+        "content": "Social accounts"
+      },
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "url",
+        "id": "social_facebook",
+        "label": "Facebook"
+      },
+      {
+        "type": "url",
+        "id": "social_pinterest",
+        "label": "Pinterest"
+      },
+      {
+        "type": "url",
+        "id": "social_youtube",
+        "label": "YouTube"
+      },
+      {
+        "type": "url",
+        "id": "social_x",
+        "label": "X"
+      },
+      {
+        "type": "url",
+        "id": "social_linkedin",
+        "label": "LinkedIn"
+      }
+    ]
+  },
+  {
+    "name": "Shipping and returns",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "A summary of the shipping and refund policies. It appears on product pages and in the product information search engines show. Keep it in step with the policies in Settings › Policies."
+      },
+      {
+        "type": "text",
+        "id": "ship_countries",
+        "label": "Countries shipped to",
+        "default": "US",
+        "info": "Two-letter country codes, separated by commas."
+      },
+      {
+        "type": "number",
+        "id": "ship_handling_min",
+        "label": "Production time, fewest business days",
+        "default": 2
+      },
+      {
+        "type": "number",
+        "id": "ship_handling_max",
+        "label": "Production time, most business days",
+        "default": 5
+      },
+      {
+        "type": "number",
+        "id": "ship_transit_min",
+        "label": "Delivery time, fewest business days",
+        "default": 3
+      },
+      {
+        "type": "number",
+        "id": "ship_transit_max",
+        "label": "Delivery time, most business days",
+        "default": 4
+      },
+      {
+        "type": "text",
+        "id": "ship_rate",
+        "label": "Standard shipping price",
+        "info": "A number, such as 4.99, or 0 for free shipping. Leave empty if it varies; checkout always shows the real price."
+      },
+      {
+        "type": "select",
+        "id": "returns_mode",
+        "label": "Returns",
+        "default": "faults",
+        "options": [
+          {
+            "value": "faults",
+            "label": "Only for damaged, faulty or wrong items"
+          },
+          {
+            "value": "window",
+            "label": "Within a set number of days"
+          }
+        ]
+      },
+      {
+        "type": "number",
+        "id": "returns_days",
+        "label": "Days to report a problem or return",
+        "default": 30
+      }
+    ]
+  },
+  {
+    "name": "Cookie banner",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Asks visitors for consent through Shopify's Customer Privacy API, so Shopify and its apps respect the answer. Turn off Shopify's own banner in Settings › Customer privacy so visitors are not asked twice. If Shopify's banner is on, it is used instead of this one."
+      },
+      {
+        "type": "checkbox",
+        "id": "cookie_banner",
+        "label": "Show the cookie banner",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cookie_everyone",
+        "label": "Ask every visitor",
+        "default": false,
+        "info": "Off: only where the law requires consent, as Shopify decides for each visitor."
+      },
+      {
+        "type": "textarea",
+        "id": "cookie_text",
+        "label": "Text",
+        "default": "We use cookies to keep your bag and checkout working and, with your permission, to understand how the shop is used and to improve it."
+      }
     ]
   }
 ]

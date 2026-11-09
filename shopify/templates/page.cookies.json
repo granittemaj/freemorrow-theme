@@ -1,0 +1,59 @@
+{
+  "sections": {
+    "main": {
+      "type": "text-page",
+      "settings": {
+        "eyebrow": "Privacy",
+        "heading": "Cookies",
+        "lede": "<p>How Freemorrow uses cookies and similar technologies, and how you choose which ones we may use.</p>",
+        "updated": "Last updated November 2026"
+      },
+      "blocks": {
+        "block_1": {
+          "type": "text",
+          "settings": {
+            "heading": "What cookies are",
+            "text": "<p>Cookies are small text files a website stores in your browser. Some are needed for the shop to work at all; others help us understand how the shop is used, or measure our advertising. Similar technologies, such as pixels and local storage, work in much the same way, and this page covers them too.</p>"
+          }
+        },
+        "block_2": {
+          "type": "cookie_table",
+          "settings": {
+            "heading": "The cookies we use",
+            "text": "<p>The shop runs on Shopify, which sets most of these cookies. Shopify lists every cookie it uses, with its purpose and how long it lasts, in its <a href=\"https://www.shopify.com/legal/cookies\" target=\"_blank\" rel=\"noopener\">cookie policy</a>. Apps and partners we work with may set their own, only in the categories you allow.</p>"
+          }
+        },
+        "block_3": {
+          "type": "text",
+          "settings": {
+            "heading": "Your choices",
+            "text": "<p>Where the law requires it, we ask before using anything other than essential cookies. You can change your mind at any time with the button below, or with Cookie preferences at the foot of every page. You can also block or delete cookies in your browser's settings, though the bag and checkout need essential cookies to work.</p><p>If your browser sends a Global Privacy Control signal, we treat it as a request to opt out of the sale or sharing of your personal information, as our <a href=\"/policies/privacy-policy\">privacy policy</a> explains. US residents can also use <a href=\"/pages/data-sharing-opt-out\">Your privacy choices</a>.</p>"
+          }
+        },
+        "block_4": {
+          "type": "cookie_button",
+          "settings": {
+            "label": "Change your cookie choices"
+          }
+        },
+        "block_5": {
+          "type": "contact",
+          "settings": {
+            "heading": "Questions",
+            "text": "<p>Write to us about cookies or your personal information.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3",
+        "block_4",
+        "block_5"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

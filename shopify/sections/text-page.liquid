@@ -1,0 +1,95 @@
+{%- comment -%}
+  A long-form page in the house style (accessibility statement, cookies): the title, an introduction, then sections of
+  text, optionally the cookie categories, a button that opens the cookie choices, and how to reach us. The page's own
+  text from the admin, when it has any, comes after the introduction.
+{%- endcomment -%}
+<article class="pg tp">
+  <header class="pg-h">
+    <p class="mono">{{ section.settings.eyebrow }}</p>
+    <h1>{% if request.page_type == 'page' %}{{ page.title }}{% else %}{{ section.settings.heading }}{% endif %}</h1>
+    {%- if section.settings.lede != blank -%}<div class="lede">{{ section.settings.lede }}</div>{%- endif -%}
+    {%- if section.settings.updated != blank -%}<p class="mono tp-u">{{ section.settings.updated }}</p>{%- endif -%}
+  </header>
+  {%- if request.page_type == 'page' and page.content != blank -%}<div class="rte pg-b">{{ page.content }}</div>{%- endif -%}
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'text' -%}
+        <section class="tp-s" {{ block.shopify_attributes }}>
+          {%- if block.settings.heading != blank -%}<h2>{{ block.settings.heading }}</h2>{%- endif -%}
+          <div class="rte">{{ block.settings.text }}</div>
+        </section>
+      {%- when 'cookie_table' -%}
+        <section class="tp-s" {{ block.shopify_attributes }}>
+          {%- if block.settings.heading != blank -%}<h2>{{ block.settings.heading }}</h2>{%- endif -%}
+          <div class="szt-w">
+            <table class="szt ckt">
+              <thead><tr><th scope="col">{{ 'cookies.table.kind' | t }}</th><th scope="col">{{ 'cookies.table.what' | t }}</th><th scope="col">{{ 'cookies.table.examples' | t }}</th><th scope="col">{{ 'cookies.table.choice' | t }}</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">{{ 'cookies.essential' | t }}</th><td>{{ 'cookies.essential_long' | t }}</td><td><code>cart</code>, <code>cart_currency</code>, <code>localization</code>, <code>_tracking_consent</code></td><td>{{ 'cookies.always' | t }}</td></tr>
+                <tr><th scope="row">{{ 'cookies.preferences_label' | t }}</th><td>{{ 'cookies.preferences_long' | t }}</td><td>{{ 'cookies.set_by_shopify' | t }}</td><td>{{ 'cookies.yours' | t }}</td></tr>
+                <tr><th scope="row">{{ 'cookies.analytics' | t }}</th><td>{{ 'cookies.analytics_long' | t }}</td><td>{{ 'cookies.set_by_shopify' | t }}</td><td>{{ 'cookies.yours' | t }}</td></tr>
+                <tr><th scope="row">{{ 'cookies.marketing' | t }}</th><td>{{ 'cookies.marketing_long' | t }}</td><td>{{ 'cookies.set_by_partners' | t }}</td><td>{{ 'cookies.yours' | t }}</td></tr>
+              </tbody>
+            </table>
+          </div>
+          {%- if block.settings.text != blank -%}<div class="rte">{{ block.settings.text }}</div>{%- endif -%}
+        </section>
+      {%- when 'cookie_button' -%}
+        <p class="tp-act" {{ block.shopify_attributes }}><button type="button" class="btn" data-cookie-prefs>{{ block.settings.label }}</button></p>
+      {%- when 'contact' -%}
+        <aside class="tp-c" {{ block.shopify_attributes }}>
+          <p class="mono">{{ block.settings.heading }}</p>
+          <div class="rte">{{ block.settings.text }}</div>
+          {%- if settings.org_email != blank -%}<a class="tlink" href="mailto:{{ settings.org_email }}">{{ settings.org_email }} {% render 'icon', name: 'arrow' %}</a>{%- endif -%}
+        </aside>
+    {%- endcase -%}
+  {%- endfor -%}
+</article>
+
+{% schema %}
+{
+  "name": "Text page",
+  "class": "section-text-page",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Freemorrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "A page", "info": "On a page, the page's title is used." },
+    { "type": "richtext", "id": "lede", "label": "Introduction" },
+    { "type": "text", "id": "updated", "label": "Last updated", "info": "For example: Last reviewed November 2026" }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Write something here.</p>" }
+      ]
+    },
+    {
+      "type": "cookie_table",
+      "name": "Cookie categories",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "The cookies we use" },
+        { "type": "richtext", "id": "text", "label": "Text after the table" }
+      ]
+    },
+    {
+      "type": "cookie_button",
+      "name": "Cookie choices button",
+      "limit": 1,
+      "settings": [{ "type": "text", "id": "label", "label": "Label", "default": "Change your cookie choices" }]
+    },
+    {
+      "type": "contact",
+      "name": "Contact",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Questions" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Write to us and we will reply as soon as we can.</p>" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Text page" }]
+}
+{% endschema %}

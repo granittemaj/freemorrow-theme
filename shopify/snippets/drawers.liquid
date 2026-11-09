@@ -24,3 +24,46 @@
   </div>
 </aside>
 <div class="fm-toast" id="fmToast" role="status" aria-live="polite"><i></i><span></span></div>
+{%- comment -%} Search: Shopify's predictive search as you type; without JavaScript the header links to the search page. {%- endcomment -%}
+<aside class="fm-drawer fm-search" id="fmSearch" role="dialog" aria-modal="true" aria-label="{{ 'search.title' | t }}" aria-hidden="true">
+  <div class="fm-dhead"><span class="fm-label">{{ 'search.title' | t }}</span><button type="button" class="fm-x">{{ 'general.close' | t }}</button></div>
+  <div class="fm-dbody">
+    <form action="{{ routes.search_url }}" method="get" role="search" class="fs-f">
+      <label class="visually-hidden" for="fsQ">{{ 'search.placeholder' | t }}</label>
+      {% render 'icon', name: 'search' %}
+      <input id="fsQ" type="search" name="q" placeholder="{{ 'search.placeholder' | t }}" autocomplete="off" autocorrect="off" spellcheck="false" aria-controls="fsR">
+      <input type="hidden" name="options[prefix]" value="last">
+    </form>
+    <div class="fs-r" id="fsR" aria-live="polite"></div>
+  </div>
+</aside>
+
+{%- if settings.cookie_banner -%}
+  {%- comment -%}
+    The cookie banner. theme.js shows it when Shopify's Customer Privacy API says this visitor should be asked (or to
+    everyone, if Theme settings › Cookie banner says so), and saves the answer through the same API.
+  {%- endcomment -%}
+  <section class="ck" id="fmCookie" role="dialog" aria-labelledby="ckT" aria-describedby="ckD" hidden>
+    <div class="ck-main">
+      <p class="mono" id="ckT">{{ 'cookies.title' | t }}</p>
+      <p id="ckD">{{ settings.cookie_text }}
+        {%- assign cookie_page = pages['cookies'] -%}
+        {%- if cookie_page.title != blank %} <a href="{{ cookie_page.url }}">{{ 'cookies.more' | t }}</a>
+        {%- elsif shop.privacy_policy.body != blank %} <a href="{{ shop.privacy_policy.url }}">{{ 'cookies.more' | t }}</a>{%- endif -%}
+      </p>
+    </div>
+    <fieldset class="ck-opts" id="ckOpts" hidden>
+      <legend class="visually-hidden">{{ 'cookies.choose' | t }}</legend>
+      <label class="ck-o"><span><b>{{ 'cookies.essential' | t }}</b><small>{{ 'cookies.essential_text' | t }}</small></span><input type="checkbox" checked disabled><i aria-hidden="true"></i></label>
+      <label class="ck-o"><span><b>{{ 'cookies.preferences_label' | t }}</b><small>{{ 'cookies.preferences_text' | t }}</small></span><input type="checkbox" name="preferences"><i aria-hidden="true"></i></label>
+      <label class="ck-o"><span><b>{{ 'cookies.analytics' | t }}</b><small>{{ 'cookies.analytics_text' | t }}</small></span><input type="checkbox" name="analytics"><i aria-hidden="true"></i></label>
+      <label class="ck-o"><span><b>{{ 'cookies.marketing' | t }}</b><small>{{ 'cookies.marketing_text' | t }}</small></span><input type="checkbox" name="marketing"><i aria-hidden="true"></i></label>
+    </fieldset>
+    <div class="ck-b">
+      <button type="button" class="ck-btn" data-ck="choose">{{ 'cookies.choose' | t }}</button>
+      <button type="button" class="ck-btn" data-ck="save" hidden>{{ 'cookies.save' | t }}</button>
+      <button type="button" class="ck-btn" data-ck="reject">{{ 'cookies.reject' | t }}</button>
+      <button type="button" class="ck-btn ck-yes" data-ck="accept">{{ 'cookies.accept' | t }}</button>
+    </div>
+  </section>
+{%- endif -%}

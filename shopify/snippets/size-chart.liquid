@@ -1,0 +1,81 @@
+{%- comment -%}
+  A product's garment measurements, in inches with a switch to centimetres (theme.js).
+  The measurements are the makers' own, from Printful's catalogue, for the blank each piece is printed on. To give a
+  product its own chart, or to correct one, fill the product's custom.size_chart metafield (multi-line text): the first
+  line is the sizes, each further line a measurement, values in inches, separated by commas, for example
+    Size, S, M, L
+    Length, 28, 29, 30
+  Accepts: product {Object}, heading {Boolean} whether to show the product's name above the table
+{%- endcomment -%}
+{%- liquid
+  assign sizes = ''
+  assign rows = ''
+  assign note = ''
+  assign custom_chart = product.metafields.custom.size_chart.value
+
+  case product.handle
+    when 'the-basecamp-oversized-hoodie'
+      assign sizes = 'S,M,L,XL,2XL,3XL'
+      assign rows = 'length:28,28.5,29.5,30,30.5,31|width:21.5,23.5,25.5,27.5,29.5,31.5'
+    when 'the-made-for-adventure-oversized-hoodie'
+      assign sizes = 'S,M,L,XL,2XL,3XL'
+      assign rows = 'length:27.75,28.75,29.75,30.75,31.75,32.75|width:22.5,23.5,24.75,26,27.25,28.25|sleeve:22.5,22.5,24.25,24.25,25.5,27'
+      assign note = 'size_guide.notes.size_up'
+    when 'the-daybreak-cropped-hoodie'
+      assign sizes = 'S,M,L,XL'
+      assign rows = 'length:18.625,19.375,21.375,22.125|width:22,23.5,25.5,27.5'
+    when 'the-everyday-oversized-tee', 'the-signature-oversized-tee'
+      assign sizes = 'S,M,L,XL,2XL'
+      assign rows = 'length:28.74,29.53,30.31,31.5,32.48|width:24.8,26.38,27.95,29.92,31.89|sleeve:9.45,9.65,9.84,10.04,10.24'
+      assign note = 'size_guide.notes.eu_sizing'
+    when 'the-roamer-heavyweight-long-sleeve'
+      assign sizes = 'S,M,L,XL,2XL,3XL'
+      assign rows = 'length:27.75,29,30,31.25,32.5,33.5|width:20.5,22,23.5,25,26.75,28.25'
+    when 'the-offbeat-long-sleeve-tee'
+      assign sizes = 'S,M,L,XL,2XL'
+      assign rows = 'length:28,29,30,31,32|width:18,20,22,24,26|sleeve:33.5,35,36.5,38,39.5'
+      assign note = 'size_guide.notes.centre_back'
+  endcase
+
+  if custom_chart != blank
+    assign chart_lines = custom_chart | newline_to_br | split: '<br />'
+    assign sizes = chart_lines.first | split: ',' | slice: 1, 20 | join: ',' | remove: ' '
+    assign rows = ''
+    for line in chart_lines offset: 1
+      assign cells = line | strip | split: ','
+      if cells.size > 1
+        assign label = cells.first | strip
+        assign values = cells | slice: 1, 20 | join: ',' | remove: ' '
+        assign rows = rows | append: '|' | append: label | append: ':' | append: values
+      endif
+    endfor
+    assign rows = rows | remove_first: '|'
+    assign note = ''
+  endif
+-%}
+{%- if sizes != blank and rows != blank -%}
+  {%- assign size_list = sizes | split: ',' -%}
+  <div class="szg">
+    {%- if heading -%}<h3 class="szg-t"><a href="{{ product.url }}">{{ product.title | remove_first: 'The ' }}</a></h3>{%- endif -%}
+    <div class="szt-w">
+      <table class="szt">
+        <caption class="visually-hidden">{{ 'size_guide.caption' | t: title: product.title }}</caption>
+        <thead><tr><th scope="col">{{ 'size_guide.size' | t }}</th>{%- for s in size_list -%}<th scope="col">{{ s }}</th>{%- endfor -%}</tr></thead>
+        <tbody>
+          {%- assign row_list = rows | split: '|' -%}
+          {%- for row in row_list -%}
+            {%- assign parts = row | split: ':' -%}
+            {%- assign key = parts.first -%}
+            {%- assign row_label = key -%}
+            {%- if key == 'length' or key == 'width' or key == 'sleeve' -%}
+              {%- assign label_key = 'size_guide.rows.' | append: key -%}
+              {%- assign row_label = label_key | t -%}
+            {%- endif -%}
+            <tr><th scope="row">{{ row_label }}</th>{%- assign vals = parts.last | split: ',' -%}{%- for v in vals -%}<td data-in="{{ v }}">{{ v }}</td>{%- endfor -%}</tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+    {%- if note != blank -%}<p class="szg-n">{{ note | t }}</p>{%- endif -%}
+  </div>
+{%- endif -%}

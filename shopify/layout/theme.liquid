@@ -8,16 +8,22 @@
   {%- if settings.favicon != blank -%}
     <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
   {%- endif -%}
+  {%- liquid
+    assign meta_description = page_description | default: settings.seo_description
+    assign is_policy = false
+    if request.page_type == 'policy'
+      assign is_policy = true
+    endif
+  -%}
   <title>
     {{- page_title -}}
+    {%- if request.page_type == 'index' and page_title == shop.name and settings.seo_home_tagline != blank %} &ndash; {{ settings.seo_home_tagline }}{% endif -%}
     {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags.first }}{% endif -%}
     {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
     {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
   </title>
-  {%- if page_description -%}
-    <meta name="description" content="{{ page_description | escape }}">
-  {%- endif -%}
-  {% render 'meta-tags' %}
+  {% render 'meta-tags', description: meta_description %}
+  {% render 'structured-data' %}
   {{ 'font-geist-normal-latin-2.woff2' | asset_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
   {{ 'fonts.css' | asset_url | stylesheet_tag }}
 
@@ -44,8 +50,15 @@
       empty: {{ 'cart.empty' | t | json }},
       emptyLine: {{ 'cart.empty_line' | t | json }},
       remove: {{ 'cart.remove' | t | json }},
-      error: {{ 'cart.error' | t | json }}
+      error: {{ 'cart.error' | t | json }},
+      searchEmpty: {{ 'search.none' | t | json }},
+      searchAll: {{ 'search.see_all' | t | json }},
+      inches: {{ 'size_guide.inches' | t | json }},
+      cm: {{ 'size_guide.cm' | t | json }},
+      cookiesSaved: {{ 'cookies.saved' | t | json }}
     };
+    FM.searchUrl = {{ routes.predictive_search_url | json }};
+    FM.cookies = {{ settings.cookie_banner | json }} ? { everyone: {{ settings.cookie_everyone | json }} } : null;
   </script>
   <script src="{{ 'theme.js' | asset_url }}" defer></script>
   {%- comment -%} The scroll-led pages animate with GSAP; it loads only where it is used. {%- endcomment -%}
@@ -72,7 +85,10 @@
   {% sections 'header-group' %}
 
   <main id="main" role="main" tabindex="-1">
+    {%- comment -%} Shopify writes the policy pages; the theme sets them beside the list of help and policy pages. {%- endcomment -%}
+    {%- if is_policy -%}<div class="pol">{% render 'policy-nav' %}<div class="pol-b">{%- endif -%}
     {{ content_for_layout }}
+    {%- if is_policy -%}</div></div>{%- endif -%}
   </main>
 
   {% sections 'footer-group' %}
