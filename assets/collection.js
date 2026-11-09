@@ -57,8 +57,9 @@ if (places.length) {
 }
 
 /* ---------- place and sort ---------- */
-const cards = $$('.pc', grid), eds = $$('.ed', grid), featured = [...grid.children];
-cards.forEach(c => { c.dataset.places = PLACES.filter(p => p.handles.includes(c.dataset.handle)).map(p => p.id).join(' '); });
+let cards = $$('.pc', grid), eds = $$('.ed', grid), featured = [...grid.children];
+const tagPlaces = () => cards.forEach(c => { c.dataset.places = PLACES.filter(p => p.handles.includes(c.dataset.handle)).map(p => p.id).join(' '); });
+tagPlaces();
 let place = null, sort = 'featured';
 const pill = $('.pill'), count = $('#shN');
 function apply(animate = true) {
@@ -79,7 +80,7 @@ function apply(animate = true) {
   }
   if (count) count.textContent = `${n} ${n === 1 ? count.dataset.one : count.dataset.other}`;
   const none = $('[data-none]'); if (none) none.hidden = n > 0;
-  history.replaceState(null, '', place ? '#' + place : location.pathname + location.search);
+  history.replaceState(history.state, '', place ? '#' + place : location.pathname + location.search);
   window.ScrollTrigger && setTimeout(() => ScrollTrigger.refresh(), 700);
 }
 const toGrid = () => {
@@ -97,6 +98,69 @@ document.addEventListener('click', e => {
 const fromHash = location.hash.slice(1);
 if (PLACES.some(p => p.id === fromHash)) place = fromHash;
 apply(false);
+
+/* ---------- collections, without leaving the page ---------- */
+// scrolling is driven here rather than left to the browser's smooth scroll, so it lands the same everywhere
+function glideTo(y) {
+  const html = document.documentElement;
+  if (reduce || !G) { scrollTo(0, y); return; }
+  const o = { y: scrollY };
+  html.style.scrollBehavior = 'auto';
+  G.to(o, { y, duration: .8, ease: 'power2.inOut', onUpdate: () => scrollTo(0, o.y), onComplete: () => { html.style.scrollBehavior = ''; } });
+}
+// a chip fetches only this section of the other collection (Shopify's Section Rendering API) and swaps the grid in
+// place: the pieces in both glide to their new places, the new ones fade in. The link still works on its own.
+const section = grid.closest('.shopify-section'), sid = section ? section.id.replace('shopify-section-', '') : '';
+const shopName = (document.title.split(' – ').pop() || '').trim();
+let loading = null;
+async function showCollection(url, push) {
+  const u = new URL(url, location.href);
+  if (loading) loading.abort();
+  loading = new AbortController();
+  // to the top of the products, from above or below
+  const hd = $('.hd'), y = tools.getBoundingClientRect().top + scrollY - (hd ? hd.offsetHeight : 60) + 1;
+  if (Math.abs(scrollY - y) > 4) glideTo(y);
+  grid.setAttribute('aria-busy', 'true');
+  try {
+    const r = await fetch(`${u.pathname}?section_id=${encodeURIComponent(sid)}`, { signal: loading.signal });
+    if (!r.ok) throw new Error(r.status);
+    const doc = new DOMParser().parseFromString(await r.text(), 'text/html'), ng = doc.querySelector('.grid');
+    if (!ng) throw new Error('no grid');
+    const state = !reduce && G && window.Flip ? Flip.getState($$('.pc, .ed', grid)) : null;
+    // pieces in both collections keep their element, so they glide rather than reappear
+    const old = new Map(cards.map(c => [c.dataset.handle, c]));
+    const next = [...ng.children].map(el => (el.classList.contains('pc') && old.get(el.dataset.handle)) || document.importNode(el, true));
+    grid.replaceChildren(...next);
+    cards = $$('.pc', grid); eds = $$('.ed', grid); featured = [...grid.children];
+    tagPlaces(); place = null;
+    const pager = $('.pager'), npager = doc.querySelector('.pager');
+    if (pager) pager.remove();
+    if (npager) grid.after(document.importNode(npager, true));
+    apply(false);
+    if (state) Flip.from(state, { duration: .6, ease: 'power3.inOut', absolute: true, scale: false,
+      onEnter: els => G.fromTo(els, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .5, stagger: .04, delay: .1 }) });
+    // the chip, the address and the title follow
+    let title = '';
+    $$('.chips a').forEach(a => { const on = new URL(a.href, location.href).pathname === u.pathname; a.toggleAttribute('aria-current', on); if (on) { a.setAttribute('aria-current', 'page'); title = a.firstChild.textContent.trim(); } });
+    if (title) document.title = shopName ? `${title} – ${shopName}` : title;
+    if (push) history.pushState({ fmCollection: u.pathname }, '', u.pathname);
+    window.FM && FM.cardSizes && FM.cardSizes();
+    placePins();
+  } catch (e) {
+    if (e && e.name === 'AbortError') return;
+    location.href = u.href;
+  } finally { grid.removeAttribute('aria-busy'); }
+}
+if (sid) {
+  $$('.chips a').forEach(a => a.addEventListener('click', e => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+    e.preventDefault();
+    if (a.hasAttribute('aria-current')) { toGrid(); return; }
+    showCollection(a.href, true);
+  }));
+  history.replaceState({ fmCollection: location.pathname }, '', location.href);
+  addEventListener('popstate', e => { const path = (e.state && e.state.fmCollection) || location.pathname; if (/\/collections\//.test(path)) showCollection(path, false); });
+}
 
 /* ---------- pins on the photo tiles ---------- */
 function placePins() {
