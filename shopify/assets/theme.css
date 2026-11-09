@@ -386,3 +386,13 @@ html.compact body:not([data-page="story"]):not(.float) .hd-i{width:40px;height:4
 .spec-s::before,.spec-s::after{display:none}
 .spec-f::after{background:radial-gradient(closest-side,color-mix(in srgb,var(--tint) 35%,rgba(40,30,20,.28)),rgba(40,30,20,0))}
 .spec-tools{padding:20px 22px 2px}
+
+/* the footer, in four columns: logo, tagline and sign-up; Explore; Help; Legal. Every link in the same type. */
+.ft{grid-template-columns:minmax(0,1.5fr) repeat(3,minmax(0,1fr));column-gap:clamp(24px,4vw,64px);row-gap:40px}
+.ft-a .ft-n{margin-top:24px;max-width:380px}
+.ft-c button{min-height:32px;display:flex;align-items:center;padding:0;border:0;background:none;color:var(--on-dark-2);font:inherit;font-size:14px;text-align:left;cursor:pointer;transition:color .25s}
+.ft-c button:hover{color:var(--on-dark)}
+.ft-l{font-family:var(--sans);font-size:13px;color:var(--on-dark-2);letter-spacing:0;text-transform:none;justify-content:space-between;align-items:center}
+@media (max-width:900px){.ft{grid-template-columns:repeat(3,minmax(0,1fr))}.ft-a{grid-column:1/-1}}
+@media (max-width:560px){.ft{grid-template-columns:repeat(2,minmax(0,1fr))}.ft-pay{width:auto}}
+.ft-a p{max-width:34ch}
