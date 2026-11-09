@@ -5,8 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#EAE3D5">
   <link rel="canonical" href="{{ canonical_url }}">
+  {%- comment -%} The striped sun, unless a favicon is chosen in Theme settings › Logo. {%- endcomment -%}
   {%- if settings.favicon != blank -%}
-    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+  {%- else -%}
+    <link rel="icon" type="image/svg+xml" href="{{ 'favicon.svg' | asset_url }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ 'favicon-32.png' | asset_url }}">
+    <link rel="apple-touch-icon" href="{{ 'apple-touch-icon.png' | asset_url }}">
   {%- endif -%}
   {%- liquid
     assign meta_description = page_description | default: settings.seo_description
