@@ -67,3 +67,6 @@
     </div>
   </section>
 {%- endif -%}
+
+{%- comment -%} Back to the top, once the page has scrolled well down (theme.js). {%- endcomment -%}
+<button type="button" class="totop" id="fmTop" aria-label="{{ 'general.back_to_top' | t }}" tabindex="-1">{% render 'icon', name: 'arrow' %}</button>

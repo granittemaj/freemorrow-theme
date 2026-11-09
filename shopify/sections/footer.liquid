@@ -15,7 +15,8 @@
     {%- if section.settings.newsletter -%}
       {%- form 'customer', class: 'ft-n', id: 'footer-newsletter' -%}
         <input type="hidden" name="contact[tags]" value="newsletter">
-        <label class="visually-hidden" for="ftMail">{{ section.settings.newsletter_heading }}</label>
+        {%- if section.settings.newsletter_heading != blank -%}<label class="mono ft-nh" for="ftMail">{{ section.settings.newsletter_heading }}</label>{%- endif -%}
+        {%- if section.settings.newsletter_text != blank -%}<p class="ft-nt">{{ section.settings.newsletter_text }}</p>{%- endif -%}
         {%- if form.posted_successfully? -%}
           <p class="ft-ok" role="status">{{ 'newsletter.success' | t }}</p>
         {%- else -%}
@@ -95,7 +96,8 @@
   "settings": [
     { "type": "text", "id": "tagline", "label": "Tagline", "default": "Leaving the world better than we found it." },
     { "type": "checkbox", "id": "newsletter", "label": "Show newsletter sign-up", "default": true },
-    { "type": "text", "id": "newsletter_heading", "label": "Newsletter label", "default": "Letters from the field", "info": "Read out to screen readers." },
+    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Letters from the field" },
+    { "type": "text", "id": "newsletter_text", "label": "Newsletter text", "default": "New collections and the stories behind them, a few times a year." },
     { "type": "link_list", "id": "menu_1", "label": "Menu", "default": "footer" },
     { "type": "text", "id": "menu_1_title", "label": "Menu heading", "default": "Explore" },
     { "type": "checkbox", "id": "show_help", "label": "Show the help column", "default": true, "info": "Help, Size guide and Contact pages and the shipping and refund policies, once each exists." },

@@ -14,9 +14,12 @@
         "help_title": "Help",
         "show_policies": true,
         "legal_title": "Legal",
-        "show_payment": true
+        "show_payment": true,
+        "newsletter_text": "New collections and the stories behind them, a few times a year."
       }
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }
