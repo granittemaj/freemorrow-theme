@@ -1,8 +1,18 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "cart_note": false,
     "seo_home_tagline": "Clothing for everyday adventures",
     "seo_description": "Clothing for everyday adventures. Supported by our partner Not For Sale, all proceeds support its work combating human trafficking and ecocide.",
+    "share_image": "shopify://shop_images/freemorrow-share.jpg",
     "org_email": "team@freemorrow.com",
     "ship_countries": "US",
     "ship_handling_min": 2,
@@ -13,7 +23,8 @@
     "returns_days": 30,
     "cookie_banner": true,
     "cookie_everyone": false,
-    "cookie_text": "We use cookies to keep your bag and checkout working and, with your permission, to understand how the shop is used and to improve it."
+    "cookie_text": "We use cookies to keep your bag and checkout working and, with your permission, to understand how the shop is used and to improve it.",
+    "content_for_index": []
   },
   "presets": {
     "Default": {
