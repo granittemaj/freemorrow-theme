@@ -422,3 +422,15 @@ body:has(.buybar.on) .totop{bottom:calc(var(--g) + 76px)}
 /* while another collection loads, the grid rests a little */
 .grid[aria-busy="true"]{opacity:.55;transition:opacity .2s}
 .grid{transition:opacity .3s}
+
+/* the quick look's photo: the product page's studio light in place of the grid */
+.fm-main{--tint:#D9CCB4;background:radial-gradient(80% 70% at 50% 40%,color-mix(in srgb,var(--tint) 9%,#FBF8F2) 0%,color-mix(in srgb,var(--tint) 20%,#F1EBE0) 62%,color-mix(in srgb,var(--tint) 30%,#E6DED0) 100%);transition:--tint .6s ease}
+
+/* the sign-up text and its field share one width, so the field ends where the longest line does */
+.ft-a .ft-n{max-width:340px}
+.ft-a .ft-n .ft-nt{max-width:none!important}
+
+/* the sign-up's answer, in place of the field */
+.ft-n[aria-busy="true"] .ft-in{opacity:.6}
+.ft-n .ft-ok{margin:0;padding:13px 18px;border-radius:999px;background:rgba(236,230,218,.08);font-size:14px;color:var(--on-dark);animation:ftIn .5s var(--ease)}
+@keyframes ftIn{from{opacity:0;transform:translateY(6px)}}
