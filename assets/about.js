@@ -68,12 +68,32 @@ if (opening) {
   tl.to(stage, { '--fg': '#F7F2E9', '--fg2': 'rgba(247,242,233,.84)', duration: .25 }, 2.0);
   tl.to(caps[1], { autoAlpha: 1, y: 0, duration: .35 }, 2.25);
   tl.to({}, { duration: .1 }, TOTAL - .1);
-  ScrollTrigger.create({
+  const st = ScrollTrigger.create({
     trigger: opening, start: 'top top', end: () => '+=' + Math.round(TOTAL * innerHeight * .8), pin: true, scrub: reduce ? true : 1,
     anticipatePin: 1, animation: tl, invalidateOnRefresh: true,
     onUpdate: self => { const t = self.progress * TOTAL; hd && hd.classList.toggle('dark', t > 2.0 && self.progress < 1); },
     onLeave: () => { if (hd) { hd.classList.remove('dark'); hd.classList.add('solid'); } }, onEnterBack: () => hd && hd.classList.remove('solid'),
   });
+
+  // like the home page's sunrise, the opening plays by itself: from the top it glides until the photograph has
+  // opened and the second caption is in. Anything the visitor does takes over at once.
+  const html = document.documentElement, REST = 2.7;
+  let glide = null, glideY = -1;
+  const stopGlide = () => { if (glide) glide.kill(); glide = null; glideY = -1; html.style.scrollBehavior = ''; };
+  const glideTo = (t, dur) => {
+    stopGlide();
+    const o = { y: scrollY };
+    html.style.scrollBehavior = 'auto';
+    glide = gsap.to(o, { y: st.start + t / TOTAL * (st.end - st.start), duration: dur, ease: 'power1.inOut',
+      onUpdate: () => { glideY = Math.round(o.y); scrollTo(0, glideY); }, onComplete: stopGlide });
+  };
+  const takeOver = e => { if (e && e.target && e.target.closest && e.target.closest('.ab-stage .cue')) return; stopGlide(); };
+  ['wheel', 'touchstart', 'touchmove', 'keydown', 'pointerdown'].forEach(ev => addEventListener(ev, takeOver, { passive: true }));
+  // a scroll the glide did not make (a scrollbar drag) takes over too; the pin's own adjustments are small, so they do not
+  addEventListener('scroll', () => { if (glide && glideY > -1 && Math.abs(scrollY - glideY) > 60) stopGlide(); }, { passive: true });
+  const cue = $('.ab-stage .cue');
+  cue && cue.addEventListener('click', e => { e.preventDefault(); glideTo(REST, 3.6); });
+  if (!reduce) addEventListener('load', () => setTimeout(() => { if (scrollY < 4) glideTo(REST, 4.4); }, 700));
 }
 
 /* ---------- the statement, written into place ---------- */
