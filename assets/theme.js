@@ -240,12 +240,16 @@ if (nl) {
       .then(r => {
         // a visible challenge is Shopify's to show: the form goes the ordinary way, token and all
         if (/\/challenge/.test(r.url)) throw new Error('challenge');
-        return r.text();
+        return r.text().then(html => ({ html, posted: /customer_posted=true/.test(r.url) }));
       })
-      .then(html => {
+      .then(({ html, posted }) => {
         const f = new DOMParser().parseFromString(html, 'text/html').getElementById('footer-newsletter');
-        const ok = f && f.querySelector('.ft-ok'), err = f && f.querySelector('.ft-err');
-        if (!ok && !err) throw new Error('no answer');
+        let ok = f && f.querySelector('.ft-ok');
+        const err = f && f.querySelector('.ft-err');
+        // Shopify confirms a sign-up in the address it answers from, even when the page says nothing more
+        if (!ok && !err && posted) { ok = document.createElement('p'); ok.className = 'ft-ok'; ok.setAttribute('role', 'status'); ok.textContent = nl.dataset.ok || ''; }
+        // an answer that cannot be read is not sent again: Shopify's token works once
+        if (!ok && !err) { busy(false); $$('.ft-err', nl).forEach(x => x.remove()); const e = document.createElement('p'); e.className = 'ft-err'; e.setAttribute('role', 'alert'); e.textContent = T.error; const b0 = $('.ft-in', nl); b0 && b0.before(e); return; }
         busy(false);
         $$('.ft-err', nl).forEach(x => x.remove());
         const box = $('.ft-in', nl);

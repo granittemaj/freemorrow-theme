@@ -13,7 +13,8 @@
     {%- if section.settings.tagline != blank -%}<p>{{ section.settings.tagline }}</p>{%- endif -%}
 
     {%- if section.settings.newsletter -%}
-      {%- form 'customer', class: 'ft-n', id: 'footer-newsletter' -%}
+      {%- assign newsletter_ok = 'newsletter.success' | t -%}
+      {%- form 'customer', class: 'ft-n', id: 'footer-newsletter', data-ok: newsletter_ok -%}
         <input type="hidden" name="contact[tags]" value="newsletter">
         {%- if section.settings.newsletter_heading != blank -%}<label class="mono ft-nh" for="ftMail">{{ section.settings.newsletter_heading }}</label>{%- endif -%}
         {%- if section.settings.newsletter_text != blank -%}<p class="ft-nt">{{ section.settings.newsletter_text }}</p>{%- endif -%}
