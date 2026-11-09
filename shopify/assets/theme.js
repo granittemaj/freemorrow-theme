@@ -226,31 +226,41 @@ document.addEventListener('DOMContentLoaded', () => { $$('.pc').forEach(cardSize
 FM.cardSizes = () => $$('.pc').forEach(cardSizes);
 
 /* ---------- the newsletter signs up in place ---------- */
-// The form is sent the ordinary way, so Shopify's spam check (hCaptcha) can add its token first, but into a hidden
-// frame, so the page stays where it is. When the answer arrives, its message replaces the field. Anything else the
-// frame lands on (a visible challenge, an error page) is opened in the page instead.
+// Shopify's spam check (hCaptcha) stops the form, adds its token, then sends the form itself. That last send is
+// caught here and made in the background with the token, and the answer replaces the field, so the page never
+// moves. Without a spam check the form is sent in the background straight away. Shopify will not show its pages in
+// a frame, so the answer is fetched and read here.
 const nl = $('#footer-newsletter');
 if (nl) {
-  const frame = document.createElement('iframe');
-  frame.name = 'fmNewsletter'; frame.title = ''; frame.hidden = true; frame.setAttribute('aria-hidden', 'true'); frame.tabIndex = -1;
-  document.body.appendChild(frame);
-  nl.target = 'fmNewsletter';
-  let sent = false;
-  nl.addEventListener('submit', () => { sent = true; nl.setAttribute('aria-busy', 'true'); const b = $('button[type="submit"]', nl); b && (b.disabled = true); });
-  frame.addEventListener('load', () => {
-    if (!sent) return;
-    sent = false;
-    nl.removeAttribute('aria-busy');
-    const btn = $('button[type="submit"]', nl);
-    let d = null, href = '';
-    try { d = frame.contentDocument; href = frame.contentWindow.location.href; } catch (e) {}
-    const f = d && d.getElementById('footer-newsletter');
-    const ok = f && f.querySelector('.ft-ok'), err = f && f.querySelector('.ft-err');
-    $$('.ft-err', nl).forEach(x => x.remove());
-    if (ok) { const box = $('.ft-in', nl); box && box.replaceWith(document.importNode(ok, true)); return; }
-    btn && (btn.disabled = false);
-    if (err) { const box = $('.ft-in', nl); box && box.before(document.importNode(err, true)); const i = $('input[type="email"]', nl); i && i.focus(); return; }
-    if (href && href !== 'about:blank') location.href = href;
+  const nativeSubmit = HTMLFormElement.prototype.submit;
+  const busy = on => { nl.toggleAttribute('aria-busy', on); const b = $('button[type="submit"]', nl); b && (b.disabled = on); };
+  const send = form => {
+    busy(true);
+    fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'text/html' }, credentials: 'same-origin' })
+      .then(r => {
+        // a visible challenge is Shopify's to show: the form goes the ordinary way, token and all
+        if (/\/challenge/.test(r.url)) throw new Error('challenge');
+        return r.text();
+      })
+      .then(html => {
+        const f = new DOMParser().parseFromString(html, 'text/html').getElementById('footer-newsletter');
+        const ok = f && f.querySelector('.ft-ok'), err = f && f.querySelector('.ft-err');
+        if (!ok && !err) throw new Error('no answer');
+        busy(false);
+        $$('.ft-err', nl).forEach(x => x.remove());
+        const box = $('.ft-in', nl);
+        if (ok) { box && box.replaceWith(document.importNode(ok, true)); return; }
+        box && box.before(document.importNode(err, true));
+        const i = $('input[type="email"]', nl); i && i.focus();
+      })
+      .catch(() => { busy(false); nativeSubmit.call(form); });
+  };
+  HTMLFormElement.prototype.submit = function () { if (this === nl) { send(this); return; } return nativeSubmit.call(this); };
+  // listening on the window, last: if the spam check has stopped the form it will send it itself, later
+  addEventListener('submit', e => {
+    if (e.target !== nl || e.defaultPrevented) return;
+    e.preventDefault();
+    send(nl);
   });
 }
 
