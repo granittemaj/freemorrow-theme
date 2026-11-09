@@ -126,8 +126,9 @@ async function showCollection(url, push) {
     if (!r.ok) throw new Error(r.status);
     const doc = new DOMParser().parseFromString(await r.text(), 'text/html'), ng = doc.querySelector('.grid');
     if (!ng) throw new Error('no grid');
-    const state = !reduce && G && window.Flip ? Flip.getState($$('.pc, .ed', grid)) : null;
-    // pieces in both collections keep their element, so they glide rather than reappear
+    // the grid holds its height while the pieces fade out and the new ones in, so the page below never jumps
+    grid.style.minHeight = grid.offsetHeight + 'px';
+    if (!reduce && G) await G.to([...grid.children], { opacity: 0, y: 8, duration: .22, ease: 'power1.in' });
     const old = new Map(cards.map(c => [c.dataset.handle, c]));
     const next = [...ng.children].map(el => (el.classList.contains('pc') && old.get(el.dataset.handle)) || document.importNode(el, true));
     grid.replaceChildren(...next);
@@ -137,12 +138,17 @@ async function showCollection(url, push) {
     if (pager) pager.remove();
     if (npager) grid.after(document.importNode(npager, true));
     apply(false);
-    if (state) Flip.from(state, { duration: .6, ease: 'power3.inOut', absolute: true, scale: false,
-      onEnter: els => G.fromTo(els, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .5, stagger: .04, delay: .1 }) });
+    const shown = [...grid.children].filter(el => !el.hidden);
+    if (!reduce && G) G.fromTo(shown, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .45, stagger: .05, ease: 'power2.out', clearProps: 'opacity,transform' });
+    else shown.forEach(el => { el.style.opacity = ''; el.style.transform = ''; });
+    // once the glide to the products has settled, the grid takes its own height again
+    setTimeout(() => { grid.style.minHeight = ''; window.ScrollTrigger && ScrollTrigger.refresh(); }, reduce ? 0 : 900);
     // the chip, the address and the title follow
     let title = '';
     $$('.chips a').forEach(a => { const on = new URL(a.href, location.href).pathname === u.pathname; a.toggleAttribute('aria-current', on); if (on) { a.setAttribute('aria-current', 'page'); title = a.firstChild.textContent.trim(); } });
     if (title) document.title = shopName ? `${title} – ${shopName}` : title;
+    // the quick look says which collection a piece was opened from
+    if (title) $$('[data-from]', grid).forEach(el => { el.dataset.from = title; });
     if (push) history.pushState({ fmCollection: u.pathname }, '', u.pathname);
     window.FM && FM.cardSizes && FM.cardSizes();
     placePins();

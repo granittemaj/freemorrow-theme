@@ -101,6 +101,10 @@ function qRender() {
   if (ci > -1 && sel[ci]) { const h = handleize(sel[ci]), mine = p.images.filter(u => u.toLowerCase().includes(h)); if (mine.length) imgs = mine; }
   const first = (v.featured_image && v.featured_image.src) || imgs[0];
   $('#fmImg').src = sized(first, 900); $('#fmImg').alt = short(p.title) + (sel[ci] ? ` — ${sel[ci]}` : '');
+  // the photo sits in the same soft light as the product page, tinted with the colour shown
+  let tint = ci > -1 && sel[ci] ? FM.swatch(sel[ci]) : null;
+  if (!tint) { const f = String(first).toLowerCase(), k = Object.keys(PALETTE).find(n => f.includes(handleize(n))); tint = k ? PALETTE[k] : '#D9CCB4'; }
+  $('.fm-main').style.setProperty('--tint', tint);
   $('#fmThumbs').innerHTML = imgs.length > 1 ? imgs.slice(0, 6).map((u, i) => `<button type="button" aria-label="${i + 1}" aria-pressed="${u === first}" data-v="${esc(sized(u, 900))}"><img src="${esc(sized(u, 160))}" alt=""></button>`).join('') : '';
   const colors = $('#fmColors'), sizes = $('#fmSizes');
   colors.hidden = ci < 0 || p.options[ci].values.length < 2;
@@ -220,6 +224,30 @@ if (hd) addEventListener('scroll', () => { hd.classList.toggle('up', scrollY > 8
 
 document.addEventListener('DOMContentLoaded', () => { $$('.pc').forEach(cardSizes); });
 FM.cardSizes = () => $$('.pc').forEach(cardSizes);
+
+/* ---------- the newsletter signs up in place ---------- */
+// the form posts in the background and its answer replaces the field; if Shopify asks for a challenge (its spam
+// check), or anything else goes wrong, the form is sent the ordinary way instead
+const nl = $('#footer-newsletter');
+if (nl) nl.addEventListener('submit', e => {
+  const input = $('input[type="email"]', nl), btn = $('button[type="submit"]', nl);
+  if (!input || !input.value) return;
+  e.preventDefault();
+  btn && (btn.disabled = true);
+  nl.setAttribute('aria-busy', 'true');
+  fetch(nl.action, { method: 'POST', body: new FormData(nl), headers: { Accept: 'text/html' } })
+    .then(r => { if (/\/challenge/.test(r.url)) throw new Error('challenge'); return r.text(); })
+    .then(html => {
+      const d = new DOMParser().parseFromString(html, 'text/html'), f = d.getElementById('footer-newsletter');
+      const ok = f && f.querySelector('.ft-ok'), err = f && f.querySelector('.ft-err');
+      if (!ok && !err) throw new Error('no answer');
+      $$('.ft-err', nl).forEach(x => x.remove());
+      if (ok) { const box = $('.ft-in', nl); box && box.replaceWith(document.importNode(ok, true)); }
+      else { const box = $('.ft-in', nl); box && box.before(document.importNode(err, true)); btn && (btn.disabled = false); input.focus(); }
+    })
+    .catch(() => { HTMLFormElement.prototype.submit.call(nl); })
+    .finally(() => nl.removeAttribute('aria-busy'));
+});
 
 /* ---------- back to top ---------- */
 const topB = $('#fmTop');
