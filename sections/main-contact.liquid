@@ -2,6 +2,8 @@
 <section class="pg">
   <header class="pg-h"><p class="mono">{{ section.settings.eyebrow }}</p><h1>{{ page.title }}</h1></header>
   {%- if page.content != blank -%}<div class="rte pg-b">{{ page.content }}</div>{%- endif -%}
+  {%- assign help_page = pages['help'] -%}
+  {%- if help_page.title != blank -%}<p class="pg-note">{{ 'contact.help_html' | t: url: help_page.url }}</p>{%- endif -%}
   {%- form 'contact', class: 'fm-form pg-b' -%}
     {%- if form.posted_successfully? -%}
       <p class="ok" role="status">{{ 'contact.success' | t }}</p>

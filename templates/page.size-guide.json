@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "size-guide",
+      "settings": {
+        "eyebrow": "Fit",
+        "heading": "Size guide",
+        "lede": "<p>Most pieces have a relaxed, unisex fit. Lay a piece you already own and like flat, measure it, and compare it with the numbers below.</p>",
+        "collection": "shop-all",
+        "footnote": "<p>Between sizes? For a closer fit choose the smaller, for more room the larger. Still unsure? <a href=\"/pages/contact\">Write to us</a> before you order: every piece is made for you, so we cannot exchange a size.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

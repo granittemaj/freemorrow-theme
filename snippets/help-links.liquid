@@ -1,0 +1,36 @@
+{%- comment -%}
+  Links to the help pages and the store's policies, each shown only once it exists. Pages are found by handle:
+  help, size-guide, cookies, accessibility, and Shopify's own data-sharing-opt-out.
+  Accepts: set {String} 'help' (the footer's Help column), 'legal' (the footer's last line) or 'all' (beside a policy).
+{%- endcomment -%}
+{%- liquid
+  assign help_page = pages['help']
+  assign size_page = pages['size-guide']
+  assign cookie_page = pages['cookies']
+  assign a11y_page = pages['accessibility']
+  assign optout_page = pages['data-sharing-opt-out']
+  assign contact_page = pages['contact']
+  assign here = request.path
+-%}
+{%- capture help_links -%}
+  {%- if help_page.title != blank -%}<a href="{{ help_page.url }}"{% if here == help_page.url %} aria-current="page"{% endif %}>{{ 'help.help_faq' | t }}</a>{%- endif -%}
+  {%- if size_page.title != blank -%}<a href="{{ size_page.url }}"{% if here == size_page.url %} aria-current="page"{% endif %}>{{ size_page.title }}</a>{%- endif -%}
+  {%- if shop.shipping_policy.body != blank -%}<a href="{{ shop.shipping_policy.url }}"{% if here == shop.shipping_policy.url %} aria-current="page"{% endif %}>{{ 'help.shipping' | t }}</a>{%- endif -%}
+  {%- if shop.refund_policy.body != blank -%}<a href="{{ shop.refund_policy.url }}"{% if here == shop.refund_policy.url %} aria-current="page"{% endif %}>{{ 'help.returns' | t }}</a>{%- endif -%}
+  {%- if contact_page.title != blank -%}<a href="{{ contact_page.url }}"{% if here == contact_page.url %} aria-current="page"{% endif %}>{{ contact_page.title }}</a>{%- endif -%}
+{%- endcapture -%}
+{%- capture legal_links -%}
+  {%- if shop.privacy_policy.body != blank -%}<a href="{{ shop.privacy_policy.url }}"{% if here == shop.privacy_policy.url %} aria-current="page"{% endif %}>{{ shop.privacy_policy.title }}</a>{%- endif -%}
+  {%- if shop.terms_of_service.body != blank -%}<a href="{{ shop.terms_of_service.url }}"{% if here == shop.terms_of_service.url %} aria-current="page"{% endif %}>{{ shop.terms_of_service.title }}</a>{%- endif -%}
+  {%- if cookie_page.title != blank -%}<a href="{{ cookie_page.url }}"{% if here == cookie_page.url %} aria-current="page"{% endif %}>{{ cookie_page.title }}</a>{%- endif -%}
+  {%- if a11y_page.title != blank -%}<a href="{{ a11y_page.url }}"{% if here == a11y_page.url %} aria-current="page"{% endif %}>{{ a11y_page.title }}</a>{%- endif -%}
+  {%- if shop.legal_notice.body != blank -%}<a href="{{ shop.legal_notice.url }}"{% if here == shop.legal_notice.url %} aria-current="page"{% endif %}>{{ shop.legal_notice.title }}</a>{%- endif -%}
+  {%- if shop.contact_information.body != blank -%}<a href="{{ shop.contact_information.url }}"{% if here == shop.contact_information.url %} aria-current="page"{% endif %}>{{ shop.contact_information.title }}</a>{%- endif -%}
+  {%- if optout_page.title != blank -%}<a href="{{ optout_page.url }}"{% if here == optout_page.url %} aria-current="page"{% endif %}>{{ 'help.privacy_choices' | t }}</a>{%- endif -%}
+  {%- if settings.cookie_banner -%}<button type="button" data-cookie-prefs>{{ 'cookies.preferences' | t }}</button>{%- endif -%}
+{%- endcapture -%}
+{%- case set -%}
+  {%- when 'help' -%}{{ help_links }}
+  {%- when 'legal' -%}{{ legal_links }}
+  {%- else -%}{{ help_links }}{{ legal_links }}
+{%- endcase -%}

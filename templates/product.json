@@ -3,7 +3,7 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "shipping": { "type": "details", "settings": { "heading": "Shipping and returns", "text": "<p>Taxes and shipping are calculated at checkout. Our shipping and refund policies are linked at the foot of every page.</p>" } }
+        "shipping": { "type": "shipping", "settings": { "heading": "Shipping and returns", "text": "" } }
       },
       "block_order": ["shipping"]
     },

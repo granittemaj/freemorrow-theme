@@ -1,4 +1,8 @@
-{%- comment -%} The footer: the white logo, two menus, the newsletter and the legal line. {%- endcomment -%}
+{%- comment -%}
+  The footer: the white logo with the tagline and social accounts, a menu, the help pages (found by handle, see
+  snippets/help-links.liquid), the newsletter, then the legal line with the policies, cookie preferences and the
+  payment methods the shop accepts.
+{%- endcomment -%}
 <footer class="ft">
   <div class="ft-a">
     {%- if settings.logo_white != blank -%}
@@ -7,7 +11,19 @@
       <img class="ft-mark" src="{{ 'logo-white.png' | asset_url }}" alt="{{ shop.name | escape }}" width="44" height="34" loading="lazy">
     {%- endif -%}
     {%- if section.settings.tagline != blank -%}<p>{{ section.settings.tagline }}</p>{%- endif -%}
+    {%- capture social_links -%}
+      {%- assign social_keys = 'instagram,tiktok,facebook,pinterest,youtube,x,linkedin' | split: ',' -%}
+      {%- for key in social_keys -%}
+        {%- assign setting_key = 'social_' | append: key -%}
+        {%- assign social_label = 'general.social.' | append: key -%}
+        {%- if settings[setting_key] != blank -%}
+          <a href="{{ settings[setting_key] }}" target="_blank" rel="noopener me" aria-label="{{ social_label | t: shop: shop.name }}">{% render 'icon', name: key %}</a>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if social_links != blank -%}<div class="ft-so">{{ social_links }}</div>{%- endif -%}
   </div>
+
   {%- for i in (1..2) -%}
     {%- liquid
       assign menu_key = 'menu_' | append: i
@@ -19,10 +35,18 @@
         <b class="mono">{{ section.settings[title_key] | default: menu.title }}</b>
         {%- for link in menu.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
       </nav>
-    {%- else -%}
-      <div class="ft-c"></div>
+    {%- endif -%}
+    {%- if forloop.first and section.settings.show_help -%}
+      {%- capture help_links -%}{% render 'help-links', set: 'help' %}{%- endcapture -%}
+      {%- if help_links != blank -%}
+        <nav class="ft-c" aria-label="{{ section.settings.help_title | escape }}">
+          <b class="mono">{{ section.settings.help_title }}</b>
+          {{ help_links }}
+        </nav>
+      {%- endif -%}
     {%- endif -%}
   {%- endfor -%}
+
   {%- if section.settings.newsletter -%}
     {%- form 'customer', class: 'ft-n', id: 'footer-newsletter' -%}
       <input type="hidden" name="contact[tags]" value="newsletter">
@@ -31,17 +55,36 @@
       {%- if form.posted_successfully? -%}
         <p class="ft-ok" role="status">{{ 'newsletter.success' | t }}</p>
       {%- else -%}
-        {%- if form.errors -%}<p class="ft-err" role="alert">{{ form.errors.messages.email | default: form.errors.messages.base }}</p>{%- endif -%}
-        <div class="ft-in"><input id="ftMail" type="email" name="contact[email]" placeholder="{{ 'newsletter.placeholder' | t }}" autocomplete="email" required><button type="submit">{{ 'newsletter.button' | t }}</button></div>
+        {%- if form.errors -%}<p class="ft-err" role="alert" id="ftMailErr">{{ form.errors.messages.email | default: form.errors.messages.base }}</p>{%- endif -%}
+        <div class="ft-in"><input id="ftMail" type="email" name="contact[email]" placeholder="{{ 'newsletter.placeholder' | t }}" autocomplete="email" required aria-describedby="ftMailNote{% if form.errors %} ftMailErr{% endif %}"><button type="submit">{{ 'newsletter.button' | t }}</button></div>
+        <small class="ft-note" id="ftMailNote">{{ 'newsletter.consent_html' | t: privacy: shop.privacy_policy.url }}</small>
       {%- endif -%}
     {%- endform -%}
   {%- endif -%}
+
   <div class="ft-l mono">
     <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
     {%- if section.settings.show_policies -%}
-      <span class="ft-pol">{%- for policy in shop.policies -%}<a href="{{ policy.url }}">{{ policy.title }}</a>{%- endfor -%}</span>
+      <span class="ft-pol">{% render 'help-links', set: 'legal' %}</span>
+    {%- endif -%}
+    {%- if section.settings.show_payment and shop.enabled_payment_types.size > 0 -%}
+      <span class="ft-pay">
+        <span class="visually-hidden">{{ 'general.payment_methods' | t }}</span>
+        {%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag: class: 'pay-i' }}{%- endfor -%}
+      </span>
     {%- endif -%}
   </div>
+  {%- if localization.available_countries.size > 1 -%}
+    {%- form 'localization', class: 'ft-loc' -%}
+      <label class="mono" for="ftCountry">{{ 'general.country' | t }}</label>
+      <select id="ftCountry" name="country_code" onchange="this.form.submit()">
+        {%- for country in localization.available_countries -%}
+          <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>{{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})</option>
+        {%- endfor -%}
+      </select>
+      <noscript><button type="submit">{{ 'general.update' | t }}</button></noscript>
+    {%- endform -%}
+  {%- endif -%}
 </footer>
 
 {% schema %}
@@ -50,14 +93,17 @@
   "class": "section-footer",
   "settings": [
     { "type": "text", "id": "tagline", "label": "Tagline", "default": "Leaving the world better than we found it." },
-    { "type": "link_list", "id": "menu_1", "label": "First menu", "default": "main-menu" },
-    { "type": "text", "id": "menu_1_title", "label": "First menu heading", "default": "Shop" },
-    { "type": "link_list", "id": "menu_2", "label": "Second menu", "default": "footer" },
-    { "type": "text", "id": "menu_2_title", "label": "Second menu heading", "default": "Freemorrow" },
+    { "type": "link_list", "id": "menu_1", "label": "First menu", "default": "footer" },
+    { "type": "text", "id": "menu_1_title", "label": "First menu heading", "default": "Explore" },
+    { "type": "checkbox", "id": "show_help", "label": "Show the help column", "default": true, "info": "Lists the Help, Size guide and Contact pages and the shipping and refund policies, once each exists." },
+    { "type": "text", "id": "help_title", "label": "Help column heading", "default": "Help" },
+    { "type": "link_list", "id": "menu_2", "label": "Second menu", "info": "Optional." },
+    { "type": "text", "id": "menu_2_title", "label": "Second menu heading" },
     { "type": "checkbox", "id": "newsletter", "label": "Show newsletter sign-up", "default": true },
     { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Letters from the field" },
     { "type": "text", "id": "newsletter_text", "label": "Newsletter text", "default": "New collections and the stories behind them, a few times a year." },
-    { "type": "checkbox", "id": "show_policies", "label": "Show policy links", "default": true }
+    { "type": "checkbox", "id": "show_policies", "label": "Show policy links", "default": true },
+    { "type": "checkbox", "id": "show_payment", "label": "Show payment methods", "default": true }
   ]
 }
 {% endschema %}

@@ -1,0 +1,11 @@
+{%- comment -%} Beside a policy: every help and policy page, and how to reach us. {%- endcomment -%}
+<aside class="pol-nav">
+  <p class="mono">{{ 'help.title' | t }}</p>
+  <nav aria-label="{{ 'help.title' | t }}">{% render 'help-links', set: 'all' %}</nav>
+  {%- if settings.org_email != blank -%}
+    <div class="pol-ask">
+      <p class="mono">{{ 'help.questions' | t }}</p>
+      <a href="mailto:{{ settings.org_email }}">{{ settings.org_email }}</a>
+    </div>
+  {%- endif -%}
+</aside>

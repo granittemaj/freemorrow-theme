@@ -1,7 +1,12 @@
 {
   "general": {
-    "accessibility": { "skip_to_content": "Skip to content" },
-    "meta": { "tags": "Tagged \"{{ tags }}\"", "page": "Page {{ page }}" },
+    "accessibility": {
+      "skip_to_content": "Skip to content"
+    },
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
     "home": "{{ shop }}, home",
     "main_menu": "Main",
     "breadcrumb": "Breadcrumb",
@@ -13,7 +18,19 @@
       "title": "The sun has set on this page.",
       "text": "It may have moved, or it never existed. The rest of the world is still worth exploring.",
       "home": "Back to the story"
-    }
+    },
+    "social": {
+      "instagram": "{{ shop }} on Instagram",
+      "tiktok": "{{ shop }} on TikTok",
+      "facebook": "{{ shop }} on Facebook",
+      "pinterest": "{{ shop }} on Pinterest",
+      "youtube": "{{ shop }} on YouTube",
+      "x": "{{ shop }} on X",
+      "linkedin": "{{ shop }} on LinkedIn"
+    },
+    "payment_methods": "Payment methods accepted",
+    "country": "Country or region",
+    "update": "Update"
   },
   "story": {
     "scroll": "Scroll",
@@ -40,7 +57,16 @@
       "pairs_with": "Pairs well with",
       "variant": "Choose an option",
       "views": "Views",
-      "worn": { "one": "Worn · 1 photo", "other": "Worn · {{ count }} photos" }
+      "worn": {
+        "one": "Worn · 1 photo",
+        "other": "Worn · {{ count }} photos"
+      },
+      "eta": "Made to order · arrives in about {{ min }}–{{ max }} business days",
+      "ship_made": "Each piece is made to order in about {{ min }}–{{ max }} business days.",
+      "ship_time": "Standard delivery within the US then takes about {{ min }}–{{ max }} business days.",
+      "ship_cost": "Shipping options and prices are shown at checkout.",
+      "returns_faults": "Damaged, misprinted or not what you ordered? Tell us within {{ days }} days of delivery and we will replace it or refund you. As each piece is made for you, we cannot take back a change of mind or a wrong size.",
+      "returns_window": "You can return a piece within {{ days }} days of delivery."
     },
     "card": {
       "organic": "Organic cotton",
@@ -48,7 +74,10 @@
       "quick_add_label": "Add {{ title }} to bag in size",
       "quick_look": "Quick look: {{ title }}",
       "details": "{{ title }} details",
-      "colours": { "one": "1 colour", "other": "{{ count }} colours" }
+      "colours": {
+        "one": "1 colour",
+        "other": "{{ count }} colours"
+      }
     },
     "quick_look": {
       "label": "Product details",
@@ -56,7 +85,10 @@
     }
   },
   "collections": {
-    "pieces": { "one": "1 piece", "other": "{{ count }} pieces" },
+    "pieces": {
+      "one": "1 piece",
+      "other": "{{ count }} pieces"
+    },
     "piece": "piece",
     "piece_plural": "pieces",
     "browse": "Collections",
@@ -74,8 +106,14 @@
   },
   "cart": {
     "title": "Your bag",
-    "bag_count": { "one": "Bag, 1 item", "other": "Bag, {{ count }} items" },
-    "count": { "one": "1 piece", "other": "{{ count }} pieces" },
+    "bag_count": {
+      "one": "Bag, 1 item",
+      "other": "Bag, {{ count }} items"
+    },
+    "count": {
+      "one": "1 piece",
+      "other": "{{ count }} pieces"
+    },
     "subtotal": "Subtotal",
     "taxes": "Taxes and shipping calculated at checkout.",
     "checkout": "Checkout",
@@ -91,24 +129,32 @@
   "newsletter": {
     "placeholder": "Email address",
     "button": "Sign up",
-    "success": "Thank you. The next letter is on its way to you."
+    "success": "Thank you. The next letter is on its way to you.",
+    "consent_html": "By signing up you agree to our <a href=\"{{ privacy }}\">privacy policy</a>. Unsubscribe at any time."
   },
   "contact": {
     "name": "Name",
     "email": "Email",
     "message": "Message",
     "send": "Send",
-    "success": "Thank you. We will write back soon."
+    "success": "Thank you. We will write back soon.",
+    "help_html": "Most answers about delivery, returns and sizing are on our <a href=\"{{ url }}\">help page</a>."
   },
   "search": {
     "title": "Search",
     "results_for": "Results for “{{ terms }}”",
     "placeholder": "Search the collection",
     "submit": "Search",
-    "none": "Nothing matched. Try another word."
+    "none": "Nothing matched. Try another word.",
+    "see_all": "See all results for"
   },
-  "blog": { "empty": "No stories yet." },
-  "password": { "enter": "Enter with a password", "submit": "Enter" },
+  "blog": {
+    "empty": "No stories yet."
+  },
+  "password": {
+    "enter": "Enter with a password",
+    "submit": "Enter"
+  },
   "gift_card": {
     "title": "Your {{ value }} gift card",
     "balance": "Balance: {{ value }}",
@@ -123,14 +169,128 @@
     "first_name": "First name",
     "last_name": "Last name",
     "logout": "Sign out",
-    "login": { "title": "Sign in", "submit": "Sign in", "guest": "Continue as a guest" },
-    "register": { "title": "Create an account", "submit": "Create account" },
-    "recover": { "title": "Forgot your password?", "submit": "Send a reset link", "success": "We have emailed you a link to reset your password." },
-    "activate": { "title": "Activate your account", "submit": "Activate", "decline": "Decline invitation" },
-    "reset": { "title": "Choose a new password", "submit": "Save password" },
-    "account": { "title": "Your account", "orders": "Orders", "none": "No orders yet.", "address": "Address" },
-    "order": { "title": "Order {{ name }}", "number": "Order", "date": "Date", "status": "Status", "total": "Total", "shipping": "Shipping address", "billing": "Billing address" },
-    "addresses": { "title": "Addresses", "default": "Default", "edit": "Edit", "save": "Save address", "add": "Add an address", "make_default": "Make this my default address" },
-    "address": { "address1": "Address", "address2": "Apartment, suite, etc.", "city": "City", "zip": "Postal code", "country": "Country", "province": "State or province", "phone": "Phone" }
+    "login": {
+      "title": "Sign in",
+      "submit": "Sign in",
+      "guest": "Continue as a guest"
+    },
+    "register": {
+      "title": "Create an account",
+      "submit": "Create account"
+    },
+    "recover": {
+      "title": "Forgot your password?",
+      "submit": "Send a reset link",
+      "success": "We have emailed you a link to reset your password."
+    },
+    "activate": {
+      "title": "Activate your account",
+      "submit": "Activate",
+      "decline": "Decline invitation"
+    },
+    "reset": {
+      "title": "Choose a new password",
+      "submit": "Save password"
+    },
+    "account": {
+      "title": "Your account",
+      "orders": "Orders",
+      "none": "No orders yet.",
+      "address": "Address"
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "number": "Order",
+      "date": "Date",
+      "status": "Status",
+      "total": "Total",
+      "shipping": "Shipping address",
+      "billing": "Billing address"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "default": "Default",
+      "edit": "Edit",
+      "save": "Save address",
+      "add": "Add an address",
+      "make_default": "Make this my default address"
+    },
+    "address": {
+      "address1": "Address",
+      "address2": "Apartment, suite, etc.",
+      "city": "City",
+      "zip": "Postal code",
+      "country": "Country",
+      "province": "State or province",
+      "phone": "Phone"
+    }
+  },
+  "help": {
+    "title": "Help and policies",
+    "help_faq": "Help and FAQ",
+    "shipping": "Shipping",
+    "returns": "Returns and refunds",
+    "privacy_choices": "Your privacy choices",
+    "questions": "Questions?"
+  },
+  "cookies": {
+    "title": "Cookies",
+    "more": "How we use cookies",
+    "choose": "Choose",
+    "save": "Save choices",
+    "reject": "Reject",
+    "accept": "Accept all",
+    "saved": "Your cookie choices are saved.",
+    "preferences": "Cookie preferences",
+    "essential": "Essential",
+    "essential_text": "The bag, checkout and security. Always on.",
+    "essential_long": "Keep your bag, checkout, sign-in and security working, and remember your cookie choices.",
+    "preferences_label": "Preferences",
+    "preferences_text": "Remember choices such as your country.",
+    "preferences_long": "Remember choices you make, such as your country, language or currency.",
+    "analytics": "Analytics",
+    "analytics_text": "Show us how the shop is used, so we can improve it.",
+    "analytics_long": "Tell us, without naming you, which pages are visited and how the shop is used, so we can improve it.",
+    "marketing": "Marketing",
+    "marketing_text": "Measure and personalise our advertising.",
+    "marketing_long": "Measure whether our advertising works and show you more relevant ads elsewhere.",
+    "always": "Always on",
+    "yours": "Your choice",
+    "set_by_shopify": "Set by Shopify",
+    "set_by_partners": "Set by Shopify and advertising partners",
+    "table": {
+      "kind": "Kind",
+      "what": "What they do",
+      "examples": "Examples",
+      "choice": "Your say"
+    }
+  },
+  "size_guide": {
+    "title": "Size guide",
+    "all": "Every size guide",
+    "inches": "inches",
+    "cm": "centimetres",
+    "in": "in",
+    "cm_short": "cm",
+    "units": "Units",
+    "size": "Size",
+    "caption": "Garment measurements of {{ title }}",
+    "rows": {
+      "length": "Length",
+      "width": "Width",
+      "sleeve": "Sleeve"
+    },
+    "explain": {
+      "length": "Down the back, from the highest point of the shoulder to the hem.",
+      "width": "Across the chest, laid flat, from armpit to armpit.",
+      "sleeve": "Along the sleeve to the end of the cuff, as its maker measures it."
+    },
+    "garment": "Measurements of the garment laid flat, from its maker. Each piece can vary by up to 2 in (5 cm).",
+    "how": "Lay a piece you own and like the fit of flat, measure it the same way, and compare.",
+    "notes": {
+      "size_up": "Its maker suggests one size up from your usual size.",
+      "eu_sizing": "European sizing, which runs small: its maker suggests one size up from your usual US size.",
+      "centre_back": "Sleeve measured from the centre of the back of the neck to the cuff."
+    }
   }
 }

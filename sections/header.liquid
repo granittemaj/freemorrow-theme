@@ -1,5 +1,6 @@
 {%- comment -%}
-  The header: the logo (the white one takes over on dark story scenes), the main menu and the bag.
+  The header: the logo (the white one takes over on dark story scenes), the main menu, search, the account and the
+  bag.
 {%- endcomment -%}
 <header class="hd">
   <a class="logo" href="{{ routes.root_url }}" aria-label="{{ 'general.home' | t: shop: shop.name | escape }}">
@@ -16,13 +17,19 @@
   </a>
   <nav class="nav" aria-label="{{ 'general.main_menu' | t }}">
     {%- if section.settings.home_label != blank -%}
-      <a href="{{ routes.root_url }}"{% if request.page_type == 'index' %} aria-current="page"{% endif %}>{{ section.settings.home_label }}</a>
+      <a class="nav-home" href="{{ routes.root_url }}"{% if request.page_type == 'index' %} aria-current="page"{% endif %}>{{ section.settings.home_label }}</a>
     {%- endif -%}
     {%- for link in section.settings.menu.links -%}
       <a href="{{ link.url }}"{% if link.active or link.child_active %} aria-current="page"{% endif %}>{{ link.title }}</a>
     {%- endfor -%}
   </nav>
   <div class="hd-r">
+    {%- if section.settings.show_search -%}
+      <a class="hd-i" href="{{ routes.search_url }}" data-search aria-label="{{ 'search.title' | t }}">{%- render 'icon', name: 'search' -%}</a>
+    {%- endif -%}
+    {%- if section.settings.show_account and shop.customer_accounts_enabled -%}
+      <a class="hd-i" href="{{ routes.account_url }}" aria-label="{% if customer %}{{ 'customer.account.title' | t }}{% else %}{{ 'customer.login.title' | t }}{% endif %}">{%- render 'icon', name: 'account' -%}</a>
+    {%- endif -%}
     <a class="bag-b" href="{{ routes.cart_url }}" data-bag data-n="{{ cart.item_count }}" aria-label="{{ 'cart.bag_count' | t: count: cart.item_count }}">
       {%- render 'icon', name: 'bag' -%}
       <span class="count" data-bag-count aria-hidden="true">{{ cart.item_count }}</span>
@@ -48,7 +55,9 @@
       "label": "Menu",
       "default": "main-menu",
       "info": "Top-level links only. Suggested: Shop (/collections/all) and About (/pages/about)."
-    }
+    },
+    { "type": "checkbox", "id": "show_search", "label": "Show search", "default": true },
+    { "type": "checkbox", "id": "show_account", "label": "Show the account link", "default": true, "info": "Only when customer accounts are turned on in Settings › Customer accounts." }
   ]
 }
 {% endschema %}

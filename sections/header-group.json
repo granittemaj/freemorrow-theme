@@ -2,7 +2,7 @@
   "type": "header",
   "name": "Header group",
   "sections": {
-    "header": { "type": "header", "settings": { "home_label": "The story", "menu": "main-menu" } }
+    "header": { "type": "header", "settings": { "home_label": "The story", "menu": "main-menu", "show_search": true, "show_account": true } }
   },
   "order": ["header"]
 }

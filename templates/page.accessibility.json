@@ -1,0 +1,52 @@
+{
+  "sections": {
+    "main": {
+      "type": "text-page",
+      "settings": {
+        "eyebrow": "Accessibility",
+        "heading": "Accessibility",
+        "lede": "<p>We want everyone to be able to explore and shop Freemorrow, whatever device or assistive technology they use.</p>",
+        "updated": "Last reviewed November 2026"
+      },
+      "blocks": {
+        "block_1": {
+          "type": "text",
+          "settings": {
+            "heading": "Our aim",
+            "text": "<p>We aim to meet the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA, and we keep them in mind whenever the shop changes.</p>"
+          }
+        },
+        "block_2": {
+          "type": "text",
+          "settings": {
+            "heading": "What we have done",
+            "text": "<ul><li>Every page works with a keyboard, starts with a link that skips to its content, and shows clearly where the focus is.</li><li>Pages use headings, landmarks and labels, so screen readers can find their way around.</li><li>Photos and controls have text alternatives, and colours are named, not only shown.</li><li>Buttons and links are sized for touch.</li><li>If your device asks for reduced motion, the scroll story and other animations are calmed or switched off.</li><li>Pages can be zoomed and work on small screens.</li></ul>"
+          }
+        },
+        "block_3": {
+          "type": "text",
+          "settings": {
+            "heading": "What we know is not perfect",
+            "text": "<p>The home page tells its story through scrolling animation. Everything in it can also be reached from the Shop and About pages. Checkout is provided by Shopify, which publishes its own accessibility commitment. Some content from third parties, such as payment providers, may not be fully accessible, and we cannot always change it.</p>"
+          }
+        },
+        "block_4": {
+          "type": "contact",
+          "settings": {
+            "heading": "Tell us",
+            "text": "<p>If anything on Freemorrow is hard to use, please tell us what you were trying to do, on which page and with which device or assistive technology. We will do our best to fix it, and to help you get what you need in the meantime.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "block_1",
+        "block_2",
+        "block_3",
+        "block_4"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

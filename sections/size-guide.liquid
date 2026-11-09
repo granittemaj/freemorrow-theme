@@ -1,0 +1,42 @@
+{%- comment -%}
+  The size guide: how to measure, then the garment measurements of every piece in a collection that has them
+  (snippets/size-chart.liquid), switchable between inches and centimetres.
+{%- endcomment -%}
+{%- assign source = section.settings.collection | default: collections['all'] -%}
+<section class="pg pg--wide szp">
+  <header class="pg-h">
+    <p class="mono">{{ section.settings.eyebrow }}</p>
+    <h1>{% if request.page_type == 'page' %}{{ page.title }}{% else %}{{ section.settings.heading }}{% endif %}</h1>
+    {%- if section.settings.lede != blank -%}<div class="lede">{{ section.settings.lede }}</div>{%- endif -%}
+  </header>
+  {%- if request.page_type == 'page' and page.content != blank -%}<div class="rte pg-b">{{ page.content }}</div>{%- endif -%}
+
+  <div class="szp-how">
+    <div><p class="mono">{{ 'size_guide.rows.length' | t }}</p><p>{{ 'size_guide.explain.length' | t }}</p></div>
+    <div><p class="mono">{{ 'size_guide.rows.width' | t }}</p><p>{{ 'size_guide.explain.width' | t }}</p></div>
+    <div><p class="mono">{{ 'size_guide.rows.sleeve' | t }}</p><p>{{ 'size_guide.explain.sleeve' | t }}</p></div>
+  </div>
+
+  <div class="szp-bar"><p class="szg-n">{{ 'size_guide.garment' | t }}</p>{% render 'unit-switch' %}</div>
+  <div class="szp-l">
+    {%- for product in source.products limit: 50 -%}
+      {%- render 'size-chart', product: product, heading: true -%}
+    {%- endfor -%}
+  </div>
+  {%- if section.settings.footnote != blank -%}<div class="rte szg-how">{{ section.settings.footnote }}</div>{%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Size guide",
+  "class": "section-size-guide",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Small label", "default": "Fit" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Size guide", "info": "On a page, the page's title is used." },
+    { "type": "richtext", "id": "lede", "label": "Introduction", "default": "<p>Most pieces have a relaxed, unisex fit. Compare these measurements with a piece you already own and like the fit of.</p>" },
+    { "type": "collection", "id": "collection", "label": "Products from", "info": "Pieces without measurements are left out." },
+    { "type": "richtext", "id": "footnote", "label": "Note at the end", "default": "<p>Between sizes? For a closer fit choose the smaller, for more room the larger. Still unsure? Write to us before you order; every piece is made for you, so we cannot exchange a size.</p>" }
+  ],
+  "presets": [{ "name": "Size guide" }]
+}
+{% endschema %}

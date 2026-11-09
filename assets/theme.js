@@ -66,6 +66,8 @@ function render(cart) {
 /* ---------- drawers ---------- */
 let open = null, back = null;
 function show(d, opener) {
+  // a drawer written inside a section is lifted to the body, so no transformed ancestor can trap its fixed position
+  if (d.parentElement !== document.body) { document.body.appendChild(d); void d.offsetWidth; }
   const scrim = $('#fmScrim');
   if (open && open !== d) hide(open, true);
   back = opener || document.activeElement;
@@ -79,6 +81,7 @@ function hide(d, swap) {
   back && back.focus && back.focus({ preventScroll: true });
 }
 FM.openBag = opener => { show($('#fmBag'), opener); refresh(); };
+FM.show = show; FM.hide = hide;
 
 /* ---------- quick look ---------- */
 let qp = null, sel = [];
@@ -143,6 +146,10 @@ document.addEventListener('click', e => {
   const t = e.target;
   const bagB = t.closest('[data-bag]');
   if (bagB) { e.preventDefault(); FM.openBag(bagB); return; }
+  const srch = t.closest('[data-search]');
+  if (srch && FM.openSearch) { e.preventDefault(); FM.openSearch(srch); return; }
+  const dr = t.closest('[data-drawer]');
+  if (dr && $('#' + dr.dataset.drawer)) { e.preventDefault(); show($('#' + dr.dataset.drawer), dr); return; }
   if (t.closest('#fmScrim')) { open && hide(open); return; }
   const x = t.closest('.fm-x'); if (x) { hide(x.closest('.fm-drawer')); return; }
 
@@ -196,7 +203,7 @@ addEventListener('keydown', e => {
   if (!open) return;
   if (e.key === 'Escape') hide(open);
   if (e.key === 'Tab') {
-    const f = $$('button, a, input', open).filter(x => x.offsetParent && !x.disabled), a = f[0], z = f[f.length - 1];
+    const f = $$('button, a, input, select, textarea', open).filter(x => x.offsetParent && !x.disabled), a = f[0], z = f[f.length - 1];
     if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); }
     else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
   }
@@ -209,4 +216,94 @@ const root = document.documentElement;
 if (hd) addEventListener('scroll', () => { hd.classList.toggle('up', scrollY > 8); root.classList.toggle('compact', scrollY > 40); }, { passive: true });
 
 document.addEventListener('DOMContentLoaded', () => { $$('.pc').forEach(cardSizes); });
+
+/* ---------- search: Shopify's predictive search as you type ---------- */
+const fs = $('#fmSearch');
+if (fs) {
+  const q = $('#fsQ'), out = $('#fsR');
+  let wait, ctl;
+  FM.openSearch = opener => { show(fs, opener); setTimeout(() => q.focus({ preventScroll: true }), 120); };
+  const row = (r, kind) => `<a class="fs-i" href="${esc(r.url)}">${kind === 'product'
+    ? `<span class="th">${r.image ? `<img src="${esc(sized(r.image, 160))}" alt="" loading="lazy">` : ''}</span><span><b>${esc(short(r.title))}</b><small>${FM.money(Math.round(parseFloat(r.price) * 100))}${r.available ? '' : ' · ' + esc(T.soldOut)}</small></span>`
+    : `<span><b>${esc(r.title)}</b></span>`}</a>`;
+  const run = () => {
+    const term = q.value.trim();
+    if (ctl) ctl.abort();
+    if (!term) { out.innerHTML = ''; return; }
+    ctl = new AbortController();
+    const url = `${FM.searchUrl}.json?q=${encodeURIComponent(term)}&resources[type]=product,collection,page,article&resources[limit]=6&resources[options][unavailable_products]=last`;
+    fetch(url, { signal: ctl.signal, headers: { Accept: 'application/json' } }).then(r => r.json()).then(j => {
+      const res = (j.resources && j.resources.results) || {};
+      const groups = [['product', res.products], ['collection', res.collections], ['page', res.pages], ['article', res.articles]].filter(g => g[1] && g[1].length);
+      const all = `${FM.routes.root.replace(/\/$/, '')}/search?q=${encodeURIComponent(term)}&options%5Bprefix%5D=last`;
+      out.innerHTML = (groups.length
+        ? groups.map(([k, list]) => `<div class="fs-g fs-g--${k}">${list.map(r => row(r, k)).join('')}</div>`).join('')
+        : `<p class="fs-none">${esc(T.searchEmpty)}</p>`) + `<a class="tlink fs-all" href="${esc(all)}">${esc(T.searchAll)} “${esc(term)}”</a>`;
+    }).catch(() => {});
+  };
+  q.addEventListener('input', () => { clearTimeout(wait); wait = setTimeout(run, 180); });
+}
+
+/* ---------- size tables: inches or centimetres, remembered ---------- */
+const fmtIn = v => String(Math.round(v * 100) / 100), fmtCm = v => (Math.round(v * 2.54 * 10) / 10).toFixed(1).replace(/\.0$/, '');
+function units(u) {
+  $$('[data-in]').forEach(c => { const v = parseFloat(c.dataset.in); c.textContent = u === 'cm' ? fmtCm(v) : fmtIn(v); });
+  $$('[data-unit]').forEach(b => b.setAttribute('aria-pressed', b.dataset.unit === u));
+  $$('[data-unit-label]').forEach(l => { l.textContent = u === 'cm' ? T.cm : T.inches; });
+  try { localStorage.setItem('fm-units', u); } catch (e) {}
+}
+document.addEventListener('click', e => { const b = e.target.closest('[data-unit]'); if (b) units(b.dataset.unit); });
+document.addEventListener('DOMContentLoaded', () => { if (!$('[data-in]')) return; let u = null; try { u = localStorage.getItem('fm-units'); } catch (e) {} units(u === 'cm' ? 'cm' : 'in'); });
+
+/* ---------- cookie consent, through Shopify's Customer Privacy API ---------- */
+const ck = $('#fmCookie');
+if (ck && FM.cookies) {
+  const opts = $('#ckOpts');
+  const api = () => window.Shopify && window.Shopify.customerPrivacy;
+  // Shopify's own banner, when it is switched on, is in charge
+  const shopifyOwn = () => !!(window.privacyBanner || document.getElementById('shopify-pc__banner'));
+  const load = cb => {
+    if (api()) { cb(); return; }
+    if (window.Shopify && window.Shopify.loadFeatures) window.Shopify.loadFeatures([{ name: 'consent-tracking-api', version: '0.1' }], err => { if (!err && api()) cb(); });
+  };
+  const mode = choose => { opts.hidden = !choose; $('[data-ck="choose"]', ck).hidden = choose; $('[data-ck="save"]', ck).hidden = !choose; };
+  const openCk = choose => {
+    const p = api(), c = p && p.currentVisitorConsent ? p.currentVisitorConsent() : {};
+    ['preferences', 'analytics', 'marketing'].forEach(k => { $(`[name="${k}"]`, opts).checked = c[k] === 'yes'; });
+    mode(!!choose); ck.hidden = false;
+    requestAnimationFrame(() => ck.classList.add('show'));
+    if (choose) setTimeout(() => $('input:not(:disabled)', opts).focus({ preventScroll: true }), 80);
+  };
+  const closeCk = () => { ck.classList.remove('show'); setTimeout(() => { ck.hidden = true; }, 450); };
+  const save = v => {
+    const p = api();
+    if (!p) { closeCk(); return; }
+    p.setTrackingConsent({ analytics: v.analytics, marketing: v.marketing, preferences: v.preferences, sale_of_data: v.marketing }, () => { closeCk(); toast(T.cookiesSaved); });
+  };
+  const ask = () => {
+    const p = api();
+    if (!p || shopifyOwn()) return;
+    const undecided = !p.getTrackingConsent || p.getTrackingConsent() === 'no_interaction';
+    const required = (p.shouldShowBanner && p.shouldShowBanner()) || (p.userCanBeTracked && !p.userCanBeTracked());
+    if (undecided && (FM.cookies.everyone || required)) openCk(false);
+  };
+  addEventListener('load', () => setTimeout(() => load(ask), 700));
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-ck]');
+    if (b) {
+      const a = b.dataset.ck;
+      if (a === 'choose') { mode(true); $('input:not(:disabled)', opts).focus(); }
+      else if (a === 'accept') save({ analytics: true, marketing: true, preferences: true });
+      else if (a === 'reject') save({ analytics: false, marketing: false, preferences: false });
+      else if (a === 'save') save({ analytics: $('[name="analytics"]', opts).checked, marketing: $('[name="marketing"]', opts).checked, preferences: $('[name="preferences"]', opts).checked });
+      return;
+    }
+    const pr = e.target.closest('[data-cookie-prefs]');
+    if (pr) {
+      e.preventDefault();
+      if (window.privacyBanner && window.privacyBanner.showPreferences) { window.privacyBanner.showPreferences(); return; }
+      load(() => openCk(true));
+    }
+  });
+}
 })();
