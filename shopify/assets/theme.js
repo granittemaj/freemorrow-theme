@@ -219,6 +219,7 @@ const root = document.documentElement;
 if (hd) addEventListener('scroll', () => { hd.classList.toggle('up', scrollY > 8); root.classList.toggle('compact', scrollY > 40); }, { passive: true });
 
 document.addEventListener('DOMContentLoaded', () => { $$('.pc').forEach(cardSizes); });
+FM.cardSizes = () => $$('.pc').forEach(cardSizes);
 
 /* ---------- back to top ---------- */
 const topB = $('#fmTop');

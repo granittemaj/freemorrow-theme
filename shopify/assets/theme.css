@@ -418,3 +418,7 @@ html.compact body:not([data-page="story"]):not(.float) .hd-i{width:40px;height:4
 .totop svg{width:20px;height:20px;transform:rotate(-90deg)}
 body:has(.buybar.on) .totop{bottom:calc(var(--g) + 76px)}
 @media (prefers-reduced-motion:reduce){.totop,.totop.on{transition:none}}
+
+/* while another collection loads, the grid rests a little */
+.grid[aria-busy="true"]{opacity:.55;transition:opacity .2s}
+.grid{transition:opacity .3s}
