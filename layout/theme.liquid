@@ -61,7 +61,17 @@
       searchAll: {{ 'search.see_all' | t | json }},
       inches: {{ 'size_guide.inches' | t | json }},
       cm: {{ 'size_guide.cm' | t | json }},
-      cookiesSaved: {{ 'cookies.saved' | t | json }}
+      cookiesSaved: {{ 'cookies.saved' | t | json }},
+      viewFront: {{ 'products.turn.front' | t | json }},
+      viewBack: {{ 'products.turn.back' | t | json }},
+      viewLeft: {{ 'products.turn.left' | t | json }},
+      viewRight: {{ 'products.turn.right' | t | json }},
+      viewLeftFront: {{ 'products.turn.left_front' | t | json }},
+      viewRightFront: {{ 'products.turn.right_front' | t | json }},
+      turnLeft: {{ 'products.turn.turn_left' | t | json }},
+      turnRight: {{ 'products.turn.turn_right' | t | json }},
+      dragToTurn: {{ 'products.turn.drag' | t | json }},
+      turntable: {{ 'products.turn.label' | t | json }}
     };
     FM.searchUrl = {{ routes.predictive_search_url | json }};
     FM.cookies = {{ settings.cookie_banner | json }} ? { everyone: {{ settings.cookie_everyone | json }} } : null;

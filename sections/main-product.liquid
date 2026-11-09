@@ -32,7 +32,7 @@
           {{ main_image | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 900px) 40vw, 80vw', id: 'spImg', alt: product.title, loading: 'eager', fetchpriority: 'high' }}
         {%- endif -%}
       </figure>
-      <div class="spec-tools"><div class="seg" role="group" aria-label="{{ 'products.product.views' | t }}" id="spViews"></div><span class="mono" id="spShown"></span></div>
+      <div class="spec-tools"><div class="turn-c" role="group" aria-label="{{ 'products.product.views' | t }}" id="spViews" hidden></div><span class="mono" id="spShown"></span></div>
     </div>
     {%- if worn != blank -%}
       <div class="field">
