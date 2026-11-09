@@ -30,6 +30,10 @@
   assign socials = socials | remove_first: '|' | split: '|'
 
   assign ship_countries = settings.ship_countries | default: 'US' | remove: ' ' | split: ','
+  comment
+    Liquid cannot hold a brace inside {{ }}, so the search template is put together here.
+  endcomment
+  assign search_template = origin | append: routes.search_url | append: '?q=' | append: '{search_term_string}'
   assign refund_url = shop.refund_policy.url | default: '/policies/refund-policy' | prepend: origin
 -%}
 {%- capture return_policy -%}
@@ -81,7 +85,7 @@
       "publisher": {"@id": {{ org_id | json }}},
       "potentialAction": {
         "@type": "SearchAction",
-        "target": {"@type": "EntryPoint", "urlTemplate": {{ origin | append: routes.search_url | append: '?q={search_term_string}' | json }}},
+        "target": {"@type": "EntryPoint", "urlTemplate": {{ search_template | json }}},
         "query-input": "required name=search_term_string"
       }
     }

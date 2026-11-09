@@ -1,10 +1,36 @@
 {
   "current": {
-    "cart_note": false
+    "cart_note": false,
+    "seo_home_tagline": "Clothing for everyday adventures",
+    "seo_description": "Clothing for everyday adventures. Supported by our partner Not For Sale, all proceeds support its work combating human trafficking and ecocide.",
+    "org_email": "team@freemorrow.com",
+    "ship_countries": "US",
+    "ship_handling_min": 2,
+    "ship_handling_max": 5,
+    "ship_transit_min": 3,
+    "ship_transit_max": 4,
+    "returns_mode": "faults",
+    "returns_days": 30,
+    "cookie_banner": true,
+    "cookie_everyone": false,
+    "cookie_text": "We use cookies to keep your bag and checkout working and, with your permission, to understand how the shop is used and to improve it."
   },
   "presets": {
     "Default": {
-      "cart_note": false
+      "cart_note": false,
+      "seo_home_tagline": "Clothing for everyday adventures",
+      "seo_description": "Clothing for everyday adventures. Supported by our partner Not For Sale, all proceeds support its work combating human trafficking and ecocide.",
+      "org_email": "team@freemorrow.com",
+      "ship_countries": "US",
+      "ship_handling_min": 2,
+      "ship_handling_max": 5,
+      "ship_transit_min": 3,
+      "ship_transit_max": 4,
+      "returns_mode": "faults",
+      "returns_days": 30,
+      "cookie_banner": true,
+      "cookie_everyone": false,
+      "cookie_text": "We use cookies to keep your bag and checkout working and, with your permission, to understand how the shop is used and to improve it."
     }
   }
 }
