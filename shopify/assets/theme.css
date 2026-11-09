@@ -347,3 +347,30 @@ html.compact body:not([data-page="story"]):not(.float) .hd-i{width:40px;height:4
 .szd .tlink{font-size:13.5px}
 @media (max-width:480px){.szd-h{flex-direction:column;gap:12px}.szd-h h2{padding-top:0}}
 .fm-drawer:focus{outline:none}
+
+/* the turntable: the photo turns in 3D between the piece's sides; drag, swipe, arrow keys or the arrows */
+.spec-f{touch-action:pan-y;cursor:grab;outline:none;-webkit-user-select:none;user-select:none}
+.spec-f.grab{cursor:grabbing}
+.spec-f:focus-visible{outline:2px solid var(--sun);outline-offset:8px;border-radius:12px}
+.spec-f > img{position:relative;z-index:1;transform-origin:50% 55%;transition:transform .6s cubic-bezier(.2,.7,.1,1);will-change:transform;-webkit-user-drag:none}
+.spec-f.grab > img{transition:none}
+.spec-f > img.turn-out{position:absolute;z-index:1;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;pointer-events:none;transition:none}
+/* a soft shadow on the floor, which narrows as the piece turns side-on */
+.spec-f::after{content:"";position:absolute;left:18%;right:18%;bottom:-3%;height:7%;border-radius:50%;background:radial-gradient(closest-side,rgba(60,44,28,.18),rgba(60,44,28,0));z-index:0;transition:transform .5s cubic-bezier(.2,.7,.1,1)}
+.spec-f.turning::after{transform:scaleX(.7)}
+.turn-c{display:flex;align-items:center;gap:6px}
+.turn-c[hidden]{display:none}
+.turn-b{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--paper);box-shadow:inset 0 0 0 1px var(--rule);transition:background .2s,box-shadow .2s,color .2s}
+.turn-b:hover{box-shadow:inset 0 0 0 1px var(--ink-2)}
+.turn-b:active{background:var(--ink);color:var(--paper)}
+.turn-b svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.turn-o{display:block;width:44px;height:26px;margin:0 2px 0 6px}
+.turn-o svg{width:100%;height:100%;overflow:visible}
+.turn-o ellipse{fill:none;stroke:var(--tick);stroke-width:1;stroke-dasharray:2 2.4}
+.turn-o circle{fill:var(--mute);transition:r .3s,fill .3s}
+.turn-o circle.on{fill:var(--sun)}
+.turn-l{display:flex;flex-direction:column;min-width:86px;margin-right:4px;line-height:1.2}
+.turn-l b{font-weight:500;font-size:13.5px}
+.turn-l small{font:400 10px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-top:2px}
+@media (hover:none){.turn-l small{display:none}}
+@media (max-width:420px){.turn-o{display:none}}
