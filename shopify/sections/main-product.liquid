@@ -26,7 +26,7 @@
 
 <div class="spec" data-product-page>
   <div class="spec-l">
-    <div class="surface spec-s">
+    <div class="spec-s" id="spStage">
       <figure class="spec-f">
         {%- if main_image != blank -%}
           {{ main_image | image_url: width: 1400 | image_tag: widths: '600, 900, 1200, 1400', sizes: '(min-width: 900px) 40vw, 80vw', id: 'spImg', alt: product.title, loading: 'eager', fetchpriority: 'high' }}

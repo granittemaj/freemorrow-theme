@@ -27,6 +27,7 @@ FM.money = cents => {
 /* ---------- colours, matching snippets/swatch-color.liquid ---------- */
 const PALETTE = { dust: '#D9CCB4', 'athletic heather': '#B5B4B0', 'pine green': '#2E4A3B', black: '#1A1A1A', cypress: '#5E6A4C', 'midnight blue': '#1E2942', clay: '#B8836A', 'french navy': '#1F2A48', stone: '#D6CDBD', white: '#F7F7F4', 'light blue': '#B7CEE2', 'mustard yellow': '#D6A238', 'oxford navy': '#232B44', burgundy: '#6B1F2B', 'light avio blue': '#9DB7D2', 'leaf green': '#4D7A46', navy: '#1F2A44', cranberry: '#8C2234', 'dark grey': '#4B4B4B', 'denim blue': '#4E6A8F' };
 FM.swatch = v => PALETTE[String(v).toLowerCase()] || '#CFC6B6';
+FM.palette = PALETTE;
 const isColor = o => /^colou?r$/i.test(o.name || o);
 const isSize = o => /^size$/i.test(o.name || o);
 
