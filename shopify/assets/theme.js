@@ -72,7 +72,9 @@ function show(d, opener) {
   if (open && open !== d) hide(open, true);
   back = opener || document.activeElement;
   d.classList.add('open'); d.setAttribute('aria-hidden', 'false'); scrim.classList.add('open'); open = d;
-  setTimeout(() => $('.fm-x', d).focus({ preventScroll: true }), 60);
+  // focus goes to the panel itself, so keyboard and screen reader users land inside it without a ring on Close
+  if (!d.hasAttribute('tabindex')) d.setAttribute('tabindex', '-1');
+  setTimeout(() => d.focus({ preventScroll: true }), 60);
 }
 function hide(d, swap) {
   d.classList.remove('open'); d.setAttribute('aria-hidden', 'true');
