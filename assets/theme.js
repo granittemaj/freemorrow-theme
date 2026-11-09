@@ -226,28 +226,33 @@ document.addEventListener('DOMContentLoaded', () => { $$('.pc').forEach(cardSize
 FM.cardSizes = () => $$('.pc').forEach(cardSizes);
 
 /* ---------- the newsletter signs up in place ---------- */
-// the form posts in the background and its answer replaces the field; if Shopify asks for a challenge (its spam
-// check), or anything else goes wrong, the form is sent the ordinary way instead
+// The form is sent the ordinary way, so Shopify's spam check (hCaptcha) can add its token first, but into a hidden
+// frame, so the page stays where it is. When the answer arrives, its message replaces the field. Anything else the
+// frame lands on (a visible challenge, an error page) is opened in the page instead.
 const nl = $('#footer-newsletter');
-if (nl) nl.addEventListener('submit', e => {
-  const input = $('input[type="email"]', nl), btn = $('button[type="submit"]', nl);
-  if (!input || !input.value) return;
-  e.preventDefault();
-  btn && (btn.disabled = true);
-  nl.setAttribute('aria-busy', 'true');
-  fetch(nl.action, { method: 'POST', body: new FormData(nl), headers: { Accept: 'text/html' } })
-    .then(r => { if (/\/challenge/.test(r.url)) throw new Error('challenge'); return r.text(); })
-    .then(html => {
-      const d = new DOMParser().parseFromString(html, 'text/html'), f = d.getElementById('footer-newsletter');
-      const ok = f && f.querySelector('.ft-ok'), err = f && f.querySelector('.ft-err');
-      if (!ok && !err) throw new Error('no answer');
-      $$('.ft-err', nl).forEach(x => x.remove());
-      if (ok) { const box = $('.ft-in', nl); box && box.replaceWith(document.importNode(ok, true)); }
-      else { const box = $('.ft-in', nl); box && box.before(document.importNode(err, true)); btn && (btn.disabled = false); input.focus(); }
-    })
-    .catch(() => { HTMLFormElement.prototype.submit.call(nl); })
-    .finally(() => nl.removeAttribute('aria-busy'));
-});
+if (nl) {
+  const frame = document.createElement('iframe');
+  frame.name = 'fmNewsletter'; frame.title = ''; frame.hidden = true; frame.setAttribute('aria-hidden', 'true'); frame.tabIndex = -1;
+  document.body.appendChild(frame);
+  nl.target = 'fmNewsletter';
+  let sent = false;
+  nl.addEventListener('submit', () => { sent = true; nl.setAttribute('aria-busy', 'true'); const b = $('button[type="submit"]', nl); b && (b.disabled = true); });
+  frame.addEventListener('load', () => {
+    if (!sent) return;
+    sent = false;
+    nl.removeAttribute('aria-busy');
+    const btn = $('button[type="submit"]', nl);
+    let d = null, href = '';
+    try { d = frame.contentDocument; href = frame.contentWindow.location.href; } catch (e) {}
+    const f = d && d.getElementById('footer-newsletter');
+    const ok = f && f.querySelector('.ft-ok'), err = f && f.querySelector('.ft-err');
+    $$('.ft-err', nl).forEach(x => x.remove());
+    if (ok) { const box = $('.ft-in', nl); box && box.replaceWith(document.importNode(ok, true)); return; }
+    btn && (btn.disabled = false);
+    if (err) { const box = $('.ft-in', nl); box && box.before(document.importNode(err, true)); const i = $('input[type="email"]', nl); i && i.focus(); return; }
+    if (href && href !== 'about:blank') location.href = href;
+  });
+}
 
 /* ---------- back to top ---------- */
 const topB = $('#fmTop');
